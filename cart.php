@@ -2,28 +2,31 @@
 include("db_conf.php");
 include("header.php");
 if(!empty($_GET["action"])) {
-	$itemId = $_GET["itemId"];
-	$size = $_POST["size"];
-	$stockQuery = mysql_query("SELECT * FROM items_stock WHERE item_id = $itemId AND size = '$size'");
-	$stockRow = mysql_fetch_array($stockQuery);
-	
 	switch($_GET["action"]) {
 		case "add":
-			if(!empty($_POST["quantity"])) {
+			// Get parameters from form
+			if(!empty($_POST["quantity"]) && !empty($_POST["itemId"]) && !empty($_POST["size"])) {
 				$quantity = $_POST["quantity"];
+				$itemId = $_POST["itemId"];
+				$size = $_POST["size"];
+				
+				// Find the item stock ID - this will be its identifier in the cart
+				$stockQuery = mysql_query("SELECT * FROM items_stock WHERE item_id = $itemId AND size = '$size'");
+				$stockRow = mysql_fetch_array($stockQuery);
+				$itemStockId = $stockRow["id"];
 
-		   		
+				// We also need the item details
 		   		$itemQuery = mysql_query("SELECT * FROM items WHERE id = $itemId");
 		   		$itemRow = mysql_fetch_array($itemQuery);
 		
-		
-				$itemArray = array($stockRow["id"] => array('name'=>$itemRow["name"], 'id'=>$itemId, 'price'=>$itemRow["price"], 'quantity'=>$quantity, 'size'=>$size));
+				// Create array with item's data, pointed by the item stock id.
+				$itemArray = array($itemStockId => array('name'=>$itemRow["name"], 'id'=>$itemStockId, 'price'=>$itemRow["price"], 'quantity'=>$quantity, 'size'=>$size));
 				if(!empty($_SESSION["cart_item"])) {
-					if(in_array($stockRow["id"], $_SESSION["cart_item"])) {
-						// Update quantity for existing items (with the same size)
+					if(array_key_exists($itemStockId, $_SESSION["cart_item"])) {
+						// Update quantity for existing items (stock items)
 						foreach($_SESSION["cart_item"] as $k => $v) {
-							if($stockRow["id"] == $k) {
-								$_SESSION["cart_item"][$k]["quantity"] = $quantity;
+							if($itemStockId == $k) {
+								$_SESSION["cart_item"][$k]["quantity"] += $quantity;
 							}
 						}
 					} else {
@@ -36,13 +39,15 @@ if(!empty($_GET["action"])) {
 		break;
 		
 		case "remove":
-			if(!empty($_SESSION["cart_item"])) {
-				foreach($_SESSION["cart_item"] as $k => $v) {
-					if($stockRow["id"] == $k) {
-						unset($_SESSION["cart_item"][$k]);	
-					}			
-					if(empty($_SESSION["cart_item"])) {
-						unset($_SESSION["cart_item"]);
+			if(!empty($_GET["itemStockId"])) {
+				if(!empty($_SESSION["cart_item"])) {
+					foreach($_SESSION["cart_item"] as $k => $v) {
+						if($_GET["itemStockId"] == $k) {
+							unset($_SESSION["cart_item"][$k]);	
+						}			
+						if(empty($_SESSION["cart_item"])) {
+							unset($_SESSION["cart_item"]);
+						}
 					}
 				}
 			}
@@ -76,7 +81,7 @@ if(!empty($_GET["action"])) {
 						<td><?php echo $item["size"]; ?></td>
 						<td><?php echo $item["quantity"]; ?></td>
 						<td align=right><?php echo "$".$item["price"]; ?></td>
-						<td><a href="cart.php?action=remove&itemId=<?php echo $item["id"]; ?>" class="btnRemoveAction">Remove Item</a></td>
+						<td><a href="cart.php?action=remove&itemStockId=<?php echo $item["id"]; ?>" class="btnRemoveAction">Remove Item</a></td>
 					</tr>
 <?php
         			$item_total += ($item["price"]*$item["quantity"]);

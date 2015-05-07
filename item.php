@@ -15,11 +15,13 @@ $designerId = $itemRow['designer_id'];
 $color = $itemRow['color'];
 
 ?>
+</script>
+
     <div id="content_header"></div>
     <div id="site_content">
         <div id="content">
 			<div class="product-item">
-				<form method="post" action="cart.php?action=add&itemId=<?php echo $itemId; ?>">
+				<form name="addToCartForm" method="post" action="cart.php?action=add">
 				<div><img src="<?php echo "images/".$picture ?>"></div>
 				<div><strong><?php echo $name; ?></strong></div>
 				<div><?php echo $description; ?></div>
@@ -44,6 +46,7 @@ $color = $itemRow['color'];
 						}	
 ?>
 					</select>
+					<input type="hidden" name="itemId" value="<?php echo $itemId; ?>" />
 					<input type="text" name="quantity" value="1" size="2" />
 					<input type="submit" value="Add To Cart" class="btnAddCart" />
 				</div>

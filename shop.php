@@ -1,4 +1,7 @@
-
+<?php
+include("header.php");
+include("db_conf.php");
+?>
     <div id="content_header"></div>
     <div id="site_content">
         <div id="content">
@@ -17,10 +20,7 @@
 					<td>Add To Cart</td>
 					
 				</tr>
-			   <?php
-			   	include("db_conf.php");
-			   	include("header.php");
-
+<?php
 			   	$query = mysql_query("SELECT * FROM items");
 			   	while($row = mysql_fetch_array($query)) {
 					$itemId = $row['id'];
