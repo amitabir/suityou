@@ -1,5 +1,5 @@
 <?php
-include("db_conf.php");
+include("config.php");
 include("header.php");
 $itemId = $_GET["itemId"];
 $itemQuery = mysql_query("SELECT * FROM items WHERE id = $itemId");

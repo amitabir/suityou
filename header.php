@@ -1,5 +1,5 @@
 <?php
-session_start();
+require_once 'config.php';
 ?>
 <html>
 <head>
@@ -24,15 +24,33 @@ session_start();
      
       <div id="menubar">
         <ul id="leftmenu">
-          <li><a href="shop.php">Shop</a></li>
-          <li><a href="match.php">Match</a></li>	
-          <li><a href="trends.php">Trends</a></li>
+          	<li><a href="shop.php">Shop</a></li>
+          	<li><a href="match.php">Match</a></li>	
+          	<li><a href="trends.php">Trends</a></li>
         </ul>
-		
-        <ul id="rightmenu">
-          <li><a href="cart.php">Shopping Cart</a></li>
-          <li><a href="user.php">User</a></li>	
-          <li><a href="index.php">Logout</a></li>
+        
+<?php 
+if(isset($_SESSION['user_id'],$_SESSION['email']))
+{
+?>
+		<p>Hello <?php echo $_SESSION['email']?></p>
+		<ul id="changeMenu">			
+			<li><a href="cart.php">Shopping Cart</a></li>
+          	<li><a href="user.php">User</a></li>	
+          	<li><a href="connexion.php">Logout</a></li>
         </ul>
+<?php
+}
+else
+{
+?>
+		<ul id="changeMenu">
+			<li><a href="sign_up.php">Sign up</a></li>
+			<li><a href="connexion.php">Log in</a></li>
+		</ul>
+<?php 
+}
+?>        
       </div>
     </div>
+</div>

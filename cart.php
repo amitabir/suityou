@@ -1,5 +1,4 @@
 <?php
-include("db_conf.php");
 include("header.php");
 if(!empty($_GET["action"])) {
 	switch($_GET["action"]) {

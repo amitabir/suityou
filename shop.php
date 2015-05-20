@@ -1,6 +1,5 @@
 <?php
 include("header.php");
-include("db_conf.php");
 ?>
     <div id="content_header"></div>
     <div id="site_content">

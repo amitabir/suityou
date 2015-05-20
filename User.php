@@ -14,7 +14,7 @@ class User
 	public $description;
 	public $website_link;
 	
-	public function getUserfromDBbyID($user_id)
+	public static function getUserfromDBbyID($user_id)
 	{
 		$query = mysql_query('select * from users where user_id=.'.$user_id);
 		$row = mysql_num_rows($query);
@@ -24,7 +24,7 @@ class User
 			return null; 
 	}
 	
-	public function getUserfromDBbyEmail($email)
+	public static function getUserfromDBbyEmail($email)
 	{
 		$query = mysql_query('select * from users where email=.'.$email);
 		$row = mysql_num_rows($query);
@@ -34,17 +34,8 @@ class User
 			return null;
 	}
 	
-	public function getUserFromArray(array $arr)
-	{
-		$user = new User();
-		foreach ($arr as $key => $value)
-		{
-		    $user->$key = $value;
-		}
-		return $user;
-	}
-	
-	function setArrayFromUser(array $arr)
+
+	public function setArrayFromUser(&$arr)
 	{
 		
 		foreach($this as $key => $value)
@@ -54,25 +45,50 @@ class User
 		
 	}
 	
-	function unSetArrayFromUser(array $arr)
+	public static function unSetArrayFromUser(&$arr)
 	{
-		foreach($this as $key => $value)
+		$properties =  get_class_vars('User');
+		foreach($properties as $key => $value)
 		{
-			unset($arr[$key]);
+			if(isset($arr[$key]))
+				unset($arr[$key]);
 		}
 	}
 	
-	function issetUserinArray(array $arr)
+	public static function issetUserinArray(&$arr)
 	{
-		foreach($this as $key => $value)
+		$properties =  get_class_vars('User');
+		foreach($properties as $key => $value)		
 		{
-			if(!isset($arr[$key]))
+			if(!isset($arr[$key])){
 				return false;
+			}
 			else
 				return true; 
 		}
 	}
 	
+	public static function UserFromArray(&$arr)
+	{
+		$user = new User;
+		foreach($user as $key => $value)
+		{
+			if(isset($arr[$key]))
+			{
+				$user->$key = $arr[$key];
+			}
+		}
+		return $user;
+	}
+	
+	public function applyFuncOnUser(&$function)
+	{
+		foreach($this as $key => $value)
+		{
+			$this->$key = $function($this->$key);
+			
+		}
+	}
 	
 }
 ?>
