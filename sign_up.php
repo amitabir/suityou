@@ -1,7 +1,7 @@
 <?php
 include('header.php');
 //We check if the form has been sent
-if(isset($_POST['email'], $_POST['first_name'], $_POST['last_name'], $_POST['address'], $_POST['gender'], $_POST['birth_date']))
+if(isset($_POST['email'], $_POST['first_name'], $_POST['last_name'], $_POST['address'], $_POST['gender'], $_POST['birth_date'], $_POST['is_designer']))
 {
 			//We check if the email form is valid
 			if(preg_match('#^(([a-z0-9!\#$%&\\\'*+/=?^_`{|}~-]+\.?)*[a-z0-9!\#$%&\\\'*+/=?^_`{|}~-]+)@(([a-z0-9-_]+\.?)*[a-z0-9-_]+)\.[a-z]{2,}$#i',$_POST['email']))
@@ -19,9 +19,10 @@ if(isset($_POST['email'], $_POST['first_name'], $_POST['last_name'], $_POST['add
 						//We dont display the form
 						$form = false;
 						//logging him into session automatically
-						$dn = mysql_fetch_assoc(mysql_query('select user_id,email from users where email="'.$email.'"'));
+						$dn = mysql_fetch_assoc(mysql_query('select user_id,email,is_designer from users where email="'.$email.'"'));
 						$_SESSION['user_id'] = $dn['user_id'];
 						$_SESSION['email'] = $dn['email'];
+						$_SESSION['is_designer'] = $dn['is_designer'];
 						header("Location: index.php");
 					}
 					else

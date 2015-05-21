@@ -15,7 +15,7 @@ else
 	{
 		
 		$user = User::UserFromArray($_POST);
-		$req = mysql_query('select user_id,email from users where email="'.$user->{'email'}.'"');
+		$req = mysql_query('select user_id,email,is_designer from users where email="'.$user->{'email'}.'"');
 		$dn = mysql_fetch_array($req);
 		//We compare the submited email and we check if the user exists
 		if($dn['email']==$user->{'email'} and mysql_num_rows($req)>0)
@@ -25,7 +25,7 @@ else
 			//We save the email in the session email and the user Id in the session userid
 			$_SESSION['email'] = $dn['email'];
 			$_SESSION['user_id']=$dn['user_id'];
-			sleep(1);
+			$_SESSION['is_designer']=$dn['is_designer'];
 			header("Location: index.php");
 		}
 		else

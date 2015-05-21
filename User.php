@@ -16,24 +16,35 @@ class User
 	
 	public static function getUserfromDBbyID($user_id)
 	{
-		$query = mysql_query('select * from users where user_id=.'.$user_id);
-		$row = mysql_num_rows($query);
-		if($row == 1)
-			return mysql_fetch_object($query,'User');
-		else
-			return null; 
+		
+		$query = mysql_query('select * from users where user_id='.$user_id);
+	
+		return User::getUserfromDB($query);
 	}
 	
 	public static function getUserfromDBbyEmail($email)
 	{
-		$query = mysql_query('select * from users where email=.'.$email);
+		$query = mysql_query('select * from users where email='.$email);
+		return User::getUserfromDB($query);
+	}
+	
+	private static function getUserfromDB($query)
+	{
 		$row = mysql_num_rows($query);
 		if($row == 1)
-			return mysql_fetch_object($query,'User');
+		{
+			
+			$user = new User();
+			$arr=mysql_fetch_array($query);
+			foreach($arr as $key=>$value)
+			{
+				$user->{$key} = $value;
+			}
+			return $user;
+		}
 		else
 			return null;
 	}
-	
 
 	public function setArrayFromUser(&$arr)
 	{

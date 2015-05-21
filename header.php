@@ -36,7 +36,7 @@ if(isset($_SESSION['user_id'],$_SESSION['email']))
 		<p>Hello <?php echo $_SESSION['email']?></p>
 		<ul id="changeMenu">			
 			<li><a href="cart.php">Shopping Cart</a></li>
-          	<li><a href="user.php">User</a></li>	
+          	<li><a href="profile.php">Profile</a></li>	
           	<li><a href="connexion.php">Logout</a></li>
         </ul>
 <?php
