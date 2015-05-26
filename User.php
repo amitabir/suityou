@@ -13,7 +13,7 @@ class User
 	public $coupon_meter;
 	public $description;
 	public $website_link;
-	
+	 
 	public static function getUserfromDBbyID($user_id)
 	{
 		

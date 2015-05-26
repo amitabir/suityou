@@ -22,7 +22,7 @@ include("header.php");
 <?php
 			   	$query = mysql_query("SELECT * FROM items");
 			   	while($row = mysql_fetch_array($query)) {
-					$itemId = $row['id'];
+					$itemId = $row['item_id'];
 			   		$name = $row['name'];
 			   		$gender = $row['gender'];
 			   		$type = $row['type'];
@@ -30,7 +30,7 @@ include("header.php");
 					$picture = $row['picture'];
 					$price = $row['price'];
 					echo "<tr>";
-			   		echo "<td> $name </td> <td> $price $ </td> <td> $gender </td> <td> $type </td> <td> $description </td> <td> <img width='170' src=images/$picture /> </td> <td> <a href='item.php?itemId=$itemId'> Buy Now </a> </td>";
+			   		echo "<td> $name </td> <td> $price $ </td> <td> $gender </td> <td> $type </td> <td> $description </td> <td> <img width='170' src=images/items/$picture /> </td> <td> <a href='show_item.php?itemId=$itemId'> Buy Now </a> </td>";
 					echo "</tr>";
 			   	}
 			   ?>

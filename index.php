@@ -8,9 +8,9 @@
                 <h2>Welcome to SuitYou!</h2>
             </div>
 			
-			<ul>
+			<ul>				
 	            <li><a href="shop.php">Shop</a></li>
-	            <li><a href="match.php">Match</a></li>	
+	            <li><a href="matching.php">Match</a></li>	
 	            <li><a href="trends.php">Trends</a></li>
 			</ul>
 			

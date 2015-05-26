@@ -1,61 +1,76 @@
 <?php
-include("config.php");
-include("header.php");
-$itemId = $_GET["itemId"];
-$itemQuery = mysql_query("SELECT * FROM items WHERE id = $itemId");
-$itemRow = mysql_fetch_array($itemQuery);
-								
-$name = $itemRow['name'];
-$gender = $itemRow['gender'];
-$type = $itemRow['type'];
-$description = $itemRow['description'];
-$picture = $itemRow['picture'];
-$price = $itemRow['price'];
-$designerId = $itemRow['designer_id'];
-$color = $itemRow['color'];
+class Item {
+	public $itemId;
+	public $name;
+	public $gender;
+	public $type;
+	public $description;
+	public $price;
+	public $designerId;
+	public $creationTime;
+	public $picture;
 
+	public static function getItemByID($itemId) {
+		$itemQuery = mysql_query("SELECT * FROM items WHERE item_id = ".$itemId);
+	
+		$num_rows = mysql_num_rows($itemQuery);
+		if($num_rows == 1) {
+			$itemRow = mysql_fetch_array($itemQuery);
+			$item = new Item();
+			$item->itemId = $itemId;
+			$item->name = $itemRow['name'];
+			$item->gender = $itemRow['gender'];
+			$item->type = $itemRow['type'];
+			$item->description = $itemRow['description'];
+			$item->price = $itemRow['price'];
+			$item->designerId = $itemRow['designer_id'];
+			$item->creationTime = $itemRow['creation_time'];
+			$item->picture = $itemRow['picture'];
+			return $item;
+		}
+		else {
+			return null;
+		}
+	}
+	
+	public function getItemAttributes() {
+		$itemAttributesQuery = mysql_query("SELECT categories.category_id, categories.name ,attributes.attribute_id, attributes.name
+									   FROM item_attributes
+									   INNER JOIN attributes, categories
+									   WHERE item_attributes.item_id = ". $this->itemId . " AND item_attributes.attribute_id = attributes.attribute_id AND attributes.category_id = categories.category_id") or die(mysql_error());
+		
+		$result = array();
+	   	while($row = mysql_fetch_array($itemAttributesQuery)) {
+			$categoryId = $row[0];
+			$categoryName = $row[1];
+	   		$attributeId = $row[2];
+	   		$attributeName = $row[3];
+			$result[$categoryId] = array("cat_name" => $categoryName, "att_id" => $attributeId, "att_name" => $attributeName);
+	   	}
+		
+		return $result;	  
+	}
+	
+	public function getItemStock() {
+		$itemStockQuery = mysql_query("SELECT * FROM items_stock WHERE item_id = ". $this->itemId);
+		$result = array();
+		while($stockRow = mysql_fetch_array($itemStockQuery)) {
+			$stockId = $stockRow['item_stock_id'];
+			$result[$stockId] = array('size' => $stockRow['size'], 'quantity' => $stockRow['quantity']);
+		}
+		return $result;
+	}
+	
+	public static function itemFromArray(&$arr)	{
+		$item = new Item();
+		foreach($item as $key => $value)
+		{
+			if(isset($arr[$key]))
+			{
+				$item->$key = $arr[$key];
+			}
+		}
+		return $item;
+	}
+}
 ?>
-</script>
-
-    <div id="content_header"></div>
-    <div id="site_content">
-        <div id="content">
-			<div class="product-item">
-				<form name="addToCartForm" method="post" action="cart.php?action=add">
-				<div><img src="<?php echo "images/".$picture ?>"></div>
-				<div><strong><?php echo $name; ?></strong></div>
-				<div><?php echo $description; ?></div>
-				<div class="product-price"><?php echo "$".$price; ?></div>
-				<div> 	
-					 <select name='size'>
-<?php
-						$itemStockQuery = mysql_query("SELECT * FROM items_stock WHERE item_id = $itemId");
-						while($stockRow = mysql_fetch_array($itemStockQuery)) {
-							$size = $stockRow['size'];
-							$quantity = $stockRow['quantity'];
-							
-							if ($quantity > 0) {
-?>
-								<option value="<?php echo $size; ?>"><?php echo $size; ?></option>	
-<?php
-							} else {
-?>
-								<option value="<?php echo $size; ?>"><?php echo $size." - Out of stock"; ?></option>	
-<?php
-							}
-						}	
-?>
-					</select>
-					<input type="hidden" name="itemId" value="<?php echo $itemId; ?>" />
-					<input type="text" name="quantity" value="1" size="2" />
-					<input type="submit" value="Add To Cart" class="btnAddCart" />
-				</div>
-				</form>
-			</div>			
-        </div>
-    </div>
-
-</div>
-
-  </body>
-</html>

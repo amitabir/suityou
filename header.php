@@ -9,6 +9,8 @@ require_once 'config.php';
   <meta name="keywords" content="website keywords, website keywords" />
   <meta http-equiv="content-type" content="text/html; charset=windows-1252" />
   <link rel="stylesheet" type="text/css" href="style/style.css" /> 
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script src="ajax.js?102"></script>
 </head>
 
 <body>
@@ -25,10 +27,9 @@ require_once 'config.php';
       <div id="menubar">
         <ul id="leftmenu">
           	<li><a href="shop.php">Shop</a></li>
-          	<li><a href="match.php">Match</a></li>	
+          	<li><a href="matching.php">Match</a></li>	
           	<li><a href="trends.php">Trends</a></li>
-        </ul>
-        
+        </ul>        
 <?php 
 if(isset($_SESSION['user_id'],$_SESSION['email']))
 {
