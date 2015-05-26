@@ -4,7 +4,14 @@ include("header.php");
 include('Item.php');
 
 $itemId = $_GET["itemId"];
+	$userId = $_SESSION['user_id'];
 $item = Item::getItemByID($itemId);
+if ($item->type=="TOP"){
+	$typeColId="top_item_id";
+}else{
+	$typeColId="bottom_item_id";
+}
+$queryMatches = mysql_query('SELECT * from item_matchings WHERE '.$typeColId. '='.$item->itemId);
 ?>
 
     <div id="content_header"></div>
@@ -54,6 +61,67 @@ $item = Item::getItemByID($itemId);
 					<input type="submit" value="Add To Cart" class="btnAddCart" />
 				</div>
 				</form>
+				<table border="1">
+				<tr>
+				<?php
+				if ($item->type == "TOP"){
+					if ($item->gender == "MALE"){
+						echo "Matching Pants:";
+					} else{
+						echo "Matching Pants and Skirts:";
+					}
+				} else{
+					echo "Matching Shirts:";
+				}
+				?>
+				</tr>
+				<tr>
+				<?php
+				while($row = mysql_fetch_array($queryMatches)) {
+					$matchId = $row['match_id'];
+					$percent= $row['match_percent'];
+					if ($item->type == "TOP"){
+						$matchItemId= $row["bottom_item_id"];
+					}else{
+						$matchItemId= $row['top_item_id'];
+					}
+					$matchItem = Item::getItemByID($matchItemId);
+				?>
+					<td>
+					match rating: <?php echo "$".$percent; ?> %
+					<br/>
+					<img src="<?php echo "images/items/". $matchItem->picture; ?>">
+					<br/>
+				<?php
+					$queryUserMatch=mysql_query('SELECT rating FROM user_matchings WHERE user_id='.$userId.' AND match_id= ' . $matchId);
+					if (mysql_num_rows($queryUserMatch)>0){
+						$row=mysql_fetch_array($queryUserMatch);
+						$rating=$row['rating'];
+					} else {
+						$rating = -1;
+					}
+					echo '<span class="star-rating">';
+					for ($i = 1; $i <= 10; $i++) {
+						echo '<input type="radio" name="rating"';
+						if ($rating != -1){
+							if ($i==$rating){
+								echo ' checked disabled';
+							}else{
+								echo ' disabled';
+							}
+						}
+						echo ' value="'.$i.'" onclick="submitUserRating('.$matchId.', '.$userId.', $(this).val(), 10);"><i></i>';
+					}
+					echo '</span>';
+				?>
+					<br/>
+					<a href='show_item.php?itemId=<?php echo $matchItemId;?>'> Buy Now </a>
+					</td>
+				<?php
+				}
+				?>
+			</tr>
+			</table>
 			</div>			
         </div>
     </div>
