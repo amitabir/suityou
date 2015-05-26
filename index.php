@@ -9,7 +9,8 @@
             </div>
 			
 			<ul>				
-	            <li><a href="shop.php">Shop</a></li>
+	            <li><a href="shop_entrance.php?gender=male">Shop- Men</a></li>
+				<li><a href="shop_entrance.php?gender=female">Shop-Women</a></li>
 	            <li><a href="matching.php">Match</a></li>	
 	            <li><a href="trends.php">Trends</a></li>
 			</ul>
