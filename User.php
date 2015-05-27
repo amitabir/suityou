@@ -66,18 +66,25 @@ class User
 		}
 	}
 	
-	public static function issetUserinArray(&$arr)
+	public static function issetUserDetailsinArray(&$arr)
 	{
 		$properties =  get_class_vars('User');
 		foreach($properties as $key => $value)		
 		{
-			if(!isset($arr[$key])){
-				return false;
-			}
+			if($key == 'user_id')
+				continue;
 			else
-				return true; 
+			{
+				if(!isset($arr[$key]))
+				{
+					return false;
+				}
+				else
+					return true; 
+			}
 		}
 	}
+
 	
 	public static function UserFromArray(&$arr)
 	{

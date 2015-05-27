@@ -29,7 +29,7 @@ if(isset($_POST['email'], $_POST['first_name'], $_POST['last_name'], $_POST['add
 					{
 						//Otherwise, we say that an error occured
 						$form = true;
-						$message = mysql_error();//'An error occurred while signing up.';
+						$message = mysql_error();//TODO:'An error occurred while signing up.';
 					}
 						
 				}
