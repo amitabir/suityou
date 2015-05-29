@@ -31,10 +31,8 @@ function addNewAttribute($categoryKey, $itemId) {
 if(isset($_POST["submit"])) {
 	
 	if ($_GET["action"] == "add") {
-		
 		$item = Item::itemFromArray($_POST);
-		// TODO change
-		$item->designerId = 1;
+		$item->designerId = $_POST["designerId"];
 		$item->picture = uploadImage("imageToUpload", ITEM_IMAGES_TARGET_DIR);
 		
 		mysql_query('INSERT INTO items(name, gender, type, description, price, designer_id, picture) VALUES ("'.$item->name.'", "'.$item->gender.'", "'.$item->type.'", "'.$item->description.'", '.$item->price.', '.$item->designerId.', "'.$item->picture.'")') or die(mysql_error());
@@ -71,7 +69,6 @@ if(isset($_POST["submit"])) {
 		$updatedItem->designerId = $oldItem->designerId;
 		
 		if (!empty($_FILES["imageToUpload"]["name"])) {
-			// TODO delete old image
 			deleteImage($oldItem->picture, ITEM_IMAGES_TARGET_DIR);
 			$updatedItem->picture = uploadImage("imageToUpload", ITEM_IMAGES_TARGET_DIR);
 		} else {
@@ -127,6 +124,22 @@ if(isset($_POST["submit"])) {
 		
 		header("location: show_item.php?itemId=".$itemId);
 					
+	} else if ($_GET["action"] == "remove") {
+		$itemId = $_GET["itemId"];
+		$item = Item::getItemById($itemId);
+		
+		if (!empty($item->picture)) {
+			deleteImage($item->picture, ITEM_IMAGES_TARGET_DIR);
+		}
+		
+		// Delete item attributes
+		mysql_query('DELETE FROM item_attributes WHERE item_id = '.$itemId) or die(mysql_error());
+		
+		// Delete item stock
+		mysql_query('DELETE FROM items_stock WHERE item_id = '.$itemId) or die(mysql_error());
+		
+		// Delete the item
+		mysql_query('DELETE FROM items WHERE item_id = '.$itemId) or die(mysql_error());
 	}
 }
 ?>

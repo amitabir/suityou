@@ -1,9 +1,5 @@
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<script type="text/javascript" src="jquery.validate.min.js"></script>
-<script type="text/javascript" src="sign_up_validate.js"></script>
 <?php
 include('header.php');
-
 
 //We check if the form has been sent
 if(isset($_POST['email'], $_POST['first_name'], $_POST['last_name'], $_POST['address'], $_POST['gender'], $_POST['birth_date']))//, $_POST['is_designer']))
@@ -64,6 +60,8 @@ if(isset($message))
 if($form)
 {
 ?>
+<script type="text/javascript" src="jquery.validate.min.js"></script>
+<script type="text/javascript" src="sign_up_validate.js"></script>
 <div class="content">
     <form id="sign_up_form" action="sign_up.php" method="post">
         Please fill the following form to sign up:<br />

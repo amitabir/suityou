@@ -16,12 +16,42 @@
 	echo "<a href='show_item.php?itemId=$bottomItemId'> Buy Bottom Item </a> <br/>";
 	
 	echo 'Rating:';
-	echo '<span class="star-rating">';
-	for ($i = 1; $i <= 10; $i++) {
-		echo '<input type="radio" name="rating" value="'.$i.'" onclick="submitUserRating('.$matchId.', '.$userId.', $(this).val(), 10);"><i></i>';
-	}
-	echo '</span>';
 ?>
+
+<script type="text/javascript">
+		$(function () {
+			var that = this;
+			var startTime = new Date().getTime();
+			var toolitup = $("#jRate").jRate({
+				count: 10,
+				startColor: 'yellow',
+				endColor: 'red',
+				strokeColor: 'black',
+				width: 30,
+				height: 30,
+				precision: 0.5,
+				onSet: function(rating) {
+					var endTime = new Date().getTime();
+					var ratingTime = endTime-startTime;
+					$.ajax({ url: "handle_match_rating.php?skipped=false&matchId=<?php echo $matchId; ?>&userId=<?php echo $userId; ?>&rating="+rating*2+"&ratingTime="+ratingTime,
+					        context: document.body,
+					        success: function(result) {
+					          $("#match").html(result);
+					        }});
+				}
+			});	
+		});
+		
+		$(document).ready(function(){
+		    $("#skipBtn").click(function(){
+		        $.ajax({url: "handle_match_rating.php?skipped=true&matchId=<?php echo $matchId; ?>&userId=<?php echo $userId; ?>", success: function(result){
+		            $("#match").html(result);
+		        }});
+		    });
+		});
+	</script>
+<div id="jRate"></div>
+
 <div id="next">
-	<a onclick="skipRating(<?php echo $matchId; ?>, <?php echo $userId; ?>);" href="javascript:void(0);" > Next </a>
+	<button id="skipBtn">Next</button>
 </div>

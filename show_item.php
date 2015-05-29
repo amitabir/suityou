@@ -46,11 +46,11 @@ $queryMatches = mysql_query('SELECT * from item_matchings WHERE '.$typeColId. '=
 						foreach ($stockArray as $stockId=>$stockData) {					
 							if ($stockData["quantity"] > 0) {
 ?>
-								<option value="<?php echo $size; ?>"><?php echo $stockData["size"]; ?></option>	
+								<option value="<?php echo $stockData["size"]; ?>"><?php echo $stockData["size"]; ?></option>	
 <?php
 							} else {
 ?>
-								<option value="<?php echo $size; ?>"><?php echo $stockData["size"]." - Out of stock"; ?></option>	
+								<option value="<?php echo $stockData["size"]; ?>"><?php echo $stockData["size"]." - Out of stock"; ?></option>	
 <?php
 							}
 						}	
@@ -61,6 +61,7 @@ $queryMatches = mysql_query('SELECT * from item_matchings WHERE '.$typeColId. '=
 					<input type="submit" value="Add To Cart" class="btnAddCart" />
 				</div>
 				</form>
+		<?php if (mysql_num_rows($queryMatches) > 0) {  ?>
 				<table border="1">
 				<tr>
 				<?php
@@ -82,7 +83,7 @@ $queryMatches = mysql_query('SELECT * from item_matchings WHERE '.$typeColId. '=
 					$percent= $row['match_percent'];
 					if ($item->type == "TOP"){
 						$matchItemId= $row["bottom_item_id"];
-					}else{
+					} else {
 						$matchItemId= $row['top_item_id'];
 					}
 					$matchItem = Item::getItemByID($matchItemId);
@@ -90,30 +91,51 @@ $queryMatches = mysql_query('SELECT * from item_matchings WHERE '.$typeColId. '=
 					<td>
 					match rating: <?php echo "$".$percent; ?> %
 					<br/>
-					<img src="<?php echo "images/items/". $matchItem->picture; ?>">
+					<img src="<?php echo "images/items/".$matchItem->picture; ?>">
 					<br/>
 				<?php
-					$queryUserMatch=mysql_query('SELECT rating FROM user_matchings WHERE user_id='.$userId.' AND match_id= ' . $matchId);
+					$queryUserMatch = mysql_query('SELECT rating FROM user_matchings WHERE user_id='.$userId.' AND match_id= ' . $matchId);
 					if (mysql_num_rows($queryUserMatch)>0){
-						$row=mysql_fetch_array($queryUserMatch);
-						$rating=$row['rating'];
+						$row = mysql_fetch_array($queryUserMatch);
+						$rating = $row['rating'];
 					} else {
 						$rating = -1;
 					}
-					echo '<span class="star-rating">';
-					for ($i = 1; $i <= 10; $i++) {
-						echo '<input type="radio" name="rating"';
-						if ($rating != -1){
-							if ($i==$rating){
-								echo ' checked disabled';
-							}else{
-								echo ' disabled';
-							}
-						}
-						echo ' value="'.$i.'" onclick="submitUserRating('.$matchId.', '.$userId.', $(this).val(), 10);"><i></i>';
-					}
-					echo '</span>';
 				?>
+					
+					<script type="text/javascript">
+							$(function () {
+								var that = this;
+								var startTime = new Date().getTime();
+								var toolitup = $("#jRate_<?php echo $matchId?>").jRate({
+									<?php if ($rating != -1) {  ?>
+										rating: <?php echo $rating / 2;  ?>,
+										readOnly: true,
+									<?php } ?>
+									count: 10,
+									startColor: 'yellow',
+									endColor: 'red',
+									strokeColor: 'black',
+									width: 20,
+									height: 20,
+									precision: 0.5,
+									onSet: function(rating) {
+										var endTime = new Date().getTime();
+										var ratingTime = endTime-startTime;
+										$.ajax({ url: "handle_match_rating.php?skipped=false&matchId=<?php echo $matchId; ?>&userId=<?php echo $userId; ?>&rating="+rating*2+"&ratingTime="+ratingTime,
+										        context: document.body,
+										        success: function(result) {
+										         // $("#match").html(result);
+										        }});
+									}
+								});	
+							});
+						</script>
+					<?php if ($rating != -1) { ?>
+						You Rated:
+					<?php } ?>
+					<div id="jRate_<?php echo $matchId?>"></div>
+					
 					<br/>
 					<a href='show_item.php?itemId=<?php echo $matchItemId;?>'> Buy Now </a>
 					</td>
@@ -122,6 +144,7 @@ $queryMatches = mysql_query('SELECT * from item_matchings WHERE '.$typeColId. '=
 				?>
 			</tr>
 			</table>
+		<?php }  ?>
 			</div>			
         </div>
     </div>

@@ -7,16 +7,16 @@ $queryBottom = mysql_query('SELECT * FROM items WHERE gender="'.strtoupper($gend
 function showTable($query){
 	echo '<table border="1px">';
 
-	$i=0;
+				$i=0;
 			 	while($row = mysql_fetch_array($query)) {
 					$picture = $row['picture'];
 					$price = $row['price'];
 					$itemId= $row['item_id'];
-					if ($i % 2 == 0){
+					if ($i % 2 == 0) {
 						echo "<tr>";
 					}
 					echo "<td> <img width='170' src=images/items/$picture /> <br/> $price <br/> <a href='show_item.php?itemId=$itemId'> Buy Now </a> </td>";
-					if ($i % 2 == 1){
+					if ($i % 2 == 1) {
 			   			echo "</tr>";
 					}
 					$i++;

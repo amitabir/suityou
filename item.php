@@ -51,8 +51,13 @@ class Item {
 		return $result;	  
 	}
 	
-	public function getItemStock() {
-		$itemStockQuery = mysql_query("SELECT * FROM items_stock WHERE item_id = ". $this->itemId);
+	public function getItemStock($size = NULL) {
+		if ($size == NULL) {
+			$itemStockQuery = mysql_query('SELECT * FROM items_stock WHERE item_id = '. $this->itemId);
+		} else {
+			$itemStockQuery = mysql_query('SELECT * FROM items_stock WHERE item_id = '. $this->itemId. ' AND size = "'.$size.'"');
+		}
+		
 		$result = array();
 		while($stockRow = mysql_fetch_array($itemStockQuery)) {
 			$stockId = $stockRow['item_stock_id'];

@@ -1,6 +1,6 @@
 <?php
 include("header.php");
-include("Item.php");
+include("item.php");
 
 $itemForUpdate = NULL;
 if(!empty($_GET["itemId"])) {
@@ -150,6 +150,7 @@ if(!empty($_GET["itemId"])) {
 						?>
 						 </tbody>
 						</table>
+						<input type="hidden" name="designerId" value="<?php echo $_SESSION['user_id']; ?>" />
 						<?php if ($itemForUpdate != NULL) { ?>
 			            	<input type="submit" value="Update Item" name="submit"/>
 						<?php } else { ?>
