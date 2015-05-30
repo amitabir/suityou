@@ -10,6 +10,7 @@ require_once 'config.php';
   <meta http-equiv="content-type" content="text/html; charset=windows-1252" />
   <link rel="stylesheet" type="text/css" href="style/style.css" /> 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  <script src="js/jquery-ui.min.js"></script>
   <script src="jRate.min.js"></script>
 </head>
 

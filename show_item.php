@@ -12,6 +12,8 @@ if ($item->type=="TOP"){
 	$typeColId="bottom_item_id";
 }
 $queryMatches = mysql_query('SELECT * from item_matchings WHERE '.$typeColId. '='.$item->itemId);
+
+// TODO add designer link
 ?>
 
     <div id="content_header"></div>

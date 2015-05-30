@@ -6,11 +6,7 @@ include("algorithms.php");
 $userId = $_SESSION['user_id'];
 $matchId = getUserNextMatchQuestion($userId);
 
-// echo '<script type="text/javascript">'
-//    , 'showMatch('.$matchId.');'
-//    , '</script>'
-// ;
-
+// TODO: don't show a designer mathces with his clothes
 ?>
 
 <script>

@@ -52,10 +52,10 @@ if(!empty($_GET["itemId"])) {
         <div id="content">
 			<div class="add_item_form">
 				<?php if ($itemForUpdate != NULL) { ?>
-	            	<form action="add_item_logic.php?action=update&itemId=<?php echo $itemForUpdate->itemId;?>" method="post" enctype="multipart/form-data"/>
+	            	<form action="manage_item_logic.php?action=update&itemId=<?php echo $itemForUpdate->itemId;?>" method="post" enctype="multipart/form-data"/>
 						Update Item:<br />
 				<?php } else { ?>
-					<form action="add_item_logic.php?action=add" method="post" enctype="multipart/form-data"/>
+					<form action="manage_item_logic.php?action=add" method="post" enctype="multipart/form-data"/>
 						Add New Item:<br />
 				<?php } ?>
 			        <div class="center">

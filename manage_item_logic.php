@@ -26,11 +26,10 @@ function addNewAttribute($categoryKey, $itemId) {
 	
 	mysql_query('INSERT INTO item_attributes(item_id, attribute_id) VALUES ('.$itemId.', '.$newAttributeId.')') or die(mysql_error());
 }
-
-// We check if the form has been sent
-if(isset($_POST["submit"])) {
 	
-	if ($_GET["action"] == "add") {
+if ($_GET["action"] == "add") {	
+	if(isset($_POST["submit"])) {
+		
 		$item = Item::itemFromArray($_POST);
 		$item->designerId = $_POST["designerId"];
 		$item->picture = uploadImage("imageToUpload", ITEM_IMAGES_TARGET_DIR);
@@ -61,8 +60,9 @@ if(isset($_POST["submit"])) {
 		header("location: show_item.php?itemId=".$newItemId);
 	
 		// TODO : maybe show a "New item was added notification"
-		
-	} else if ($_GET["action"] == "update") {
+	}
+} else if ($_GET["action"] == "update") {
+	if(isset($_POST["submit"])) { 
 		$itemId = $_GET["itemId"];
 		$oldItem = Item::getItemById($itemId);
 		$updatedItem = Item::itemFromArray($_POST);
@@ -123,14 +123,16 @@ if(isset($_POST["submit"])) {
 		}
 		
 		header("location: show_item.php?itemId=".$itemId);
-					
-	} else if ($_GET["action"] == "remove") {
+	}				
+} else if ($_GET["action"] == "remove") {
 		$itemId = $_GET["itemId"];
 		$item = Item::getItemById($itemId);
 		
 		if (!empty($item->picture)) {
 			deleteImage($item->picture, ITEM_IMAGES_TARGET_DIR);
 		}
+		
+		// TODO what if there are still live matches with this item?
 		
 		// Delete item attributes
 		mysql_query('DELETE FROM item_attributes WHERE item_id = '.$itemId) or die(mysql_error());
@@ -140,6 +142,6 @@ if(isset($_POST["submit"])) {
 		
 		// Delete the item
 		mysql_query('DELETE FROM items WHERE item_id = '.$itemId) or die(mysql_error());
-	}
-}
-?>
+		
+		header("location: manage_clothes.php");
+}?>

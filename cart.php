@@ -101,7 +101,7 @@ function showUpdate(elementId) {
 		    $item_total = 0;
 			if ($displayMaxMessage) {
 				?> 
-					<h3> The item you requested was updated to the maximum available quantity in stock. </h3>
+					<h3> The quantity has been changed to an amount that is currently available for this item. </h3>
 		<?php 
 		}
 		?>	

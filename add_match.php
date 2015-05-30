@@ -1,34 +1,75 @@
 <?php
 include("header.php");
-include("image_upload.php");
 
-if(isset($_POST["submit"])) {	
-	
-	$modelPic = uploadImage("imageToUpload", "images/models/");
-	if (mysql_query('INSERT INTO item_matchings(top_item_id, bottom_item_id, model_picture, match_type) VALUES ('.$_POST["top_item_id"].', '.$_POST["bottom_item_id"].', "'.$modelPic.'", 1)')) {
-		echo "Match was added: id = ".mysql_insert_id();
-	} else {
-		echo mysql_error();
-	}
+$matchForUpdate = NULL;
+if(!empty($_GET["matchId"])) {
+	$matchQuery = mysql_query("SELECT * FROM item_matchings WHERE match_id =".$_GET["matchId"]);
+	$matchRow = mysql_fetch_array($matchQuery);
+	$matchForUpdate = array("matchId" => $_GET["matchId"], "topItemId" => $matchRow['top_item_id'], "bottomItemId" => $matchRow['bottom_item_id'], "modelPicture" => $matchRow['model_picture']);
 }
 ?>
+<script>
+	function loadItems(gender, type) {
+		$.ajax({ url: "select_item_for_match.php?gender="+gender+"&type="+type,
+		 context: document.body,
+		 success: function(result) {
+		 			$("#selection").html(result);
+	 			}
+		});
+	};
 
-    <div id="content_header"></div>
-    <div id="site_content">
-        <div id="content">
+	$(function() {
+		$("#dialog").dialog({
+				autoOpen: false,				
+				modal: true,
+				resizable: false,
+		});
+ 
+	    $( "#openerTop" ).click(function() {
+	      $("#dialog").dialog("open");
+  				loadItems("male", "top");
+				return false
+			});
+		
+	    $( "#openerBottom" ).click(function() {
+	      $("#dialog").dialog("open");
+		  	loadItems("male", "bottom");
+			return false
+		});		
+	  });
+ </script>
+	  
+<div id="dialog" title="Item Selection">
+	<div id="selection"></div>
+</div>
+
+<div id="content_header"></div>
+	<div id="site_content">
+		<div id="content">
 			<div class="add_match_form">
-			    <form action="add_match.php" method="post" enctype="multipart/form-data".>
+				<?php if ($matchForUpdate == NULL) { ?>
+			    	<form action="manage_match_logic.php?action=add" method="post" enctype="multipart/form-data".>
+				<?php } else { ?>
+					<form action="manage_match_logic.php?action=update&matchId=<?php echo $matchForUpdate['matchId']; ?>" method="post" enctype="multipart/form-data".>
+				<?php } ?>
 			        Add New Match:<br />
 			        <div class="center">
-			        	<label for="top_item_id">Top Item ID</label><input type="text" name="top_item_id"/><br />
-			        	<label for="bottom_item_id">Top Item ID</label><input type="text" name="bottom_item_id"/><br />
-						<label for="image">Upload Item Image:</label><input type="file" name="imageToUpload" id="imageToUpload"><br />			
-			            <input type="submit" value="Add Item" name="submit"/>
+			        	<label for="top_item_id">Top Item ID: </label><input type="text" id="top_item_id" name="top_item_id" value="<?php if ($matchForUpdate != NULL) echo $matchForUpdate['topItemId']; ?>" /><button id="openerTop">Select Item</button><br />
+			        	<label for="bottom_item_id">Bottom Item ID: </label><input type="text" id="bottom_item_id" name="bottom_item_id" value="<?php if ($matchForUpdate != NULL) echo $matchForUpdate['bottomItemId']; ?>" /><button id="openerBottom">Select Item</button><br />
+						<?php if ($matchForUpdate != NULL) { ?>
+					    	<img src="images/models/<?php echo $matchForUpdate['modelPicture']; ?>" width="170"/><br/>
+						<?php } ?>
+						<label for="image">Upload Item Image:</label><input type="file" name="imageToUpload" id="imageToUpload"><br/>
+						<?php if ($matchForUpdate == NULL) { ?>			
+			           		<input type="submit" value="Add Match" name="submit"/>
+						<? } else { ?>
+							<input type="submit" value="Update Match" name="submit"/>
+						<? } ?>
 					</div>
 			    </form>
 			</div>			
-        </div>
-    </div>
+	</div>
+</div>
 
 </div>
 
