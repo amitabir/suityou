@@ -7,6 +7,7 @@ if(!empty($_GET["itemId"])) {
 	$itemForUpdate = Item::getItemById($_GET["itemId"]);
 }
 ?>
+<script type="text/javascript" src="add_item_validate.js?12"></script>
 <script>
 	function checkNew(category_id, val) {
 		if (val == "new") {
@@ -52,31 +53,33 @@ if(!empty($_GET["itemId"])) {
         <div id="content">
 			<div class="add_item_form">
 				<?php if ($itemForUpdate != NULL) { ?>
-	            	<form action="manage_item_logic.php?action=update&itemId=<?php echo $itemForUpdate->itemId;?>" method="post" enctype="multipart/form-data"/>
+	            	<form id="add_item_form" action="manage_item_logic.php?action=update&itemId=<?php echo $itemForUpdate->itemId;?>" method="post" enctype="multipart/form-data"/>
 						Update Item:<br />
 				<?php } else { ?>
-					<form action="manage_item_logic.php?action=add" method="post" enctype="multipart/form-data"/>
+					<form id="add_item_form" action="manage_item_logic.php?action=add" method="post" enctype="multipart/form-data"/>
 						Add New Item:<br />
 				<?php } ?>
 			        <div class="center">
-			        	<label for="name">Name</label><input type="text" name="name" value="<?php echo $itemForUpdate->name; ?>"/><br />
+			        	<label for="name">Name</label><input type="text" name="name" id="name" value="<?php echo $itemForUpdate->name; ?>"/><br />
 			            <label for="gender">Item Gender:</label>
-  						  		<input type="radio" name="gender" value="MALE" <?php if ($itemForUpdate->gender == 'MALE') echo "checked"; ?>>Male</option>
-  						  		<input type="radio" name="gender" value="FEMALE" <?php if ($itemForUpdate->gender == 'FEMALE') echo "checked"; ?>>Female</option>
+  						  		<input type="radio" name="gender" id="gender" value="MALE" <?php if ($itemForUpdate->gender == 'MALE') echo "checked"; ?>>Male</option>
+  						  		<input type="radio" name="gender" id="gender" value="FEMALE" <?php if ($itemForUpdate->gender == 'FEMALE') echo "checked"; ?>>Female</option>
+							<label for="gender" class="error" style="display: none;"></label>
 							<br/>
 			            <label for="type">Item Type:</label>
-				  		<input type="radio" name="type" value="TOP" <?php if ($itemForUpdate->type == 'TOP') echo "checked"; ?>>Top</option>
-				  		<input type="radio" name="type" value="BOTTOM" <?php if ($itemForUpdate->type == 'BOTTOM') echo "checked"; ?>>Bottom</option>
+				  		<input type="radio" name="type" id="type" value="TOP" <?php if ($itemForUpdate->type == 'TOP') echo "checked"; ?>>Top</option>
+				  		<input type="radio" name="type" id="type" value="BOTTOM" <?php if ($itemForUpdate->type == 'BOTTOM') echo "checked"; ?>>Bottom</option>
+							<label for="type" class="error" style="display: none;"></label>
 							<br/>
-			            <label for="description">Description:<br/></label><textarea name="description"/><?php echo $itemForUpdate->description; ?></textarea><br />        
-			            <label for="price">Item Price:</label><input type="text" name="price" value="<?php echo $itemForUpdate->price; ?>"/><br />
+			            <label for="description">Description:<br/></label><textarea name="description" id="description"/><?php echo $itemForUpdate->description; ?></textarea><br />        
+			            <label for="price">Item Price:</label><input type="text" name="price" id="price" value="<?php echo $itemForUpdate->price; ?>"/><br />
 						<?php if ($itemForUpdate != NULL) { ?>
 						 
 						<img src="images/items/<?php echo $itemForUpdate->picture; ?>" /><br/>
 						
 						<?php }?>
 						
-						<label for="image"><?php if ($itemForUpdate != NULL) echo "Change Item Image: "; else echo "Upload Item Image: "; ?></label><input type="file" name="imageToUpload" id="imageToUpload"><br />
+						<label for="imageToUpload"><?php if ($itemForUpdate != NULL) echo "Change Item Image: "; else echo "Upload Item Image: "; ?></label><input type="file" name="imageToUpload" id="imageToUpload" <?php if ($itemForUpdate == NULL) echo "required"; ?> > <br />
 						<br/>
 						<label for="Categories">Categories:</label>
 						<table border="1px">
@@ -87,7 +90,8 @@ if(!empty($_GET["itemId"])) {
 									echo "<tr>";
 									echo "<td>".$catRow['name']."</td>";
 									echo "<td>";
-									echo "<select name='cat_".$catRow['category_id']."' onChange='checkNew(".$catRow['category_id'].",this.value);'>";
+									echo "<select name='cat_".$catRow['category_id']."' onChange='checkNew(".$catRow['category_id'].",this.value);'>"; 
+									echo "<option></option>";
 										$attributesQuery = mysql_query("SELECT * FROM attributes WHERE category_id = ".$catRow['category_id']);
 										
 										// For updating item, get the attributes and mark as selected.
@@ -117,10 +121,12 @@ if(!empty($_GET["itemId"])) {
 			            
 						<label for="stock">Item Stock:</label>
 						<p> 
-						  <input type="button" value="Add Size" onClick="addRow('stockTable');" /> 
-						  <input type="button" value="Remove Size" onClick="deleteRow('stockTable');" /> 
+						  <input id="addSize" name="addSize" type="button" value="Add Size" onClick="addRow('stockTable');" /> 
+						  <input id="removeSize" name="removeSize" type="button" value="Remove Size" onClick="deleteRow('stockTable');" /> 
 						  (All acions apply only to entries with check marked check boxes only.)
 						</p>
+						<label for="size[]" class="error" style="display: none;"></label>
+						<label for="quantity[]" class="error" style="display: none;"></label>
 						<table id="stockTable" class="form" border="1">
 						 <tbody>
 						<?php

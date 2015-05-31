@@ -8,6 +8,7 @@ if(!empty($_GET["matchId"])) {
 	$matchForUpdate = array("matchId" => $_GET["matchId"], "topItemId" => $matchRow['top_item_id'], "bottomItemId" => $matchRow['bottom_item_id'], "modelPicture" => $matchRow['model_picture']);
 }
 ?>
+<script type="text/javascript" src="add_match_validate.js?3"></script>
 <script>
 	function loadItems(gender, type) {
 		$.ajax({ url: "select_item_for_match.php?gender="+gender+"&type="+type,
@@ -48,7 +49,7 @@ if(!empty($_GET["matchId"])) {
 		<div id="content">
 			<div class="add_match_form">
 				<?php if ($matchForUpdate == NULL) { ?>
-			    	<form action="manage_match_logic.php?action=add" method="post" enctype="multipart/form-data".>
+			    	<form id="add_match_form" action="manage_match_logic.php?action=add" method="post" enctype="multipart/form-data".>
 				<?php } else { ?>
 					<form action="manage_match_logic.php?action=update&matchId=<?php echo $matchForUpdate['matchId']; ?>" method="post" enctype="multipart/form-data".>
 				<?php } ?>
@@ -59,7 +60,7 @@ if(!empty($_GET["matchId"])) {
 						<?php if ($matchForUpdate != NULL) { ?>
 					    	<img src="images/models/<?php echo $matchForUpdate['modelPicture']; ?>" width="170"/><br/>
 						<?php } ?>
-						<label for="image">Upload Item Image:</label><input type="file" name="imageToUpload" id="imageToUpload"><br/>
+						<label for="imageToUpload">Upload Item Image:</label><input type="file" name="imageToUpload" id="imageToUpload" <?php if ($matchForUpdate == NULL) echo "required"; ?>><br/>
 						<?php if ($matchForUpdate == NULL) { ?>			
 			           		<input type="submit" value="Add Match" name="submit"/>
 						<? } else { ?>
