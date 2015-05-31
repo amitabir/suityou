@@ -60,7 +60,7 @@ if(isset($message))
 if($form)
 {
 ?>
-<script type="text/javascript" src="jquery.validate.min.js"></script>
+
 <script type="text/javascript" src="sign_up_validate.js"></script>
 <div class="content">
     <form id="sign_up_form" action="sign_up.php" method="post">
