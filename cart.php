@@ -87,6 +87,7 @@ if(!empty($_GET["action"])) {
 	}
 }
 ?>
+<script type="text/javascript" src="cart_qty_validate.js?2"></script>
 <script>
 function showUpdate(elementId) {
 	console.log("Going to update " + elementId);
@@ -120,7 +121,7 @@ function showUpdate(elementId) {
 					<tr>
 						<td><strong><?php echo $item["name"]; ?></strong></td>
 						<td><?php echo $item["size"]; ?></td>
-						<td><form name="updateCartForm" method="post" action="cart.php?action=update&itemStockId=<?php echo $item["id"]; ?>">
+						<td><form name="updateCartForm_<?php echo $item["id"]; ?>" method="post" action="cart.php?action=update&itemStockId=<?php echo $item["id"]; ?>">
 <input type="text" name="qty_<?php echo $item["id"]; ?>" value="<?php echo $item["quantity"]; ?>" size=4 onkeyup="showUpdate('qty_update_<?php echo $item["id"]; ?>')"/><input type="submit" value="Update" id="qty_update_<?php echo $item["id"]; ?>" style='display:none' /></form></td>
 						<td align=right><?php echo "$".$item["price"]; ?></td>
 						<td><a href="cart.php?action=remove&itemStockId=<?php echo $item["id"]; ?>" class="btnRemoveAction">Remove Item</a></td>
