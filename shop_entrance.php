@@ -15,7 +15,7 @@ function showTable($query){
 					if ($i % 2 == 0) {
 						echo "<tr>";
 					}
-					echo "<td> <img width='170' src=images/items/$picture /> <br/> $price <br/> <a href='show_item.php?itemId=$itemId'> Buy Now </a> </td>";
+					echo "<td> <img width='170' src=images/items/$picture /> <br/> $$price <br/> <a href='show_item.php?itemId=$itemId'> Buy Now </a> </td>";
 					if ($i % 2 == 1) {
 			   			echo "</tr>";
 					}

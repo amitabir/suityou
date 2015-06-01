@@ -2,9 +2,10 @@
 include("config.php");
 include("header.php");
 include('Item.php');
+include("rating.php");
 
 $itemId = $_GET["itemId"];
-	$userId = $_SESSION['user_id'];
+$userId = $_SESSION['user_id'];
 $item = Item::getItemByID($itemId);
 if ($item->type=="TOP"){
 	$typeColId="top_item_id";
@@ -15,7 +16,6 @@ $queryMatches = mysql_query('SELECT * from item_matchings WHERE '.$typeColId. '=
 
 // TODO add designer link
 ?>
-
     <div id="content_header"></div>
     <div id="site_content">
         <div id="content">
@@ -95,49 +95,7 @@ $queryMatches = mysql_query('SELECT * from item_matchings WHERE '.$typeColId. '=
 					<br/>
 					<img src="<?php echo "images/items/".$matchItem->picture; ?>">
 					<br/>
-				<?php
-					$queryUserMatch = mysql_query('SELECT rating FROM user_matchings WHERE user_id='.$userId.' AND match_id= ' . $matchId);
-					if (mysql_num_rows($queryUserMatch)>0){
-						$row = mysql_fetch_array($queryUserMatch);
-						$rating = $row['rating'];
-					} else {
-						$rating = -1;
-					}
-				?>
-					
-					<script type="text/javascript">
-							$(function () {
-								var that = this;
-								var startTime = new Date().getTime();
-								var toolitup = $("#jRate_<?php echo $matchId?>").jRate({
-									<?php if ($rating != -1) {  ?>
-										rating: <?php echo $rating / 2;  ?>,
-										readOnly: true,
-									<?php } ?>
-									count: 10,
-									startColor: 'yellow',
-									endColor: 'red',
-									strokeColor: 'black',
-									width: 20,
-									height: 20,
-									precision: 0.5,
-									onSet: function(rating) {
-										var endTime = new Date().getTime();
-										var ratingTime = endTime-startTime;
-										$.ajax({ url: "handle_match_rating.php?skipped=false&matchId=<?php echo $matchId; ?>&userId=<?php echo $userId; ?>&rating="+rating*2+"&ratingTime="+ratingTime,
-										        context: document.body,
-										        success: function(result) {
-										         // $("#match").html(result);
-										        }});
-									}
-								});	
-							});
-						</script>
-					<?php if ($rating != -1) { ?>
-						You Rated:
-					<?php } ?>
-					<div id="jRate_<?php echo $matchId?>"></div>
-					
+					<?php showRating($matchId, $userId); ?>
 					<br/>
 					<a href='show_item.php?itemId=<?php echo $matchItemId;?>'> Buy Now </a>
 					</td>
