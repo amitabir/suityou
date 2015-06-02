@@ -1,5 +1,7 @@
 <?php
 include("header.php");
+if (isset($_SESSION['user_id'],$_SESSION['email'])){
+		if (isset($_SESSION['is_admin']) && !empty($_SESSION['is_admin'])){
 
 $matchForUpdate = NULL;
 if(!empty($_GET["matchId"])) {
@@ -63,9 +65,9 @@ if(!empty($_GET["matchId"])) {
 						<label for="imageToUpload">Upload Item Image:</label><input type="file" name="imageToUpload" id="imageToUpload" <?php if ($matchForUpdate == NULL) echo "required"; ?>><br/>
 						<?php if ($matchForUpdate == NULL) { ?>			
 			           		<input type="submit" value="Add Match" name="submit"/>
-						<? } else { ?>
+						<?php } else { ?>
 							<input type="submit" value="Update Match" name="submit"/>
-						<? } ?>
+						<?php } ?>
 					</div>
 			    </form>
 			</div>			
@@ -76,3 +78,10 @@ if(!empty($_GET["matchId"])) {
 
   </body>
 </html>
+
+<?php
+}
+}else{
+	header("location: index.php");
+}
+?>
