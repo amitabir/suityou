@@ -1,7 +1,6 @@
 <?php
 include("header.php");
-if (isset($_SESSION['user_id'],$_SESSION['email'])){
-		if (isset($_SESSION['is_admin']) && !empty($_SESSION['is_admin'])){
+
 // TODO this page is meant to be only for admin
 
 $matchQuery = mysql_query('SELECT * FROM item_matchings WHERE match_type = 1');
@@ -46,9 +45,3 @@ $matchQuery = mysql_query('SELECT * FROM item_matchings WHERE match_type = 1');
 
   </body>
 </html>
-<?php
-}
-}else{
-	header("location: index.php");
-}
-?>

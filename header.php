@@ -42,12 +42,6 @@ if(isset($_SESSION['user_id'],$_SESSION['email']))
 			<li><a href="cart.php">Shopping Cart</a></li>
           	<li><a href="profile.php">Profile</a></li>	
           	<li><a href="connexion.php">Logout</a></li>
-			
-			<?php if (isset($_SESSION['is_admin']) && !empty($_SESSION['is_admin']) ){
-			?>
-			<li><a href="manage.php"> manage site</a></li>
-			<?php } ?>
-			
         </ul>
 <?php
 }
