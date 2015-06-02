@@ -4,8 +4,9 @@
 	define("DIFF_FOR_ACCEPT", 10);
 	define("IGNORED_VOTES_LIMIT", 10);
 	define("NUMBER_OF_CATEGORIES", 6);
-	define("MINIMAL_TIME", 0.1);
-	define("REPEAT_LIMIT", 10);
+	define("MINIMAL_TIME", 1000);
+	define("BAD_TIME_REPEAT_LIMIT", 10);
+	define("BAD_RATING_REPEAT_LIMIT", 2);
 	define("TREND_SCORE_LIMIT", 50);
 	define("MATCH_SCORE_LIMIT", 50);
 	define("AVERAGE_LIMIT", 8);
@@ -185,11 +186,11 @@
 	
 	function dealWithNewVoteTrend(){
 		$query = mysql_query("SELECT att1.attribute_id, att2.attribute_id, AVG(user_matchings.rating), 
-		STDDEV(user_matchings.rating) FROM user_matchings INNER JOIN item_matchings, items it1, items it2, 
+		STDDEV(user_matchings.rating) FROM user_matchings INNER JOIN users, item_matchings, items it1, items it2, 
 		item_attributes itatt1, item_attributes itatt2, attributes att1, attributes att2 WHERE user_matchings.rating 
-		is not NULL AND user_matchings.match_id = item_matchings.match_id AND item_matchings.top_item_id = it1.item_id 
-		AND item_matchings.bottom_item_id = it2.item_id AND itatt1.item_id = it1.item_id AND itatt2.item_id = it2.item_id 
-		AND att1.attribute_id = itatt1.attribute_id AND att2.attribute_id = itatt2.attribute_id AND 
+		is not NULL AND users.user_id = user_matchings.user_id AND users.is_spammer = 0 AND user_matchings.match_id = item_matchings.match_id AND
+		item_matchings.top_item_id = it1.item_id AND item_matchings.bottom_item_id = it2.item_id AND itatt1.item_id = it1.item_id AND
+		itatt2.item_id = it2.item_id AND att1.attribute_id = itatt1.attribute_id AND att2.attribute_id = itatt2.attribute_id AND
 		att1.category_id = att2.category_id GROUP BY att1.attribute_id, att2.attribute_id") or die(mysql_error());
 		$attributesData = array();
 		while($row = mysql_fetch_array($query)){
@@ -233,73 +234,153 @@
 		$matchTrendQuery = mysql_query("DELETE FROM item_matchings WHERE match_type = 0 AND (trend_percent < ".TREND_SCORE_LIMIT." OR match_percent < ".MATCH_SCORE_LIMIT.")") or die(mysql_error());
 	}
 	
+	function addUserRatingToHistory($userID, $matchID, $rating) {
+		if ($userID == NULL) {
+			// User Not signed in - save the rating in the session
+			if (!isset($_SESSION["user_data"])) {
+				$_SESSION["user_data"] = array();
+			}
+			
+			if (!isset($_SESSION["user_data"]["user_matchings"])) {
+				$_SESSION["user_data"]["user_matchings"] = array();
+			}
+			
+			$ratingRecord = array($matchID => array("rating" => $rating, "ratingTime" => time(), "skip" => false));
+
+			$_SESSION["user_data"]["user_matchings"] += $ratingRecord;
+		} else {
+			// User signed in - insert to DB.
+			mysql_query('INSERT INTO user_matchings(user_id, match_id, rating) VALUES ('.$userID.', '.$matchID.', '.$rating.')') or die(mysql_error());
+		}	
+	}
+	
 	/* This function receives a vote, a match ID which the vote belongs to and a user ID which gave the vote.
 	   First a spammer check is made and if the user is clean then get the necessary data from the DB, run the
 	   calcNewRatingForTwoItems function and update the DB. */
 	// Normal match + Trends
-	function handleUserRating($matchID, $userID, $vote, $time) {
-		//trackSpammer($userID, $vote, $time);
-		//if(!isSpammer($userID)){
-		if(True) {
+	function handleUserRating($matchID, $userID, $rating, $time) {
+		addUserRatingToHistory($userID, $matchID, $rating);
+		$isSpammer = checkIsSpammer($userID, $rating, $time);
+		if (!$isSpammer) {
 			$query = mysql_query("SELECT * FROM item_matchings WHERE match_id =".$matchID) or die(mysql_error());
 			$row = mysql_fetch_array($query);
 			$averageRating = $row['match_percent'];
 			$numberOfVotes = $row['match_count'];
 			$ignoredAverage = $row['ignored_match_percent'];
 			$numberOfIgnoredVotes = $row['ignored_match_count'];
-			$result = calcNewRatingForTwoItems($vote, $averageRating, $numberOfVotes, $numberOfIgnoredVotes, $ignoredAverage);
+			$result = calcNewRatingForTwoItems($rating, $averageRating, $numberOfVotes, $numberOfIgnoredVotes, $ignoredAverage);
 			mysql_query("UPDATE item_matchings
 					 	 SET match_percent =".$result[0].", match_count = ".$result[1].", ignored_match_percent = ".$result[2].", ignored_match_count = ".$result[3]." WHERE match_id = ".$matchID) or die(mysql_error());
-			
-			mysql_query('INSERT INTO user_matchings(user_id, match_id, rating) VALUES ('.$userID.', '.$matchID.', '.$vote.')') or die(mysql_error());
-			
+		
 			dealWithNewVoteTrend();
-			
 			removeOldTrends();
-		}	
+		}
 	}
 	
 	function handleUserSkip($matchID, $userID) {
 		mysql_query('INSERT INTO user_matchings(user_id, match_id, skipped) VALUES ('.$userID.', '.$matchID.', 1)') or die(mysql_error());
 	}
 	
+	function setUserAsSpammer($userID) {
+		if ($userID == NULL) {
+			$_SESSION["user_data"]["is_spammer"] = true;
+		} else {
+			mysql_query("UPDATE users
+						 SET is_spammer = 1
+						 WHERE user_id = ".$userID) or die(mysql_error());
+		}
+	}
+	
+	function updateUserTimeTracking($userID, $timeTracking) {
+		if ($userID == NULL) {		
+			$_SESSION["user_data"]["time_tracking"] = $timeTracking;
+		} else {
+			mysql_query("UPDATE users
+						 SET time_tracking_ctr = ".$timeTracking."
+						 WHERE user_id = ".$userID);
+		}
+	}
+	
+	function getUserTimeTracking($userID) {
+		if ($userID == NULL) {
+			if (!isset($_SESSION["user_data"])) {
+				$_SESSION["user_data"] = array();
+			}
+			
+			if (!isset($_SESSION["user_data"]["time_tracking"])) {
+				$_SESSION["user_data"]["time_tracking"] = 0;
+			}
+			
+			return $_SESSION["user_data"]["time_tracking"];
+		} else {
+			$user = User::getUserfromDBbyID($userID);
+			return $user->time_tracking;
+		}
+	}
+	
+	function getLastUserRatings($userID) {
+		$result = array();
+		if ($userID == NULL) {
+			if (!isset($_SESSION["user_data"])) {
+				$_SESSION["user_data"] = array();
+			}
+			
+			if (!isset($_SESSION["user_data"]["user_matchings"])) {
+				$_SESSION["user_data"]["user_matchings"] = array();
+			}
+			
+			$counter = 0;
+			$reversedRatings = array_reverse($_SESSION["user_data"]["user_matchings"]);
+			
+			foreach ($reversedRatings as $matchId=>$ratingData) {
+				if ($counter > BAD_RATING_REPEAT_LIMIT) {
+					break;
+				}
+				array_push($result, $ratingData["rating"]);
+				$counter++;
+			}
+		} else {
+			$lastRatingsQuery = mysql_query("SELECT rating FROM user_matchings WHERE user_id = ".$userID." ORDER BY rating_time DESC LIMIT  ".BAD_RATING_REPEAT_LIMIT);
+			while ($lastRatingRow = mysql_fetch_array($lastRatingsQuery)) {
+				array_push($result, $lastRatingRow["rating"]);
+			}
+		}
+		return $result;
+	}
+	
 	/* This function receives a user id, his vote and the time it took for him to vote. Then the function decides if
 		the user is a spammer and if so updates it to the DB. It also updates the time_tracking, vote_tracking and
 		last_vote fields un the Users table.*/
-	function trackSpammer($userId, $vote, $time){
-		$query = mysql_query("SELECT * FROM Users WHERE user_id = $userID");
-		$row = mysql_fetch_array($query);
-		if($time < MINIMAL_TIME){
-			$timeTracking = $row['time_tracking'] + 1;
-			mysql_query("UPDATE Users
-						 SET time_tracking = $timeTracking
-						 WHERE user_id = $userID");
-			if($timeTracking > REPEAT_LIMIT){
-				mysql_query("UPDATE Users
-							 SET is_spammer = TRUE
-							 WHERE user_id = $userID");
+	function checkIsSpammer($userID, $rating, $time) {
+		if($time < MINIMAL_TIME) {
+			$timeTracking = getUserTimeTracking($userID);
+			$timeTracking++;
+			updateUserTimeTracking($userId, $timeTracking);
+			if($timeTracking > BAD_TIME_REPEAT_LIMIT) {
+				setUserAsSpammer($userID);
+				return true;
 			}
 		} else {
-			mysql_query("UPDATE Users
-			 SET time_tracking = 0
-			 WHERE user_id = $userID");
+			updateUserTimeTracking($userId, 0);
 		}
-		$lastVote = $row['last_vote'];
-		if($vote == $lastVote){
-			$voteTracking = $row['vote_tracking'] + 1;
-			mysql_query("UPDATE Users
-						 SET vote_tracking = $voteTracking
-						 WHERE user_id = $userID");
-			if($voteTracking > REPEAT_LIMIT){
-				mysql_query("UPDATE Users
-							 SET is_spammer = TRUE
-							 WHERE user_id = $userID");
+		
+		// Check last votes		
+		$lastRatings = getLastUserRatings($userID);
+		if (count($lastRatings) == BAD_RATING_REPEAT_LIMIT) {
+			$is_all_same_rating = true;
+			$rating = $lastRatings[0];
+			for ($i = 1; $i < count($lastRatings); $i++) {
+				if ($rating != $lastRatings[$i]) {
+					$is_all_same_rating = false;
+					break;
+				}
 			}
-		} else {
-			mysql_query("UPDATE Users
-			 SET vote_tracking = 0 AND last_vote = $vote
-			 WHERE user_id = $userID");
+			if ($is_all_same_rating) {
+				setUserAsSpammer($userID);
+				return true;
+			}
 		}
+		return false;
 	}
 	
 	function getUserNextMatchQuestion($userId) {
