@@ -8,7 +8,7 @@ session_start();
 
 
 //We log to the DataBase
-  mysql_connect("localhost", "root", "amit");
+  mysql_connect("localhost", "root", "");
   mysql_select_db("suityou");
   
 //Webmaster Email
