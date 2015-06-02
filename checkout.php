@@ -14,6 +14,13 @@ if(!empty($_SESSION["cart_item"]) and !empty($_SESSION["user_id"])) {
 	$userId = $_SESSION["user_id"];
 	$cartData = $_SESSION["cart_item"];
 	$totalPrice = calcTotalPrice($cartData);
+	$query=mysql_query('SELECT coupon_meter FROM users WHERE user_id= ' .$_SESSION["user_id"]);
+	$row=mysql_fetch_array($query);
+	$couponMeter=$row["coupon_meter"];
+	if ($couponMeter == 100){//TODO- add options?
+		$totalPrice = 0.9 * $totalPrice;
+		mysql_query('UPDATE users SET coupon_meter=0 WHERE user_id ='.$userId);
+	}
 	
 	// Insert purchase
 	mysql_query('INSERT INTO purchases(user_id, total_price) VALUES ('.$userId.', '.$totalPrice.')') or die(mysql_error());

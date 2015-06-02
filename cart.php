@@ -133,6 +133,21 @@ function showUpdate(elementId) {
 
 					<tr>
 						<td colspan="5" align=right><strong>Total:</strong> <?php echo "$".$item_total; ?><br/>
+						<?php if (isset($_SESSION["user_id"])){
+							$query=mysql_query('SELECT coupon_meter FROM users WHERE user_id= ' .$_SESSION["user_id"]);
+							$row=mysql_fetch_array($query);
+							$couponMeter=$row["coupon_meter"];
+						} else{
+							$couponMeter = 0;
+						}
+						if ($couponMeter == 100){//TODO- add options?
+							$discount = 0.1*$item_total;
+							$newTotal = 0.9 * $item_total;
+							echo "<tr><td colspan='5' align=right><strong>Coupon! 10% discount:</strong> $discount <br/></tr>";
+							echo "<td colspan='5' align=right><strong>Total after discount:</strong> $newTotal <br/>";
+
+						}
+						?>
 						<a href="checkout.php">Checkout</a></td>
 					</tr>
 				</tbody>
