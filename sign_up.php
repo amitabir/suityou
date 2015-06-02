@@ -30,7 +30,7 @@ if(isset($_POST['email'], $_POST['first_name'], $_POST['last_name'], $_POST['add
 					{
 						//Otherwise, we say that an error occured
 						$form = true;
-						$message = mysql_error();//TODO:'An error occurred while signing up.';
+						$message = 'An error occurred while signing up.';
 					}
 						
 				}
@@ -76,7 +76,7 @@ if($form)
             	<option value="MALE">MALE</option>
 			</select><br/>            
             <label for="birth_date">Birth Date:</label><input type="date" name="birth_date" id="birth_date"  /><br />
-            <!--INSERT ISDESIGNER FURTHER LOGICS--><label for="is_designer">Designer:</label><input type="checkbox" name="is_designer" id="is_designer" value="0"/><br/>
+            <label for="is_designer">Designer:</label><input type="checkbox" name="is_designer" id="is_designer" value="0"/><br/>
             <label for="avatar">Avatar:<span class="small">(optional)</span></label><input type="text" name="avatar" value="<?php if(isset($_POST['avatar'])){echo htmlentities($_POST['avatar'], ENT_QUOTES, 'UTF-8');} ?>" /><br />
             <label for="description">Description:<span class="small">(optional)</span></label><input type="text" name="description" id="description"  /><br />
             <label for="website_link">Web Site:<span class="small">(optional)</span></label><input type="url" name="website_link" id="website_link"  /><br />

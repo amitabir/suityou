@@ -24,7 +24,8 @@ $queryMatches = mysql_query('SELECT * from item_matchings WHERE '.$typeColId. '=
 				<div><img src="<?php echo "images/items/". $item->picture; ?>"></div>
 				<div><strong><?php echo $item->name; ?></strong></div>
 				<div><?php echo $item->description; ?></div>
-				<br/>
+				<?php $desId = $item->designerId ?>
+				<div><?php echo "<a href = designer_profile.php?designerId=$desId> Designer Page </a>" ?> </div>
 				<div class="attributes">
 					Categories:
 					<table border="1px">
