@@ -13,10 +13,11 @@ class User
 	public $coupon_meter;
 	public $description;
 	public $website_link;
+	public $time_tracking_ctr;
+	public $is_spammer;
 	 
 	public static function getUserfromDBbyID($user_id)
 	{
-		
 		$query = mysql_query('select * from users where user_id='.$user_id);
 	
 		return User::getUserfromDB($query);
