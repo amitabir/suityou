@@ -8,7 +8,8 @@ $matchId = getUserNextMatchQuestion($userId);
 
 // TODO: don't show a designer mathces with his clothes
 ?>
-
+<script src="js/raphael.2.1.0.min.js"></script>
+<script src="js/justgage.1.0.1.min.js"></script>
 <script>
 $(document).ready(function(){
 $.ajax({ url: "show_match.php?matchId=<?php echo $matchId; ?>",
@@ -19,11 +20,12 @@ $.ajax({ url: "show_match.php?matchId=<?php echo $matchId; ?>",
 });
 </script>
 
+
     <div id="content_header"></div>
     	<div id="site_content">
 			<div id="content">
 				<div id="match"></div>
-        	</div>
+			</div>
     	</div>
 	</div>
   </body>
