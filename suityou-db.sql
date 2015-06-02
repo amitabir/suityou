@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: May 26, 2015 at 12:39 PM
+-- Generation Time: Jun 02, 2015 at 04:04 PM
 -- Server version: 5.6.21
 -- PHP Version: 5.5.14
 
@@ -134,15 +134,15 @@ CREATE TABLE IF NOT EXISTS `items` (
   PRIMARY KEY (`item_id`),
   UNIQUE KEY `id` (`item_id`),
   FULLTEXT KEY `name` (`name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Items table' AUTO_INCREMENT=29 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Items table' AUTO_INCREMENT=32 ;
 
 --
 -- Dumping data for table `items`
 --
 
 INSERT INTO `items` (`item_id`, `name`, `gender`, `type`, `description`, `price`, `designer_id`, `creation_time`, `picture`) VALUES
-(3, 'Bezz Women Shirt', 'MALE', 'TOP', 'A bezz shirt', 16.7, 1, '2015-05-05 12:57:08', 'images1.jpeg'),
-(4, 'Pink Skirt', 'FEMALE', 'BOTTOM', 'A pink skirt', 14.5, 1, '2015-05-05 12:57:55', 'images4.jpeg'),
+(3, 'Bezz Women Shirt', 'MALE', 'TOP', 'A pink shirt', 16.7, 1, '2015-05-05 12:57:08', '64476.jpeg'),
+(4, 'Pink Skirt', 'FEMALE', 'BOTTOM', 'A pink skirt', 14.5, 1, '2015-05-05 12:57:55', '69315.jpeg'),
 (6, 'Red Shirt', 'FEMALE', 'TOP', 'Red Shirt Description', 34.2, 1, '2015-05-23 20:58:48', '64476.jpeg'),
 (7, 'Black Pants', 'MALE', 'BOTTOM', 'Men''s black pants', 45, 1, '2015-05-23 21:02:57', '81571.jpeg'),
 (8, 'Green Pants', 'FEMALE', 'BOTTOM', 'desc', 10.9, 1, '2015-05-23 21:12:06', '2372.jpeg'),
@@ -161,10 +161,11 @@ INSERT INTO `items` (`item_id`, `name`, `gender`, `type`, `description`, `price`
 (22, 'Khaki Pants', 'MALE', 'BOTTOM', 'desc', 56.7, 1, '2015-05-23 22:32:38', '28840.jpeg'),
 (23, 'Khaki Pants', 'MALE', 'BOTTOM', 'desc', 56.7, 1, '2015-05-23 22:33:11', '1244.jpeg'),
 (24, 'Khaki Pants', 'MALE', 'BOTTOM', 'desc', 56.7, 1, '2015-05-23 22:33:53', '49227.jpeg'),
-(25, 'dsa', 'FEMALE', 'TOP', 'dsa', 12.3, 1, '2015-05-24 16:21:55', ''),
+(25, 'dsa', 'FEMALE', 'TOP', 'dsa', 12.3, 1, '2015-05-24 16:21:55', '49227.jpeg'),
 (26, 'dsa', 'FEMALE', 'TOP', 'dsa', 12.3, 1, '2015-05-24 17:18:09', ''),
 (27, 'dsa', 'FEMALE', 'TOP', 'dsa', 12.3, 1, '2015-05-24 17:18:36', ''),
-(28, 'Ofer', 'MALE', 'BOTTOM', 'Ofer', 12.9, 1, '2015-05-26 10:47:25', '19233.jpeg');
+(28, 'Ofer', 'MALE', 'BOTTOM', 'Ofer', 12.9, 1, '2015-05-26 10:47:25', '19233.jpeg'),
+(29, 'Black Jacket', 'MALE', 'TOP', 'Black Black 2', 80, 1, '2015-05-29 15:23:56', '88384.jpeg');
 
 -- --------------------------------------------------------
 
@@ -179,7 +180,7 @@ CREATE TABLE IF NOT EXISTS `items_stock` (
   `quantity` int(11) NOT NULL,
   PRIMARY KEY (`item_stock_id`),
   UNIQUE KEY `id` (`item_stock_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='The sizes and quantities of each size' AUTO_INCREMENT=28 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='The sizes and quantities of each size' AUTO_INCREMENT=34 ;
 
 --
 -- Dumping data for table `items_stock`
@@ -188,7 +189,7 @@ CREATE TABLE IF NOT EXISTS `items_stock` (
 INSERT INTO `items_stock` (`item_stock_id`, `item_id`, `size`, `quantity`) VALUES
 (1, 3, 'LARGE', 10),
 (2, 3, 'MEDIUM', 20),
-(3, 3, 'SMALL', 50),
+(3, 3, '', 50),
 (4, 4, 'MEDIUM', 55),
 (5, 4, 'LARGE', 0),
 (8, 23, 'LARGE', 30),
@@ -200,7 +201,11 @@ INSERT INTO `items_stock` (`item_stock_id`, `item_id`, `size`, `quantity`) VALUE
 (14, 27, 'LARGE', 30),
 (15, 27, 'SMALL', 24),
 (26, 21, 'large', 6),
-(27, 28, 'LARGE', 12);
+(27, 28, 'LARGE', 12),
+(28, 7, 'SMALL', 13),
+(29, 10, 'LARGE', 6),
+(30, 29, 'LARGE', 13),
+(31, 29, 'MEDIUM', 10);
 
 -- --------------------------------------------------------
 
@@ -310,7 +315,13 @@ INSERT INTO `item_attributes` (`item_id`, `attribute_id`) VALUES
 (28, 16),
 (28, 23),
 (28, 26),
-(28, 32);
+(28, 32),
+(29, 41),
+(29, 10),
+(29, 16),
+(29, 24),
+(29, 27),
+(29, 32);
 
 -- --------------------------------------------------------
 
@@ -324,21 +335,24 @@ CREATE TABLE IF NOT EXISTS `item_matchings` (
   `bottom_item_id` int(11) NOT NULL,
   `match_percent` double NOT NULL DEFAULT '0',
   `match_count` int(11) NOT NULL DEFAULT '0',
+  `trend_percent` double DEFAULT NULL,
   `match_type` tinyint(1) NOT NULL DEFAULT '1',
   `model_picture` varchar(255) DEFAULT NULL,
   `ignored_match_percent` double NOT NULL DEFAULT '0',
   `ignored_match_count` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`match_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
 
 --
 -- Dumping data for table `item_matchings`
 --
 
-INSERT INTO `item_matchings` (`match_id`, `top_item_id`, `bottom_item_id`, `match_percent`, `match_count`, `match_type`, `model_picture`, `ignored_match_percent`, `ignored_match_count`) VALUES
-(1, 3, 4, 50, 2, 1, 'model1.jpg', 0, 0),
-(2, 25, 23, 5, 2, 1, 'model2.jpg', 0, 0),
-(3, 24, 6, 80, 1, 1, '36418.jpg', 0, 0);
+INSERT INTO `item_matchings` (`match_id`, `top_item_id`, `bottom_item_id`, `match_percent`, `match_count`, `trend_percent`, `match_type`, `model_picture`, `ignored_match_percent`, `ignored_match_count`) VALUES
+(1, 3, 4, 53.725490196078, 51, NULL, 1, 'model1.jpg', 35, 2),
+(2, 25, 23, 39.642857142857, 56, NULL, 1, '63007.jpg', 0, 0),
+(3, 6, 24, 41.176470588236, 51, NULL, 1, '36418.jpg', 66, 5),
+(4, 19, 22, 60, 5, 76.111111111111, 0, NULL, 0, 0),
+(5, 29, 22, 54.999999999999, 50, NULL, 1, '74200.jpg', 54.285714285714, 7);
 
 -- --------------------------------------------------------
 
@@ -351,7 +365,16 @@ CREATE TABLE IF NOT EXISTS `purchases` (
   `user_id` int(11) NOT NULL,
   `total_price` double NOT NULL,
   PRIMARY KEY (`purchase_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
+
+--
+-- Dumping data for table `purchases`
+--
+
+INSERT INTO `purchases` (`purchase_id`, `user_id`, `total_price`) VALUES
+(1, 1, 302.4),
+(4, 1, 390.6),
+(5, 1, 334);
 
 -- --------------------------------------------------------
 
@@ -360,11 +383,24 @@ CREATE TABLE IF NOT EXISTS `purchases` (
 --
 
 CREATE TABLE IF NOT EXISTS `purchase_items` (
-  `purchase_item_id` int(11) NOT NULL AUTO_INCREMENT,
+  `purchase_id` int(11) NOT NULL,
   `item_stock_id` int(11) NOT NULL,
-  `amount` int(11) NOT NULL,
-  PRIMARY KEY (`purchase_item_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  `quantity` int(11) NOT NULL,
+  UNIQUE KEY `purchase_id` (`purchase_id`,`item_stock_id`),
+  UNIQUE KEY `purchase_id_2` (`purchase_id`,`item_stock_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `purchase_items`
+--
+
+INSERT INTO `purchase_items` (`purchase_id`, `item_stock_id`, `quantity`) VALUES
+(1, 29, 6),
+(2, 29, 1),
+(3, 29, 1),
+(4, 8, 6),
+(4, 29, 1),
+(5, 2, 20);
 
 -- --------------------------------------------------------
 
@@ -381,10 +417,13 @@ CREATE TABLE IF NOT EXISTS `users` (
   `gender` enum('MALE','FEMALE') NOT NULL,
   `birth_date` date NOT NULL,
   `is_designer` tinyint(1) NOT NULL DEFAULT '0',
+  `is_admin` tinyint(1) NOT NULL DEFAULT '0',
   `avatar` varchar(255) NOT NULL,
   `coupon_meter` int(11) NOT NULL DEFAULT '0',
   `description` text,
   `website_link` varchar(500) DEFAULT NULL,
+  `is_spammer` tinyint(1) NOT NULL DEFAULT '0',
+  `time_tracking_ctr` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`user_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
@@ -392,8 +431,8 @@ CREATE TABLE IF NOT EXISTS `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`user_id`, `email`, `first_name`, `last_name`, `address`, `gender`, `birth_date`, `is_designer`, `avatar`, `coupon_meter`, `description`, `website_link`) VALUES
-(1, 'amabir@gmail.com', 'Amit', 'Abir', 'adsa', 'MALE', '1988-12-31', 0, '', 0, '', '');
+INSERT INTO `users` (`user_id`, `email`, `first_name`, `last_name`, `address`, `gender`, `birth_date`, `is_designer`, `is_admin`, `avatar`, `coupon_meter`, `description`, `website_link`, `is_spammer`, `time_tracking_ctr`) VALUES
+(1, 'amabir@gmail.com', 'Ami', 'Abir', 'adsa', 'MALE', '1988-12-31', 1, 0, '', 0, '', '', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -409,21 +448,7 @@ CREATE TABLE IF NOT EXISTS `user_matchings` (
   `rating_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `skipped` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`user_match_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
-
---
--- Dumping data for table `user_matchings`
---
-
-INSERT INTO `user_matchings` (`user_match_id`, `user_id`, `match_id`, `rating`, `rating_time`, `skipped`) VALUES
-(1, 1, 3, NULL, '2015-05-24 12:16:09', 1),
-(2, 1, 3, 5, '2015-05-26 07:37:31', 0),
-(3, 1, 3, 10, '2015-05-26 07:37:31', 0),
-(4, 1, 3, 8, '2015-05-26 07:37:31', 0),
-(5, 1, 3, 4, '2015-05-26 07:37:31', 0),
-(6, 1, 3, 2, '2015-05-26 07:37:31', 0),
-(7, 1, 2, 10, '2015-05-26 07:44:49', 0),
-(8, 1, 2, 10, '2015-05-26 07:44:49', 0);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
