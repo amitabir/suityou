@@ -21,7 +21,6 @@ $type = $_GET["type"];
 				</tr>
 <?php
 			   	$query = mysql_query('SELECT * FROM items WHERE gender = "'.$gender.'" AND type = "' .$type. '"');
-				echo mysql_error();
 			   	while($row = mysql_fetch_array($query)) {
 					$itemId = $row['item_id'];
 			   		$name = $row['name'];
