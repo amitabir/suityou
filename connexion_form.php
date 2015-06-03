@@ -2,12 +2,19 @@
 include 'header.php';
 ?>
 	<script type="text/javascript" src="connexion.js"></script>
-		<div class="content">
-		    <form id="connexion_form"action="connexion.php" method="post">
-		        Please type your Email to log in:<br />
-		        <div class="center">
-			        	<label for="email">Email</label><input type="text" name="email" id="email" value="<?php if(isset($_SESSION['email'])) echo $_SESSION['email'];?>" /><br/>
-		        <input type="submit" value="Log in" />
-				</div>
-		    </form>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-6 col-md-offset-3">
+				<form class="form-horizontal" id="connexion_form" action="connexion.php" method="post">
+					<h3>Please type your Email to Log in:</h3>
+					<div class="form-group">
+						<label class="control-label">Email:</label>
+						<input class="form-control" type="text" name="email" id="email" value="<?php if(isset($_SESSION['email'])) echo $_SESSION['email'];?>" />
+					</div>
+					<div class="form-actions">    
+                    	<button class="btn btn-default btn-block" type="submit">Log in</button>
+                	</div>
+                </form>
+			</div> 
 		</div>
+	</div>
