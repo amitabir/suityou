@@ -18,10 +18,7 @@ $().ready(function(){
 				required: true,
 				dateISO: true
 			},
-			website_link:{
-				url: true
-			} 
-			
+			is_designer:"required"
 		},
 		messages:{
 			email:{
@@ -36,9 +33,7 @@ $().ready(function(){
 				required: "Please enter your birth date",
 				dateISO: "Please enter a valid date"
 			},
-			website_link:{
-				url: "Please enter a valid URL"
-			}
+			is_designer: "Please mention if you are a designer or not"
 		}
 	});
 });

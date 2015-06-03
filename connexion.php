@@ -31,10 +31,11 @@ else
 		}
 		else
 		{
+			echo "here";
 			//we suggest to register
 			$form = false;
 			$_SESSION['email']=$_POST['email'];
-			header("Location: sign_up.php");
+			//header("Location: sign_up.php");
 		}
 	}
 	else
