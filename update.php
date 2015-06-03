@@ -1,8 +1,5 @@
 <?php
 include'header.php';
-echo var_dump($_POST);
-echo "<br/>";
-
 $message='';
 if(User::issetUserDetailsinArray($_POST) && isset($_SESSION['user_id'],$_SESSION['email'],$_SESSION['is_designer']))
 {

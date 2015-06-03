@@ -47,6 +47,7 @@ if(isset($_POST['email'], $_POST['first_name'], $_POST['last_name'], $_POST['add
 				{
 					//Otherwise, email is already taken fwD to login
 					$form = false;
+					$_SESSION['email'] = $_POST['email'];
 					header("Location: connexion.php");
 				}
 			}

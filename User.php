@@ -9,6 +9,7 @@ class User
 	public $gender; 
 	public $birth_date;
 	public $is_designer;
+	public $is_admin;
 	public $avatar;
 	public $coupon_meter;
 	public $description;

@@ -1,5 +1,5 @@
 <?php
-include 'header.php';	
+require_once 'config.php';
 //If the user is logged, we log him out
 if(isset($_SESSION['user_id']) && isset($_SESSION['email']) && $_SESSION['email'] != '')
 {
@@ -31,11 +31,10 @@ else
 		}
 		else
 		{
-			echo "here";
-			//we suggest to register
+			//we fwd to register
 			$form = false;
 			$_SESSION['email']=$_POST['email'];
-			//header("Location: sign_up.php");
+			header("Location: sign_up.php");
 		}
 	}
 	else
@@ -44,20 +43,7 @@ else
 	}
 	if($form)
 	{	
-		//We display the form
-?>
-	
-	<script type="text/javascript" src="connexion.js"></script>
-		<div class="content">
-		    <form id="connexion_form"action="connexion.php" method="post">
-		        Please type your Email to log in:<br />
-		        <div class="center">
-			        	<label for="email">Email</label><input type="text" name="email" id="email" value="<?php if(isset($_SESSION['email'])) echo $_SESSION['email'];?>" /><br/>
-		        <input type="submit" value="Log in" />
-				</div>
-		    </form>
-		</div>
-	<?php
+		header("Location: connexion_form.php");
 	}
-} 
-	?>	
+}
+?>	
