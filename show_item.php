@@ -14,59 +14,74 @@ if ($item->type=="TOP"){
 }
 $queryMatches = mysql_query('SELECT * from item_matchings WHERE '.$typeColId. '='.$item->itemId);
 
-// TODO add designer link
+$designerNameQuery = mysql_query('SELECT first_name, last_name from users WHERE user_id = '.$item->designerId);
+$designerRow = mysql_fetch_array($designerNameQuery);
 ?>
-    <div id="content_header"></div>
-    <div id="site_content">
-        <div id="content">
-			<div class="item">
-				<form name="addToCartForm" method="post" action="cart.php?action=add">
-				<div><img src="<?php echo "images/items/". $item->picture; ?>"></div>
-				<div><strong><?php echo $item->name; ?></strong></div>
-				<div><?php echo $item->description; ?></div>
-				<?php $desId = $item->designerId ?>
-				<div><?php echo "<a href = designer_profile.php?designerId=$desId> Designer Page </a>" ?> </div>
-				<div class="attributes">
+    
+<div class="container">	
+	<div class="row">
+        <div class="col-md-12">
+            <h2 class="page-header"><?php echo $item->name; ?>
+            </h2>
+        </div>
+    </div>
+	
+	<div class="row">
+		
+        <div class="col-md-3">
+            <img class="img-thumbnail" src="<?php echo "images/items/". $item->picture; ?>" alt=""/>
+        </div>
+
+        <div class="col-md-9">
+            <h3>Item Description</h3>
+            <p><?php echo $item->description; ?></p>
+            <p>Designer: <a href = designer_profile.php?designerId=$desId><?php echo $designerRow["first_name"]." ".$designerRow["last_name"]; ?></a></p>
+			<p>Price: <?php echo "$".$item->price; ?></p>
+							<form name="addToCartForm" method="post" action="cart.php?action=add" class="form-inline">
+								 <select name='size' class="form-control">
+			<?php
+									$stockArray = $item->getItemStock();
+									foreach ($stockArray as $stockId=>$stockData) {					
+										if ($stockData["quantity"] > 0) {
+			?>
+											<option value="<?php echo $stockData["size"]; ?>"><?php echo $stockData["size"]; ?></option>	
+			<?php
+										} else {
+			?>
+											<option value="<?php echo $stockData["size"]; ?>"><?php echo $stockData["size"]." - Out of stock"; ?></option>	
+			<?php
+										}
+									}	
+			?>
+								</select>
+								<input type="hidden" name="itemId" value="<?php echo $itemId; ?>" />
+								<input type="text" name="quantity" value="1" />
+								<input type="submit" value="Add To Cart" class="btnAddCart" />
+							</form>
+        </div>
+	</div>
+	
+		
+				
+				<!-- <div class="attributes">
 					Categories:
 					<table border="1px">
 				<?php
-					$catArray = $item->getItemAttributes();
-					foreach ($catArray as $category=>$categoryAttribute) {
-						echo "<tr>";
-				   		echo "<td>".$categoryAttribute["cat_name"]."</td> <td>". $categoryAttribute["att_name"] ."</td>";
-						echo "</tr>";
-				   	}
+					// $catArray = $item->getItemAttributes();
+// 					foreach ($catArray as $category=>$categoryAttribute) {
+// 						echo "<tr>";
+// 				   		echo "<td>".$categoryAttribute["cat_name"]."</td> <td>". $categoryAttribute["att_name"] ."</td>";
+// 						echo "</tr>";
+// 				   	}
 				?>
-					</table>
-				</div>
-				<br/>
-				<div class="product-price">Price: <?php echo "$".$item->price; ?></div>
-
-				<div>
-					 <select name='size'>
-<?php
-						$stockArray = $item->getItemStock();
-						foreach ($stockArray as $stockId=>$stockData) {					
-							if ($stockData["quantity"] > 0) {
-?>
-								<option value="<?php echo $stockData["size"]; ?>"><?php echo $stockData["size"]; ?></option>	
-<?php
-							} else {
-?>
-								<option value="<?php echo $stockData["size"]; ?>"><?php echo $stockData["size"]." - Out of stock"; ?></option>	
-<?php
-							}
-						}	
-?>
-					</select>
-					<input type="hidden" name="itemId" value="<?php echo $itemId; ?>" />
-					<input type="text" name="quantity" value="1" size="2" />
-					<input type="submit" value="Add To Cart" class="btnAddCart" />
-				</div>
-				</form>
+					</table> -->
+				
+		
+		
 		<?php if (mysql_num_rows($queryMatches) > 0) {  ?>
-				<table border="1">
-				<tr>
+			<div class="row">
+				<div class="col-lg-12">
+				     <h4 class="page-header">
 				<?php
 				if ($item->type == "TOP"){
 					if ($item->gender == "MALE"){
@@ -78,8 +93,10 @@ $queryMatches = mysql_query('SELECT * from item_matchings WHERE '.$typeColId. '=
 					echo "Matching Shirts:";
 				}
 				?>
-				</tr>
-				<tr>
+					</h4>
+				</div>
+			</div>
+			<div class="row">
 				<?php
 				while($row = mysql_fetch_array($queryMatches)) {
 					$matchId = $row['match_id'];
@@ -91,26 +108,23 @@ $queryMatches = mysql_query('SELECT * from item_matchings WHERE '.$typeColId. '=
 					}
 					$matchItem = Item::getItemByID($matchItemId);
 				?>
-					<td>
-					match rating: <?php echo "$".$percent; ?> %
-					<br/>
-					<img src="<?php echo "images/items/".$matchItem->picture; ?>">
-					<br/>
-					<?php showRating($matchId, $userId); ?>
-					<br/>
-					<a href='show_item.php?itemId=<?php echo $matchItemId;?>'> Buy Now </a>
-					</td>
+					<div class="col-sm-3">
+						<p>Match Rating: <?php echo round($percent,2); ?>%</p>
+						<div class="progress">
+						        <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo round($percent,2); ?>%"></div>
+						      </div>
+						<a href="show_item.php?itemId=<?php echo $matchItemId; ?>" class="thumbnail">
+						    <img src="<?php echo "images/items/".$matchItem->picture; ?>" alt="" />
+							
+						</a>
+						<span align="center"><?php showRating($matchId, $userId); ?></span><br/>
+						
+					</div>
 				<?php
 				}
 				?>
-			</tr>
-			</table>
+			</div>
 		<?php }  ?>
-			</div>			
-        </div>
-    </div>
-
-</div>
-
+	</div>
   </body>
 </html>

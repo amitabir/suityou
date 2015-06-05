@@ -3,7 +3,7 @@ function paginate_function($item_per_page, $current_page, $total_records, $total
 {
     $pagination = '';
     if($total_pages > 0 && $total_pages != 1 && $current_page <= $total_pages){ //verify total pages and current page number
-        $pagination .= '<ul class="pagination">';
+        $pagination .= '<ul class="my_pagination">';
         
         $right_links    = $current_page + 3; 
         $previous       = $current_page - 3; //previous link 

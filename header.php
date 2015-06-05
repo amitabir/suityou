@@ -8,7 +8,7 @@ require_once 'config.php';
   <meta name="description" content="website description" />
   <meta name="keywords" content="website keywords, website keywords" />
   <meta http-equiv="content-type" content="text/html; charset=windows-1252" />
-  <link rel="stylesheet" type="text/css" href="style/style.css?3" />
+  <link rel="stylesheet" type="text/css" href="style/style.css?4" />
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
@@ -16,6 +16,7 @@ require_once 'config.php';
   <script type="text/javascript" src="jquery.validate.min.js"></script>
   <script src="jRate.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+  <script src="js/jquery.twbsPagination.min.js"></script>
 </head>
 <body>
 <nav class="navbar navbar-default">

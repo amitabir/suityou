@@ -16,7 +16,7 @@ function showSlider($query,$id)
 			$price = $row['price'];
 			$itemId= $row['item_id'];
 			echo '<div><a href="show_item.php?itemId='.$itemId.'"><img u="image" src="images/items/'.$picture.'"/></a>';
-			echo '<div u="caption" t="MCLIP|B" t2="NO" style="position: absolute; top: 250px; left: 0px;
+			echo '<div u="caption" t="MCLIP|B" t2="MCLIP|B" style="position: absolute; top: 250px; left: 0px;
 	            width: 600px; height: 50px;">
 	            <div style="position: absolute; top: 0px; left: 0px; width: 300px; height: 50px;
 	                background-color: Black; opacity: 0.5; filter: alpha(opacity=50);">
@@ -36,31 +36,20 @@ function showSlider($query,$id)
 ?>
 	<script src="jssor.slider.mini.js"></script>
 	<script src="shop_entrance.js?3"></script>
-    <div id="content_header"></div>
-    <div id="site_content">
-        <div id="content">
-            <div>
-				<table>
-					<tbody>
-						<tr>
-							<td>
+    <div class="container">
+		<div class="row">
+			<div class="col-md-6" align="center">
 								<h3>Browse Shirts</h3>
-								<?php showSlider($queryTop,"top");?> 
-								<a href='shop.php?gender=<?php echo $gender;?>&type=top'> Show More </a>
-							</td>
-							<td>
+								<?php showSlider($queryTop,"top");?> <br/>
+								 <a href='shop.php?gender=<?php echo $gender;?>&type=top'><button type="button" class="btn btn-lg btn-primary">Show More</button></a>
+			</div>
+			<div class="col-md-6" align="center">
 								<h3>Browse <?php if (strtoupper($gender)=="MALE"){ ?> Pants <?php } else { ?> Pants and Skirts <?php } ?></h3>
 								<?php showSlider($queryBottom,"bottom");?>
-								<a href='shop.php?gender=<?php echo $gender;?>&type=bottom'> Show More </a>
-							</td>
-						</tr>
-					</tbody>
-				</table>
+								<a href='shop.php?gender=<?php echo $gender;?>&type=top'><button type="button" class="btn btn-lg btn-primary">Show More</button></a>
 			</div>
-        </div>
-    </div>
-
-</div>
+    	</div>
+	</div>
 
   </body>
 </html>

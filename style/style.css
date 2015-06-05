@@ -65,8 +65,8 @@
 }
 
 /* Pagination style */
-.pagination{margin:0;padding:0;}
-.pagination li{
+/*.my_pagination{margin:0;padding:0;}
+.my_pagination li{
 	display: inline;
 	padding: 6px 10px 6px 10px;
 	border: 1px solid #ddd;
@@ -75,21 +75,21 @@
 	background: #FFFFFF;
 	box-shadow: inset 1px 1px 5px #F4F4F4;
 }
-.pagination li a{
+.my_pagination li a{
     text-decoration:none;
     color: rgb(89, 141, 235);
 }
-.pagination li.first {
+.my_pagination li.first {
     border-radius: 5px 0px 0px 5px;
 }
-.pagination li.last {
+.my_pagination li.last {
     border-radius: 0px 5px 5px 0px;
 }
-.pagination li:hover{
+.my_pagination li:hover{
 	background: #CFF;
 }
-.pagination li.active{
+.my_pagination li.active{
 	background: #F0F0F0;
 	color: #333;
 }
-
+*/
