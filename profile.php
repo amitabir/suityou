@@ -26,8 +26,15 @@ if(isset($_SESSION['user_id'],$_SESSION['email']))
 		$user = User::getUserfromDBbyID($_SESSION['user_id']);
 		if($user != null)
 		{
-			if(isset($_POST['editButton']))		
+			if(isset($_POST['editButton']) || isset($_POST['editDesignerButton']))		
 			{
+				if (isset($_POST['editButton'])){
+					$designerTabActive="";
+					$userTabActive="active";
+				}else if(isset($_POST['editDesignerButton'])){
+					$designerTabActive="active";
+					$userTabActive="";
+				}
 				$read_only='';
 				$disabled='';
 				$hidden='';
@@ -35,6 +42,8 @@ if(isset($_SESSION['user_id'],$_SESSION['email']))
 			}
 			else
 			{
+				$designerTabActive="";
+				$userTabActive="active";
 				$read_only='readonly';
 				$disabled='disabled';
 				$hidden='style="display:none"';
@@ -48,7 +57,6 @@ if(isset($_SESSION['user_id'],$_SESSION['email']))
 			{
 				$designer= false;
 			}
-
 ?>
 <script type="text/javascript" src="profile_validate.js"></script>
 <style type="text/css">
@@ -61,23 +69,23 @@ if(isset($_SESSION['user_id'],$_SESSION['email']))
 	<div role="tabpanel">
 	  <!-- Nav tabs -->
 	  <ul class="nav nav-tabs" role="tablist">
-	    <li role="presentation" class="active"><a href="#Personal" aria-controls="Personal" role="tab" data-toggle="tab">Personal details</a></li>
+	    <li role="presentation" class="<?php echo $userTabActive?>"><a href="#Personal" aria-controls="Personal" role="tab" data-toggle="tab">Personal details</a></li>
 	    <?php
 	    	if($designer)
 	    	{
 	    ?>
-	    	<li role="presentation"><a href="#designer" aria-controls="designer" role="tab" data-toggle="tab">Designer Details</a></li>
+	    	<li role="presentation" class="<?php echo $designerTabActive?>"><a href="#designer" aria-controls="designer" role="tab" data-toggle="tab">Designer Details</a></li>
 	    <?php		
 	    	}
 	    ?>
 	  </ul>
 	  <!-- Tab panes -->
 	  <div class="tab-content">
-	    <div role="tabpanel" class="tab-pane active" id="Personal">
+	    <div role="tabpanel" class="tab-pane <?php echo $userTabActive?>" id="Personal">
 	    	<div class="container">
 				 <div class="row">
 				 	<div class="col-md-6 col-md-offset-3">
-						    <form class="form-horizontal" id="update_form" action="profile_update.php" method="post" role="form">
+						    <form class="form-horizontal" id="update_form" action="profile_update.php" method="post" role="form" enctype="multipart/form-data">
 						  		<div class="form-group">
 						  			<label class="control-label" for="email">Email</label>
 						  			<input class="form-control" type="email" name="email" value="<?php echo htmlentities($user->{'email'}, ENT_QUOTES, 'UTF-8'); ?>" <?php echo $read_only;?> />
@@ -123,8 +131,41 @@ if(isset($_SESSION['user_id'],$_SESSION['email']))
 	    if($designer)
 	    {
 	    ?>
-	    <div role="tabpanel" class="tab-pane" id="designer">
-	    	<!-- Inesert Designer details here --> 
+	    <div role="tabpanel" class="tab-pane <?php echo $designerTabActive?>" id="designer">
+	    	<div class="container">
+				 <div class="row">
+				 	<div class="col-md-6 col-md-offset-3">
+						    
+						  		<div class="form-group">
+						  			<label class="control-label" for="description">Description</label>
+						  			<textarea class="form-control" name="description" form="update_form" placeholder="Describe yourself..."<?php  echo $read_only; ?>> <?php echo htmlentities($user->{'description'}, ENT_QUOTES, 'UTF-8'); ?> </textarea>
+						  		</div>
+						  		<div class="form-group">
+						  			<label class="control-label" for="website_link">Website:</label>
+						  			<input class="form-control" form="update_form" type="text" name="website_link" id="website_link" value="<?php echo htmlentities($user->{'website_link'}, ENT_QUOTES, 'UTF-8'); ?>" <?php echo $read_only;?>/>
+						  		</div>
+						  		<div class="form-group">
+						  			<label class="control-label" for="avatar">Image:</label> <br/>
+									<img src="images/users/<?php echo htmlentities($user->{'avatar'}, ENT_QUOTES, 'UTF-8'); ?>" width="170"/>
+									<?php if(isset($_POST['editButton']) or isset($_POST['editDesignerButtonButton']))		
+										{?>
+						  			<input class="form-control" type="file" form="update_form" name="imageToUpload" id="imageToUpload" <?php echo $read_only;?> >
+										<?php } ?>
+						  		</div>
+								<div class="form-actions">
+						        	<button class="btn btn-default btn-block" form="update_form" type="submit" <?php echo $read_only.' '; echo $disabled.' '; echo $hidden?> >Update</button>
+						        </div> 	
+						        
+						   
+						    <form class="form-horizontal" method="POST" action='' role="form" <?php echo $hiddenEdit; ?> >
+						 		<div class="form-actions">
+						 			<button class="btn btn-default btn-block" type="submit" name="editDesignerButton">Edit Your Details</button>
+								</div>
+							</form>
+					    </div>
+				    </div>
+				</div>
+	    </div>
 	    </div>
 	    <?php	 	
 	    }

@@ -17,6 +17,7 @@ define("USERS_IMAGES_TARGET_DIR", "images/users/");
 		} else {
 			$newAvatar = $avatar;
 		}
+		$user->avatar=$newAvatar;
 		
 		$description = $_POST['description'];
 		$websiteLink = $_POST['website_link'];

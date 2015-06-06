@@ -1,6 +1,10 @@
 <?php
-include'config.php';
+include 'config.php';
+include 'image_upload.php';
+define("USERS_IMAGES_TARGET_DIR", "images/users/");
 $message='';
+
+
 if(User::issetUserDetailsinArray($_POST) && isset($_SESSION['user_id'],$_SESSION['email'],$_SESSION['is_designer']))
 {
 	$email = $_POST['email'];
@@ -27,10 +31,20 @@ if(User::issetUserDetailsinArray($_POST) && isset($_SESSION['user_id'],$_SESSION
 		}
 	}
 	if($message=='')
-	{
+	{	
 		//creating the update query
 		$query = 'UPDATE users SET';
 		$user = User::UserFromArray($_POST);
+		
+		if (!empty($_FILES["imageToUpload"]["name"])) {
+			var_dump($_FILES);
+			$desQuery = mysql_query("SELECT * FROM users WHERE user_id =".$_SESSION['user_id']);
+			$desRow = mysql_fetch_array($desQuery);
+			$avatar = $desRow['avatar'];
+			deleteImage($avatar, USERS_IMAGES_TARGET_DIR);
+			$user->avatar = uploadImage("imageToUpload", USERS_IMAGES_TARGET_DIR);
+		} 
+		
 		foreach($user as $key=>$value)
 		{
 			if(!empty($value))
