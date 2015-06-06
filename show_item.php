@@ -55,6 +55,7 @@ $designerRow = mysql_fetch_array($designerNameQuery);
 			?>
 								</select>
 								<input type="hidden" name="itemId" value="<?php echo $itemId; ?>" />
+								<input type="hidden" name="picture" value="<?php echo $item->picture; ?>" />
 								<input type="text" name="quantity" value="1" />
 								<input type="submit" value="Add To Cart" class="btnAddCart" />
 							</form>

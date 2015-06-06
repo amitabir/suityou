@@ -90,8 +90,14 @@
 				<div id="jRate"></div>
 			</div>
 		</div>
+		
+		<div class="row">
+			<div class="col-lg-12" align="right">
+				<div id="next">
+					<button id="skipBtn">Next</button>
+				</div>
+			</div>
+		</div>
 
-<div id="next">
-	<button id="skipBtn">Next</button>
-</div>
+
 				
