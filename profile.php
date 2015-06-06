@@ -137,12 +137,12 @@ if(isset($_SESSION['user_id'],$_SESSION['email']))
 		}
 		else 
 		{
-			//user null			
-			header("Location: connexion.php");	
+			//user is null	
+			echo '<script>window.location.replace("connexion.php")</script>';
 		}
 }
 else
 {
-	//user not logged in
-	header("Location: connexion.php");
+	//user is not logged in
+	echo '<script>window.location.replace("connexion.php")</script>';
 }
