@@ -1,37 +1,45 @@
 <?php
 include("header.php");
-?>
+
+$designerId = $_SESSION["user_id"];
+
+$item_per_page = 10;
+$countQuery = mysql_query('SELECT count(*) FROM items WHERE designer_id = '.$designerId);
+$countRow = mysql_fetch_array($countQuery);
+	
+$total_pages = ceil($countRow[0]/$item_per_page);
+?>	
 <script type="text/javascript">
 $(document).ready(function() {
-	$("#results" ).load( "manage_items_fetch.php"); //load initial records
 	
-	//executes code below when user click on pagination links
-	$("#results").on( "click", ".pagination a", function (e){
-		e.preventDefault();
-		$(".loading-div").show(); //show loading element
-		var page = $(this).attr("data-page"); //get page number from link
-		$("#results").load("manage_items_fetch.php",{"page":page}, function(){ //get content from PHP page
-			$(".loading-div").hide(); //once done, hide loading element
-		});
-		
+	function loadResults(page) {
+	    $("#results").load("manage_items_fetch.php", {"page":page, "itemsPerPage":<?php echo $item_per_page ?>}); 
+	}
+	
+	loadResults(1); //load initial records
+	
+	<?php if ($total_pages > 1) {  ?>
+	$('#pages').twbsPagination({
+	        totalPages: <?php echo $total_pages; ?>,
+	        visiblePages: 5,
+	        onPageClick: function (event, page) {
+				loadResults(page);
+	    	}
 	});
+	<?php } ?>
 });
 </script>
+        
+<div id="results"><!-- content will be loaded here --></div>
 
-    <div id="content_header"></div>
-    <div id="site_content">
-        <div id="content">
-            <div id="content-part">
-			<a href='add_item.php'> Add New Item </a>
-			
-			<div class="loading-div"><img src="ajax-loader.gif" ></div>
-			<div id="results"><!-- content will be loaded here --></div>
-			
-            </div>
-        </div>
-    </div>
-
+<div class="container">
+	<div class="row text-center">
+        <div class="col-lg-12">
+			<ul id="pages" class="pagination-sm"></ul>
+		</div>
+	</div>
 </div>
+
 
   </body>
 </html>

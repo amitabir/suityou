@@ -50,22 +50,25 @@ require_once 'config.php';
         <li><a href="trends.php">Trends</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <?php if(isset($_SESSION['user_id'],$_SESSION['email']))
+     <?php if(isset($_SESSION['user_id'],$_SESSION['email']))
         {
-        ?>
+     ?>
           <p class="navbar-text">Hello <?php echo $_SESSION['email']?></p> 
           <li><a href="cart.php">Shopping Cart</a></li>
           <li><a href="profile.php">Profile</a></li>  
           <li><a href="connexion.php">Logout</a></li>
-          <?php if (isset($_SESSION['is_admin']) && !empty($_SESSION['is_admin']))
+     <?php if (isset($_SESSION['is_designer']) && !empty($_SESSION['is_designer']))
           {
-          ?>
-          <li><a href="manage.php">Manage Site</a></li>
+     ?>
+          <li><a href="manage_items.php">Manage Items</a></li>
     <?php }
-        }
-        else
-        {
-        ?>
+	 	if (isset($_SESSION['is_admin']) && !empty($_SESSION['is_admin']))
+         {
+    ?>
+         <li><a href="manage.php">Manage Site</a></li>
+   <?php }
+        }  else  {
+     ?>
           <li><a href="sign_up.php">Sign up</a></li>
           <li><a href="connexion.php">Log in</a></li>
   <?php } ?>  

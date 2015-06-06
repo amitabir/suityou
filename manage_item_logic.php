@@ -143,5 +143,5 @@ if ($_GET["action"] == "add") {
 		// Delete the item
 		mysql_query('DELETE FROM items WHERE item_id = '.$itemId) or die(mysql_error());
 		
-		header("location: manage_clothes.php");
+		header("location: manage_items.php");
 }?>

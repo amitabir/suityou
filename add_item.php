@@ -21,11 +21,11 @@ if(!empty($_GET["itemId"])) {
 		var table = document.getElementById(tableID);
 		var rowCount = table.rows.length;
 		var row = table.insertRow(rowCount);
-		var colCount = table.rows[0].cells.length;
+		var colCount = table.rows[1].cells.length;
 		for(var i=0; i<colCount; i++) {
 			var newcell = row.insertCell(i);
-			newcell.innerHTML = table.rows[0].cells[i].innerHTML;
-			newcell.childNodes[1].value = "";
+			newcell.innerHTML = table.rows[1].cells[i].innerHTML;
+			newcell.childNodes[0].value = "";
 		}
 	}
 
@@ -36,7 +36,7 @@ if(!empty($_GET["itemId"])) {
 			var row = table.rows[i];
 			var chkbox = row.cells[0].childNodes[0];
 			if(null != chkbox && true == chkbox.checked) {
-				if(rowCount <= 1) {         // limit the user from removing all the fields
+				if(rowCount <= 2) {         // limit the user from removing all the fields
 					alert("Must have at least one size available in stock.");
 					break;	
 				}
@@ -48,42 +48,68 @@ if(!empty($_GET["itemId"])) {
 	}
 </script>
 
-    <div id="content_header"></div>
-    <div id="site_content">
-        <div id="content">
-			<div class="add_item_form">
+<div class="container">
 				<?php if ($itemForUpdate != NULL) { ?>
-	            	<form id="add_item_form" action="manage_item_logic.php?action=update&itemId=<?php echo $itemForUpdate->itemId;?>" method="post" enctype="multipart/form-data"/>
-						Update Item:<br />
+	            	<form id="add_item_form" class="form-horizontal" action="manage_item_logic.php?action=update&itemId=<?php echo $itemForUpdate->itemId;?>" method="post" enctype="multipart/form-data" role="form"/>
 				<?php } else { ?>
-					<form id="add_item_form" action="manage_item_logic.php?action=add" method="post" enctype="multipart/form-data"/>
-						Add New Item:<br />
+					<form id="add_item_form" class="form-horizontal" action="manage_item_logic.php?action=add" method="post" enctype="multipart/form-data" role="form"/>
 				<?php } ?>
-			        <div class="center">
-			        	<label for="name">Name</label><input type="text" name="name" id="name" value="<?php echo $itemForUpdate->name; ?>"/><br />
-			            <label for="gender">Item Gender:</label>
-  						  		<input type="radio" name="gender" id="gender" value="MALE" <?php if ($itemForUpdate->gender == 'MALE') echo "checked"; ?>>Male</option>
-  						  		<input type="radio" name="gender" id="gender" value="FEMALE" <?php if ($itemForUpdate->gender == 'FEMALE') echo "checked"; ?>>Female</option>
-							<label for="gender" class="error" style="display: none;"></label>
-							<br/>
-			            <label for="type">Item Type:</label>
-				  		<input type="radio" name="type" id="type" value="TOP" <?php if ($itemForUpdate->type == 'TOP') echo "checked"; ?>>Top</option>
-				  		<input type="radio" name="type" id="type" value="BOTTOM" <?php if ($itemForUpdate->type == 'BOTTOM') echo "checked"; ?>>Bottom</option>
+
+		                <div class="form-group">
+		                    <label class="control-label" for="name">Name</label>
+		                    <input class="form-control" type="text" name="name" id="name" value="<?php echo $itemForUpdate->name; ?>" />
+		                </div>
+		                <div class="form-group">
+		                    <label class="control-label" for="name">Item Gender</label>
+		                    <select class="form-control" name="gender">
+								<option></option>
+		                        <option <?php if ($itemForUpdate->gender == 'FEMALE') echo "selected"; ?> value="FEMALE">FEMALE</option>
+		                        <option <?php if ($itemForUpdate->gender == 'MALE') echo "selected"; ?> value="MALE">MALE</option>
+		                    </select>
+							<label for="gender" class="error" style="display: none;"></label> 
+		                </div>
+		                <div class="form-group">
+		                    <label class="control-label" for="type">Item Type</label>
+		                    <select class="form-control" name="type">
+								<option></option>
+		                        <option <?php if ($itemForUpdate->type == 'TOP') echo "selected"; ?> value="TOP">TOP</option>
+		                        <option <?php if ($itemForUpdate->gender == 'BOTTOM') echo "selected"; ?> value="BOTTOM">BOTTOM</option>
+		                    </select>
 							<label for="type" class="error" style="display: none;"></label>
-							<br/>
-			            <label for="description">Description:<br/></label><textarea name="description" id="description"/><?php echo $itemForUpdate->description; ?></textarea><br />        
-			            <label for="price">Item Price:</label><input type="text" name="price" id="price" value="<?php echo $itemForUpdate->price; ?>"/><br />
-						<?php if ($itemForUpdate != NULL) { ?>
+						</div>
+						
+						 <div class="form-group">
+							 <label class="control-label" for="description">Description</label>
+							 <textarea class="form-control" name="description" id="description"/><?php echo $itemForUpdate->description; ?></textarea>
+						 </div>
 						 
-						<img src="images/items/<?php echo $itemForUpdate->picture; ?>" /><br/>
+						 <div class="form-group">
+							 <label class="control-label" for="price">Item Price</label>
+							 <div class="input-group">
+							   <span class="input-group-addon">$</span>
+							   <input class="form-control" type="text" name="price" id="price" value="<?php echo $itemForUpdate->price; ?>"/>
+							  </div>
+							  <label for="price" class="error" style="display: none;"></label> 
+						 </div>
+			            
+			            <div class="form-group">
+							<?php if ($itemForUpdate != NULL) { ?>
+						 	  <p> <label class="control-label">Item Image</label></p>
+							<img class="thumbnail" src="images/items/<?php echo $itemForUpdate->picture; ?>" />
 						
-						<?php }?>
+							<?php }?>
 						
-						<label for="imageToUpload"><?php if ($itemForUpdate != NULL) echo "Change Item Image: "; else echo "Upload Item Image: "; ?></label><input type="file" name="imageToUpload" id="imageToUpload" <?php if ($itemForUpdate == NULL) echo "required"; ?> > <br />
-						<br/>
+							<p><label class="control-label" for="imageToUpload"><?php if ($itemForUpdate != NULL) echo "Change Item Image: "; else echo "Upload Item Image: "; ?></label></p>
+								<input class="form-control" type="file" name="imageToUpload" id="imageToUpload" class="file" <?php if ($itemForUpdate == NULL) echo "required"; ?> >
+								
+						</div>
+							
+						<div class="form-group">
 						<label for="Categories">Categories:</label>
-						<table border="1px">
-							<tr><td>Category</td><td>Attribute</td></tr>
+						<table class="table">
+							<thead>
+							<tr><th class="col-md-3">Category</th><th class="col-md-9">Attribute</th></tr>
+							</thead>
 							<?php
 								$categoriesQuery = mysql_query("SELECT * FROM categories");
 								while($catRow = mysql_fetch_array($categoriesQuery)) {
@@ -117,17 +143,19 @@ if(!empty($_GET["itemId"])) {
 								}
 							?>
 						</table>
-						<br/>
-			            
-						<label for="stock">Item Stock:</label>
-						<p> 
-						  <input id="addSize" name="addSize" type="button" value="Add Size" onClick="addRow('stockTable');" /> 
-						  <input id="removeSize" name="removeSize" type="button" value="Remove Size" onClick="deleteRow('stockTable');" /> 
-						  (All acions apply only to entries with check marked check boxes only.)
-						</p>
-						<label for="size[]" class="error" style="display: none;"></label>
-						<label for="quantity[]" class="error" style="display: none;"></label>
-						<table id="stockTable" class="form" border="1">
+					</div>	
+			           
+					<div class="form-group">
+						<label class="control-label" for="stock">Item Stock:</label>
+						
+						<p><label for="size[]" class="error" style="display: none;"></label></p>
+						<p><label for="quantity[]" class="error" style="display: none;"></label></p>
+						<table id="stockTable" class="table">
+						 <thead>
+							 <th class="col-md-1"></th>
+							 <th class="col-md-5">Size</th>
+							 <th class="col-md-6">Quantity</th>
+						 </thead>
 						 <tbody>
 						<?php
 							if ($itemForUpdate != NULL) {
@@ -136,8 +164,8 @@ if(!empty($_GET["itemId"])) {
 							  <tr>
 								<p>
 								<td><input type="checkbox" name="chk[]" checked="checked"/><input type="hidden" name="stockIds[]" value="<?php echo $stockId; ?>"/></td>
-								<td><label for="size">Size</label><input type="text" name="size[]" value="<?php echo $stockInfo['size']; ?>"/></td>
-								<td><label for="quantity">Quantity</label><input type="text" class="small"  name="quantity[]" value="<?php echo $stockInfo['quantity']; ?>"/></td>
+								<td><input class="form-control" type="text" name="size[]" value="<?php echo $stockInfo['size']; ?>"/></td>
+								<td><input class="form-control" type="text" class="small"  name="quantity[]" value="<?php echo $stockInfo['quantity']; ?>"/></td>
 								</p>
 							  </tr>
 						<?php
@@ -147,8 +175,8 @@ if(!empty($_GET["itemId"])) {
 						  <tr>
 							<p>
 							<td><input type="checkbox" name="chk[]" checked="checked"/><input type="hidden" name="stockIds[]"/></td>
-							<td><label for="size">Size</label><input type="text" name="size[]"/></td>
-							<td><label for="quantity">Quantity</label><input type="text" class="small"  name="quantity[]"/></td>
+							<td><input class="form-control"  type="text" name="size[]"/></td>
+							<td><input class="form-control" type="text" class="small"  name="quantity[]"/></td>
 							</p>
 						  </tr>
 						<?php
@@ -156,19 +184,21 @@ if(!empty($_GET["itemId"])) {
 						?>
 						 </tbody>
 						</table>
+						<p> 
+						  <input id="addSize" class="btn btn-sm" name="addSize" type="button" value="Add Size" onClick="addRow('stockTable');" /> 
+						  <input id="removeSize" class="btn btn-sm" name="removeSize" type="button" value="Remove Size" onClick="deleteRow('stockTable');" /> 
+						  (All acions apply only to entries with check marked check boxes only.)
+						</p>
 						<input type="hidden" name="designerId" value="<?php echo $_SESSION['user_id']; ?>" />
 						<?php if ($itemForUpdate != NULL) { ?>
-			            	<input type="submit" value="Update Item" name="submit"/>
+			            	<input class="btn btn-primary" type="submit" value="Update Item" name="submit"/>
 						<?php } else { ?>
-							<input type="submit" value="Add Item" name="submit"/>
+							<input class="btn btn-primary" type="submit" value="Add Item" name="submit"/>
 						<?php } ?>
 					</div>
 			    </form>
-			</div>			
-        </div>
-    </div>
-
-</div>
+				
+			</div>
 
   </body>
 </html>
