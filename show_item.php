@@ -4,6 +4,8 @@ include("header.php");
 include('Item.php');
 include("rating.php");
 
+$outOfStockValue = "OUT_OF_STOCK";
+
 $itemId = $_GET["itemId"];
 $userId = $_SESSION['user_id'];
 $item = Item::getItemByID($itemId);
@@ -17,7 +19,6 @@ $queryMatches = mysql_query('SELECT match_id, top_item_id, bottom_item_id from i
 $designerNameQuery = mysql_query('SELECT first_name, last_name from users WHERE user_id = '.$item->designerId);
 $designerRow = mysql_fetch_array($designerNameQuery);
 ?>
-    
 <div class="container">	
 	<div class="row">
         <div class="col-md-12">
@@ -37,8 +38,8 @@ $designerRow = mysql_fetch_array($designerNameQuery);
             <p><?php echo $item->description; ?></p>
             <p>Designer: <a href = designer_profile.php?designerId=$desId><?php echo $designerRow["first_name"]." ".$designerRow["last_name"]; ?></a></p>
 			<p>Price: <?php echo "$".$item->price; ?></p>
-							<form name="addToCartForm" method="post" action="cart.php?action=add" class="form-inline">
-								 <select name='size' class="form-control">
+							<form id="addToCartForm" name="addToCartForm" method="post" action="cart.php?action=add" class="form-inline">
+								 <select id="size" name='size' class="form-control">
 			<?php
 									$stockArray = $item->getItemStock();
 									foreach ($stockArray as $stockId=>$stockData) {					
@@ -48,7 +49,7 @@ $designerRow = mysql_fetch_array($designerNameQuery);
 			<?php
 										} else {
 			?>
-											<option value="<?php echo $stockData["size"]; ?>"><?php echo $stockData["size"]." - Out of stock"; ?></option>	
+											<option value="<?php echo $outOfStockValue ?>"><?php echo $stockData["size"]." - Out of stock"; ?></option>	
 			<?php
 										}
 									}	
@@ -59,25 +60,26 @@ $designerRow = mysql_fetch_array($designerNameQuery);
 								<input type="text" name="quantity" value="1" />
 								<input type="submit" value="Add To Cart" class="btnAddCart" />
 							</form>
+							
+							<script>
+							$(document).ready(function(){
+								$('#addToCartForm').submit(function() {
+									if ($('#size').val() == "<?php echo $outOfStockValue ?>") {
+										$('#sizeOutOfStock').show();
+										return false;
+									}
+									return true;
+								});
+							});
+							
+							</script>
+							
+							<div id="sizeOutOfStock" class="alert alert-danger alert-dismissible" role="alert" style="display: none">
+							  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+							  <strong>Error!</strong> Please choose a size that is available in stock.
+							</div>
         </div>
 	</div>
-	
-		
-				
-				<!-- <div class="attributes">
-					Categories:
-					<table border="1px">
-				<?php
-					// $catArray = $item->getItemAttributes();
-// 					foreach ($catArray as $category=>$categoryAttribute) {
-// 						echo "<tr>";
-// 				   		echo "<td>".$categoryAttribute["cat_name"]."</td> <td>". $categoryAttribute["att_name"] ."</td>";
-// 						echo "</tr>";
-// 				   	}
-				?>
-					</table> -->
-				
-		
 		
 		<?php if (mysql_num_rows($queryMatches) > 0) {  ?>
 			<div class="row">

@@ -110,10 +110,10 @@ function showUpdate(elementId) {
 		<table class="table" cellpadding="10" cellspacing="1">
 			<thead>
 				<tr>
-					<th><strong>Item Description</strong></th>
-					<th><strong>Size</strong></th>
-					<th><strong>Quantity</strong></th>
-					<th><strong>Price</strong></th>
+					<th class="col-md-6"><strong>Item Description</strong></th>
+					<th class="col-md-2"><strong>Size</strong></th>
+					<th class="col-md-1"><strong>Quantity</strong></th>
+					<th class="col-md-3"><div align="right"><strong>Price</strong></div></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -127,49 +127,50 @@ function showUpdate(elementId) {
 							<a href="show_item.php?itemId=<?php echo $item["id"]; ?>" class="thumbnail">
 							    <img src="images/items/<?php echo $item["picture"]; ?>" alt="" style="width:200px;height:200px">
 							</a>
-						</div>
-							<div class="col-xs-8">
-								<div class="row">
+							</div>
+								<div class="col-xs-8">
 									<strong><?php echo $item["name"]; ?></strong>
-								</div>
-								<div class="row">
+									<div valign="bottom">
 									<a href="cart.php?action=remove&itemStockId=<?php echo $item["id"]; ?>" class="btnRemoveAction">Remove Item</a>
+									</div>
 								</div>
 							</div>
-						</div>
 						</td>
 						<td><?php echo $item["size"]; ?></td>
 						<td><form name="updateCartForm_<?php echo $item["id"]; ?>" method="post" action="cart.php?action=update&itemStockId=<?php echo $item["id"]; ?>">
-<input type="text" name="qty_<?php echo $item["id"]; ?>" value="<?php echo $item["quantity"]; ?>" size=4 onkeyup="showUpdate('qty_update_<?php echo $item["id"]; ?>')"/><input type="submit" value="Update" id="qty_update_<?php echo $item["id"]; ?>" style='display:none' /></form></td>
+<input type="text" name="qty_<?php echo $item["id"]; ?>" value="<?php echo $item["quantity"]; ?>" size=8 onkeyup="showUpdate('qty_update_<?php echo $item["id"]; ?>')"/><input type="submit" value="Update" id="qty_update_<?php echo $item["id"]; ?>" style='display:none' /></form></td>
 						<td align=right><?php echo "$".$item["price"]; ?></td>
 					</tr>
 <?php
         			$item_total += ($item["price"]*$item["quantity"]);
 				}
 ?>
-
 					<tr>
-						<td colspan="5" align=right><strong>Total:</strong> <?php echo "$".$item_total; ?><br/>
-						<?php if (isset($_SESSION["user_id"])){
-							$query=mysql_query('SELECT coupon_meter FROM users WHERE user_id= ' .$_SESSION["user_id"]);
-							$row=mysql_fetch_array($query);
-							$couponMeter=$row["coupon_meter"];
-						} else{
-							$couponMeter = 0;
-						}
-						if ($couponMeter == 100){//TODO- add options?
-							$discount = 0.1*$item_total;
-							$newTotal = 0.9 * $item_total;
-							echo "<tr><td colspan='5' align=right><strong>Coupon! 10% discount:</strong> $$discount <br/></tr>";
-							echo "<td colspan='5' align=right><strong>Total after discount:</strong> $$newTotal <br/>";
+						<td><a id="btnEmpty" href="cart.php?action=empty"><button class="btn btn-sm btn-primary">Empty Cart</button></a></td>
+						<td></td><td></td>
+						<td>
+							<p align="right"><strong>Total:</strong> <?php echo "$".$item_total; ?></p>
+							<?php if (isset($_SESSION["user_id"])){
+								$query=mysql_query('SELECT coupon_meter FROM users WHERE user_id= ' .$_SESSION["user_id"]);
+								$row=mysql_fetch_array($query);
+								$couponMeter=$row["coupon_meter"];
+							} else{
+								$couponMeter = 0;
+							}
+							if ($couponMeter == 100){//TODO- add options?
+								$discount = 0.1*$item_total;
+								$newTotal = 0.9 * $item_total;
+								echo "<p align=right><strong>Coupon! 10% Discount:</strong> $$discount </p>";
+								echo "<p align=right><strong>Total after Discount:</strong> $$newTotal </p>";
 
-						}
-						?>
-						<a href="checkout.php">Checkout</a></td>
+							}
+							?>
+							<p align="right"><a href="checkout.php"><button class="btn btn-primary">Checkout</button></a></p>
+						</td>
 					</tr>
 				</tbody>
 			</table>	
-			<a id="btnEmpty" href="cart.php?action=empty"><button class="btn btn-sm btn-primary">Empty Cart</button></a>	
+			
 <?php
 	}
 ?>
