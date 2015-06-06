@@ -17,6 +17,8 @@ require_once 'config.php';
   <script src="jRate.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
   <script src="js/jquery.twbsPagination.min.js"></script>
+  <script src="js/raphael.2.1.0.min.js"></script>
+  <script src="js/justgage.1.0.1.min.js"></script>
 </head>
 <body>
 <nav class="navbar navbar-default">

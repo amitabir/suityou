@@ -13,6 +13,7 @@ if (isset($_SESSION['user_id'],$_SESSION['email'])){
 			
 					<ul>				
 						<li><a href="manage_matches.php"> Manage Matches </a> </li>
+						<li><a href="stats.php"> Statistics </a> </li>
 					</ul>
 			
         			</div>
