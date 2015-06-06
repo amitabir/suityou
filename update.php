@@ -16,19 +16,18 @@ if(User::issetUserDetailsinArray($_POST) && isset($_SESSION['user_id'],$_SESSION
 			if($dn != 0)
 			{
 					//Otherwise, email is already taken
-					$message = 'Error: The email is already listed';
+					$message = 'Error: The email is already listed, please enter another email';
 			}
 				
 		}
 		else
 		{
 			//Otherwise, we say the email is not valid
-			$message = 'Error: The email you entered is not valid.';
+			$message = 'Error: The email you entered is not valid';
 		}
 	}
 	if($message=='')
 	{
-		//TODO: NEED TO ADD FURTHER LOGIC IF WE WISH TO ALLOW REMOVING DATA
 		//creating the update query
 		$query = 'UPDATE users SET';
 		$user = User::UserFromArray($_POST);
@@ -49,7 +48,7 @@ if(User::issetUserDetailsinArray($_POST) && isset($_SESSION['user_id'],$_SESSION
 		}
 		else
 		{
-			$message = mysql_error();//TODO:'An error occurred while signing up.';
+			$message = 'An error occurred while update you details please try again.';
 		}
 	}
 	$_SESSION['update_message']=$message;
