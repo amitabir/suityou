@@ -52,11 +52,10 @@ if(isset($_SESSION['user_id'],$_SESSION['email']))
 ?>
 <script type="text/javascript" src="profile_validate.js"></script>
 <style type="text/css">
-      .form-control[readonly]
+      .form-control[readonly],.form-control[disabled]
       {
       	background-color: #fff;
       }
-
 </style>
 <div class="container">
 	<div role="tabpanel">
@@ -78,7 +77,7 @@ if(isset($_SESSION['user_id'],$_SESSION['email']))
 	    	<div class="container">
 				 <div class="row">
 				 	<div class="col-md-6 col-md-offset-3">
-						    <form class="form-horizontal" id="update_form" action="update.php" method="post" role="form">
+						    <form class="form-horizontal" id="update_form" action="profile_update.php" method="post" role="form">
 						  		<div class="form-group">
 						  			<label class="control-label" for="email">Email</label>
 						  			<input class="form-control" type="email" name="email" value="<?php echo htmlentities($user->{'email'}, ENT_QUOTES, 'UTF-8'); ?>" <?php echo $read_only;?> />
@@ -98,7 +97,7 @@ if(isset($_SESSION['user_id'],$_SESSION['email']))
 						        <div class="form-group">
 						        	<label class="control-label" for="gender">Gender:</label>
 						            <?php $gender = $user->{'gender'}; ?>
-						            <select class="form-control" name="gender" size="2" <?php echo $read_only;?> >
+						            <select class="form-control" name="gender" size="2" <?php echo $disabled;?> >
 						            	<option <?php if($gender =="FEMALE") echo "selected='selected'"; ?>value="FEMALE">FEMALE</option>
 						            	<option <?php if($gender =="MALE") echo "selected='selected'"; ?>value="MALE">MALE</option>
 									</select>

@@ -1,5 +1,5 @@
 <?php
-include'header.php';
+include'config.php';
 $message='';
 if(User::issetUserDetailsinArray($_POST) && isset($_SESSION['user_id'],$_SESSION['email'],$_SESSION['is_designer']))
 {
