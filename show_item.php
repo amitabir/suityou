@@ -12,7 +12,7 @@ if ($item->type=="TOP"){
 }else{
 	$typeColId="bottom_item_id";
 }
-$queryMatches = mysql_query('SELECT * from item_matchings WHERE '.$typeColId. '='.$item->itemId);
+$queryMatches = mysql_query('SELECT match_id, top_item_id, bottom_item_id from item_matchings WHERE '.$typeColId. '='.$item->itemId);
 
 $designerNameQuery = mysql_query('SELECT first_name, last_name from users WHERE user_id = '.$item->designerId);
 $designerRow = mysql_fetch_array($designerNameQuery);
@@ -100,25 +100,22 @@ $designerRow = mysql_fetch_array($designerNameQuery);
 				<?php
 				while($row = mysql_fetch_array($queryMatches)) {
 					$matchId = $row['match_id'];
-					$percent= $row['match_percent'];
-					if ($item->type == "TOP"){
+					if ($item->type == "TOP") {
 						$matchItemId= $row["bottom_item_id"];
 					} else {
 						$matchItemId= $row['top_item_id'];
 					}
-					$matchItem = Item::getItemByID($matchItemId);
 				?>
-					<div class="col-sm-3">
-						<p>Match Rating: <?php echo round($percent,2); ?>%</p>
-						<div class="progress">
-						        <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo round($percent,2); ?>%"></div>
-						      </div>
-						<a href="show_item.php?itemId=<?php echo $matchItemId; ?>" class="thumbnail">
-						    <img src="<?php echo "images/items/".$matchItem->picture; ?>" alt="" />
-							
-						</a>
-						<span align="center"><?php showRating($matchId, $userId); ?></span><br/>
-						
+					<script>
+				$(document).ready(function(){
+						$.ajax({ url: "show_item_match.php?matchId=<?php echo $matchId; ?>&matchItemId=<?php echo $matchItemId; ?>",
+						        context: document.body,
+						        success: function(result) {
+						          $("#match_<?php echo $matchId; ?>").html(result);
+						        }});
+							});
+						</script>
+					<div id="match_<?php echo $matchId; ?>" class="col-sm-2">
 					</div>
 				<?php
 				}

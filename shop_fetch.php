@@ -8,18 +8,18 @@ $type = $_GET["type"];
 function getHeader($gender, $type) {
 	$header = "";
 	if ($gender == "male") {
-		$header .= "MEN'S ";
+		$header .= "<small>MEN'S</small><br/>";
 		if ($type == "top") {
-			$header .=  "<small>Shirts</small>";
+			$header .=  "Shirts";
 		} else {
-			$header .=  "<small>Pants</small>";
+			$header .=  "Pants";
 		}
 	} else {
-		$header .= "WOMEN'S ";
+		$header .= "<small>WOMEN'S</small><br/>";
 		if ($type == "top") {
-			$header .=  "<small>Shirts</small>";
+			$header .=  "Shirts";
 		} else {
-			$header .=  "<small>Pants And Skirts</small>";
+			$header .=  "Pants And Skirts";
 		}
 	}
 	return $header;
@@ -45,7 +45,7 @@ $itemsQuery = mysql_query('SELECT * FROM items WHERE gender = "'.$gender.'" AND 
 
 	<div class="row">
 		<div class="col-lg-12">
-			<h1 class="page-header">
+			<h1 class="page-header" align="center">
 				<?php echo getHeader($gender, $type); ?>
 			</h1>
 		</div>

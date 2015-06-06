@@ -4,8 +4,8 @@
 	define("DIFF_FOR_ACCEPT", 10);
 	define("IGNORED_VOTES_LIMIT", 10);
 	define("NUMBER_OF_CATEGORIES", 6);
-	define("MINIMAL_TIME", 1000);
-	define("BAD_TIME_REPEAT_LIMIT", 10);
+	define("MINIMAL_TIME", 10000);
+	define("BAD_TIME_REPEAT_LIMIT", 2);
 	define("BAD_RATING_REPEAT_LIMIT", 2);
 	define("TREND_SCORE_LIMIT", 50);
 	define("MATCH_SCORE_LIMIT", 50);
@@ -14,6 +14,8 @@
 	define("TREND_CONSTANT", 0.5);
 	define("MATCH_CONSTANT", 0.5);
 	define("PERCENT_FACTOR", 10);
+	define("COUPON_PRIZE", 10);
+	define("MAX_COUPON", 100);
 	
 	/* This function receives data about match rating for two items and a new vote value and returns the new rating, new number of 
 	   ignored votes and the new ignored average. */
@@ -94,7 +96,7 @@
 	} */
 	
 	function isSpammer($userID){
-		$query = mysql_query("SELECT is_spammer FROM Users WHERE user_id = $userID");
+		$query = mysql_query("SELECT is_spammer FROM Users WHERE user_id = ".$userID);
 		$row = mysql_fetch_array($query);
 		return $row['is_spammer'];
 	}
@@ -220,7 +222,6 @@
 				} else if(isGoodCouple($data) and $trendScore >= TREND_SCORE_LIMIT) {
 					mysql_query("INSERT INTO item_matchings(top_item_id, bottom_item_id, trend_percent, match_type)
 					VALUES (".$items[0].", ".$items[1].", ".$trendScore.", 0)") or die(mysql_error());
-					exit;
 				}
 /* 						if($matchAndTrendExists[1]){
 						mysql_query("DELETE FROM item_matchings WHERE top_item_id = items[0] AND bottom_item_id = items[1]");
@@ -234,7 +235,34 @@
 		$matchTrendQuery = mysql_query("DELETE FROM item_matchings WHERE match_type = 0 AND (trend_percent < ".TREND_SCORE_LIMIT." OR match_percent < ".MATCH_SCORE_LIMIT.")") or die(mysql_error());
 	}
 	
-	function addUserRatingToHistory($userID, $matchID, $rating) {
+	function increaseCouponMeter($userID, $increaseSize){
+		if($userID == NULL){
+			if (!isset($_SESSION["user_data"])) {
+				$_SESSION["user_data"] = array();
+			}
+			
+			if(	isset($_SESSION['user_data']['coupon_meter'])){
+				$_SESSION['user_data']['coupon_meter'] += $increaseSize;
+			} else {
+				$_SESSION['user_data']['coupon_meter'] = $increaseSize;
+			}
+			if($_SESSION['user_data']['coupon_meter'] > MAX_COUPON){
+				$_SESSION['user_data']['coupon_meter'] = MAX_COUPON;
+			}
+		} else {
+			$couponQuery = mysql_query("SELECT coupon_meter FROM users WHERE user_id = ".$userID) or die(mysql_error());
+			$couponRow = mysql_fetch_array($couponQuery);
+			$newCouponMeter = $couponRow["coupon_meter"] + $increaseSize;
+			if($newCouponMeter > MAX_COUPON){
+				$newCouponMeter = MAX_COUPON;
+			}
+			mysql_query("UPDATE users
+						 SET coupon_meter = ".$newCouponMeter."
+						 WHERE user_id = ".$userID) or die(mysql_error());
+		}
+	}
+	
+	function addUserRatingToHistory($userID, $matchID, $rating, $isSkip) {
 		if ($userID == NULL) {
 			// User Not signed in - save the rating in the session
 			if (!isset($_SESSION["user_data"])) {
@@ -245,12 +273,16 @@
 				$_SESSION["user_data"]["user_matchings"] = array();
 			}
 			
-			$ratingRecord = array($matchID => array("rating" => $rating, "ratingTime" => time(), "skip" => false));
+			$ratingRecord = array($matchID => array("rating" => $rating, "ratingTime" => time(), "skip" => $isSkip));
 
 			$_SESSION["user_data"]["user_matchings"] += $ratingRecord;
 		} else {
 			// User signed in - insert to DB.
-			mysql_query('INSERT INTO user_matchings(user_id, match_id, rating) VALUES ('.$userID.', '.$matchID.', '.$rating.')') or die(mysql_error());
+			if($isSkip){
+				mysql_query('INSERT INTO user_matchings(user_id, match_id, rating, skipped) VALUES ('.$userID.', '.$matchID.', '.$rating.', 1)') or die(mysql_error());
+			} else {
+				mysql_query('INSERT INTO user_matchings(user_id, match_id, rating, skipped) VALUES ('.$userID.', '.$matchID.', '.$rating.', 0)') or die(mysql_error());
+			}
 		}	
 	}
 	
@@ -259,10 +291,11 @@
 	   calcNewRatingForTwoItems function and update the DB. */
 	// Normal match + Trends
 	function handleUserRating($matchID, $userID, $rating, $time) {
-		addUserRatingToHistory($userID, $matchID, $rating);
+		addUserRatingToHistory($userID, $matchID, $rating, 0);
+		increaseCouponMeter($userID, COUPON_PRIZE);
 		$isSpammer = checkIsSpammer($userID, $rating, $time);
 		if (!$isSpammer) {
-			$query = mysql_query("SELECT * FROM item_matchings WHERE match_id =".$matchID) or die(mysql_error());
+			$query = mysql_query("SELECT * FROM item_matchings WHERE match_id = ".$matchID) or die(mysql_error());
 			$row = mysql_fetch_array($query);
 			$averageRating = $row['match_percent'];
 			$numberOfVotes = $row['match_count'];
@@ -278,7 +311,7 @@
 	}
 	
 	function handleUserSkip($matchID, $userID) {
-		mysql_query('INSERT INTO user_matchings(user_id, match_id, skipped) VALUES ('.$userID.', '.$matchID.', 1)') or die(mysql_error());
+		addUserRatingToHistory($userID, $matchID, NULL, true);
 	}
 	
 	function setUserAsSpammer($userID) {
@@ -314,7 +347,7 @@
 			return $_SESSION["user_data"]["time_tracking"];
 		} else {
 			$user = User::getUserfromDBbyID($userID);
-			return $user->time_tracking;
+			return $user->time_tracking_ctr;
 		}
 	}
 	
@@ -351,13 +384,13 @@
 	/* This function receives a user id, his vote and the time it took for him to vote. Then the function decides if
 		the user is a spammer and if so updates it to the DB. It also updates the time_tracking, vote_tracking and
 		last_vote fields un the Users table.*/
-	function checkIsSpammer($userID, $rating, $time) {
+	function checkIsSpammer($userId, $rating, $time) {
 		if($time < MINIMAL_TIME) {
-			$timeTracking = getUserTimeTracking($userID);
+			$timeTracking = getUserTimeTracking($userId);
 			$timeTracking++;
 			updateUserTimeTracking($userId, $timeTracking);
 			if($timeTracking > BAD_TIME_REPEAT_LIMIT) {
-				setUserAsSpammer($userID);
+				setUserAsSpammer($userId);
 				return true;
 			}
 		} else {
@@ -365,7 +398,7 @@
 		}
 		
 		// Check last votes		
-		$lastRatings = getLastUserRatings($userID);
+		$lastRatings = getLastUserRatings($userId);
 		if (count($lastRatings) == BAD_RATING_REPEAT_LIMIT) {
 			$is_all_same_rating = true;
 			$rating = $lastRatings[0];
@@ -376,25 +409,76 @@
 				}
 			}
 			if ($is_all_same_rating) {
-				setUserAsSpammer($userID);
+				setUserAsSpammer($userId);
 				return true;
 			}
 		}
 		return false;
 	}
 	
+	function insertAnonUserToDB($userID){
+		if(isset($_SESSION['user_data']["is_spammer"]) and $_SESSION['user_data']["is_spammer"]){
+			mysql_query("UPDATE users
+						 SET is_spammer = 1, time_tracking_ctr = ".$_SESSION['user_data']["time_tracking"].", coupon_meter = ".$_SESSION['user_data']['coupon_meter']."
+						 WHERE user_id = ".$userID);
+			foreach($_SESSION['user_data']["user_matchings"] as $matchID=>$matchData){
+				$matchExistQuery = mysql_query("SELECT * FROM user_matchings WHERE match_id = ".$matchID) or die(mysql_error());
+				if(mysql_num_rows($matchExistQuery) == 0){
+					addUserRatingToHistory($userID, $matchID, $matchData["rating"], 0);
+				}
+			}
+		} else {
+			mysql_query("UPDATE users
+						 SET is_spammer = 0, time_tracking_ctr = ".$_SESSION['user_data']["time_tracking"]."
+						 WHERE user_id = ".$userID);
+			foreach($_SESSION['user_data']["user_matchings"] as $matchID=>$matchData){
+				$matchExistQuery = mysql_query("SELECT * FROM user_matchings WHERE match_id = ".$matchID) or die(mysql_error());
+				if(mysql_num_rows($matchExistQuery) == 0){
+					addUserRatingToHistory($userID, $matchID, $matchData["rating"], $matchData["skip"]);
+				}
+			}
+		}
+		increaseCouponMeter($userID, $_SESSION['user_data']['coupon_meter']);
+/* 		$couponMeterQuery = mysql_query("SELECT coupon_meter FROM users WHERE user_id = ".$userID);
+		$couponMeterRow = mysql_fetch_array($couponMeterQuery);
+		$newCouponMeter = $couponMeterRow["coupon_meter"] + $userData['coupon_meter'];
+		mysql_query("UPDATE users
+					 SET coupon_meter = ".$newCouponMeter."
+					 WHERE user_id = ".$userID) or die(mysql_error()); */
+		unset($_SESSION['user_data']);
+	}
+	
 	function getUserNextMatchQuestion($userId) {
 		$itemsQuery = mysql_query("SELECT * FROM item_matchings ORDER BY match_count");
-		while($row = mysql_fetch_array($itemsQuery)) {
-			if($row["match_type"] == 0){
-				continue;
+		if($userId == NULL){
+			if(!isset($_SESSION["user_data"]["user_matchings"])){
+				while($row = mysql_fetch_array($itemsQuery)) {
+					if($row["match_type"] == 0){
+						continue;
+					}
+					return $row["match_id"];
+				}
+			} else {
+				while($row = mysql_fetch_array($itemsQuery)) {
+					if($row["match_type"] == 0){
+						continue;
+					}
+					//if(!array_key_exists($row["match_id"], $_SESSION["user_data"]["user_matchings"])){
+						return $row["match_id"]; //TODO uncomment if
+				//	}
+				}
 			}
-			return $row["match_id"];
-			$userMatchesQuery = mysql_query("SELECT * FROM user_matchings WHERE match_id = ".$row["match_id"]);
-			$userAnswered = mysql_num_rows($userMatchesQuery);
-			if ($userAnswered == 0) {
-				var_dump($row);
-				return $row["match_id"];
+		} else {
+			while($row = mysql_fetch_array($itemsQuery)) {
+				if($row["match_type"] == 0){
+					continue;
+				}
+				return $row["match_id"];//TODO remove
+				$userMatchesQuery = mysql_query("SELECT * FROM user_matchings WHERE match_id = ".$row["match_id"]);
+				$userAnswered = mysql_num_rows($userMatchesQuery);
+				if ($userAnswered == 0) {
+					return $row["match_id"];
+				}
 			}
 		}
 		// TODO - return something else when the user answered everything

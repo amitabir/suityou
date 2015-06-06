@@ -18,7 +18,10 @@
 		handleUserRating($matchId, $userId, $rating, $ratingTime);
 	}
 	
-	$newMatchId = getUserNextMatchQuestion($userId);
-	
-	header("location: show_match.php?matchId=".$newMatchId);
+	if (!empty($_GET['matchItemId'])) {
+		header("location: show_item_match?matchId=".$matchId."&matchItemId=".$_GET['matchItemId']);
+	} else {
+		$newMatchId = getUserNextMatchQuestion($userId);
+		header("location: show_match.php?matchId=".$newMatchId);
+	}
 ?>
