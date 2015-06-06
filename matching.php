@@ -21,12 +21,6 @@ $.ajax({ url: "show_match.php?matchId=<?php echo $matchId; ?>",
 </script>
 
 
-    <div id="content_header"></div>
-    	<div id="site_content">
-			<div id="content">
-				<div id="match"></div>
-			</div>
-    	</div>
-	</div>
+	<div class="container" id="match"></div>
   </body>
 </html>

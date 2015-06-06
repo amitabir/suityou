@@ -1,5 +1,5 @@
 <?php
-function showRating($matchId, $userId, $matchItemId) {
+function showRating($matchId, $userId, $matchItemId, $size) {
 	echo $redirectTo;
 	
 	$queryUserMatch = mysql_query('SELECT rating FROM user_matchings WHERE user_id='.$userId.' AND match_id= ' . $matchId);
@@ -24,8 +24,8 @@ function showRating($matchId, $userId, $matchItemId) {
 						startColor: 'yellow',
 						endColor: 'red',
 						strokeColor: 'black',
-						width: 17,
-						height: 17,
+						width: <?php echo $size; ?>,
+						height: <?php echo $size; ?>,
 						precision: 0.5,
 						onSet: function(rating) {
 							var endTime = new Date().getTime();

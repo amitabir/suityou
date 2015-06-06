@@ -20,4 +20,4 @@ $matchItem = Item::getItemByID($matchItemId);
 	<a href="show_item.php?itemId=<?php echo $matchItemId; ?>" class="thumbnail">
 	<img src="<?php echo "images/items/".$matchItem->picture; ?>" alt="" width="100" height="100" />
 	</a>
-	<span align="center"><?php showRating($matchId, $userId, $matchItemId); ?></span><br/>
+	<span align="center"><?php showRating($matchId, $userId, $matchItemId, 17); ?></span><br/>
