@@ -32,7 +32,7 @@ if ($_GET["action"] == "add") {
 		
 		$item = Item::itemFromArray($_POST);
 		$item->designerId = $_POST["designerId"];
-		
+
 		$uploadResult = uploadImage("imageToUpload", ITEM_IMAGES_TARGET_DIR);
 		if ($uploadResult["success"]) {
 			$item->picture = $uploadResult["uploadedFileName"];
