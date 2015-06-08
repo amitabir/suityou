@@ -76,7 +76,7 @@ if(!empty($_GET["itemId"])) {
 
 		                <div class="form-group">
 		                    <label class="control-label" for="name">Name</label>
-		                    <input class="form-control" type="text" name="name" id="name" <value="<?phpif ($itemForUpdate != NULL) { echo $itemForUpdate->name; }?>" />
+		                    <input class="form-control" type="text" name="name" id="name" value="<?php if ($itemForUpdate != NULL) { echo $itemForUpdate->name; }?>" />
 		                </div>
 		                <div class="form-group">
 		                    <label class="control-label" for="name">Item Gender</label>
