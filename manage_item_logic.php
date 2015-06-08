@@ -32,8 +32,18 @@ if ($_GET["action"] == "add") {
 		
 		$item = Item::itemFromArray($_POST);
 		$item->designerId = $_POST["designerId"];
-		$item->picture = uploadImage("imageToUpload", ITEM_IMAGES_TARGET_DIR);
 		
+		$uploadResult = uploadImage("imageToUpload", ITEM_IMAGES_TARGET_DIR);
+		if ($uploadResult["success"]) {
+			$item->picture = $uploadResult["uploadedFileName"];
+		} else {
+			// Upload failed, set message and return
+			$_SESSION['item_update_message']="Error uploading item image: ".$uploadResult["message"];
+			$_SESSION['item_update_success'] = false;
+			header('Location: add_item.php');
+			exit;
+		}
+				
 		mysql_query('INSERT INTO items(name, gender, type, description, price, designer_id, picture) VALUES ("'.$item->name.'", "'.$item->gender.'", "'.$item->type.'", "'.$item->description.'", '.$item->price.', '.$item->designerId.', "'.$item->picture.'")') or die(mysql_error());
 	
 		$newItemId = mysql_insert_id();
@@ -56,7 +66,8 @@ if ($_GET["action"] == "add") {
 			$quantity = $quantities[$idx];
 			mysql_query('INSERT INTO items_stock(item_id, size, quantity) VALUES ('.$newItemId.', "'.$size.'", '.$quantity.')') or die(mysql_error());
 		}
-	
+		
+		$_SESSION['item_update_message'] = "Item added successfully";
 		header("location: show_item.php?itemId=".$newItemId);
 	
 		// TODO : maybe show a "New item was added notification"
@@ -70,7 +81,17 @@ if ($_GET["action"] == "add") {
 		
 		if (!empty($_FILES["imageToUpload"]["name"])) {
 			deleteImage($oldItem->picture, ITEM_IMAGES_TARGET_DIR);
-			$updatedItem->picture = uploadImage("imageToUpload", ITEM_IMAGES_TARGET_DIR);
+			
+			$uploadResult = uploadImage("imageToUpload", ITEM_IMAGES_TARGET_DIR);
+			if ($uploadResult["success"]) {
+				$updatedItem->picture = $uploadResult["uploadedFileName"];
+			} else {
+				// Upload failed, set message and return
+				$_SESSION['item_update_message']="Error uploading item image: ".$uploadResult["message"];
+				$_SESSION['item_update_success'] = false;
+				header('Location: add_item.php?itemId='.$itemId);
+				exit;
+			}			
 		} else {
 			$updatedItem->picture = $oldItem->picture;
 		}
@@ -122,6 +143,8 @@ if ($_GET["action"] == "add") {
 			}
 		}
 		
+		$_SESSION['item_update_message'] = "Item updated successfully";
+		$_SESSION['item_update_success'] = true;
 		header("location: show_item.php?itemId=".$itemId);
 	}				
 } else if ($_GET["action"] == "remove") {
@@ -143,5 +166,7 @@ if ($_GET["action"] == "add") {
 		// Delete the item
 		mysql_query('DELETE FROM items WHERE item_id = '.$itemId) or die(mysql_error());
 		
+		$_SESSION['item_update_message'] = "Item removed successfully";
+		$_SESSION['item_update_success'] = true;
 		header("location: manage_items.php");
 }?>

@@ -4,6 +4,23 @@ include("header.php");
 include('Item.php');
 include("rating.php");
 
+if(isset($_SESSION['item_update_message']) and isset($_SESSION['item_update_success'])) {
+	$message = $_SESSION['item_update_message'];
+	if ($_SESSION['item_update_success']) {
+		$class='"alert alert-success alert-dismissible"';
+	} else {
+		$class='"alert alert-danger alert-dismissible"';
+	}
+	if(!empty($message)) {
+		echo '<div class='.$class.' role="alert">';
+		echo '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
+		echo $message;
+		echo '</div>';
+		unset($_SESSION['item_update_message']);
+	}
+	unset($_SESSION['item_update_success']);
+}
+
 $outOfStockValue = "OUT_OF_STOCK";
 
 $itemId = $_GET["itemId"];

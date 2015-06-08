@@ -2,7 +2,23 @@
 include("header.php");
 if (isset($_SESSION['user_id'],$_SESSION['email'])){
 		if (isset($_SESSION['is_admin']) && !empty($_SESSION['is_admin'])){
-// TODO this page is meant to be only for admin
+
+if(isset($_SESSION['match_update_message']) and isset($_SESSION['match_update_success'])) {
+	$message = $_SESSION['match_update_message'];
+	if ($_SESSION['match_update_success']) {
+		$class='"alert alert-success alert-dismissible"';
+	} else {
+		$class='"alert alert-danger alert-dismissible"';
+	}
+	if(!empty($message)) {
+		echo '<div class='.$class.' role="alert">';
+		echo '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
+		echo $message;
+		echo '</div>';
+		unset($_SESSION['match_update_message']);
+	}
+	unset($_SESSION['match_update_success']);
+}
 
 $item_per_page = 2;
 $countQuery = mysql_query('SELECT count(*) FROM item_matchings WHERE match_type = 1');

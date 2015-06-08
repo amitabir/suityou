@@ -9,10 +9,21 @@ if ($_GET["action"] == "add") {
 		$topItemId = $_POST['top_item_id'];
 		$bottomItemId = $_POST['bottom_item_id'];
 		
-		$modelPicture = uploadImage("imageToUpload", MODELS_IMAGES_TARGET_DIR);
-		
+		$uploadResult = uploadImage("imageToUpload", MODELS_IMAGES_TARGET_DIR);
+		if ($uploadResult["success"]) {
+			$modelPicture = $uploadResult["uploadedFileName"];
+		} else {
+			// Upload failed, set message and return
+			$_SESSION['match_update_message']="Error uploading item image: ".$uploadResult["message"];
+			$_SESSION['match_update_success'] = false;
+			header('Location: manage_matches.php');
+			exit;
+		}						
+				
 		mysql_query('INSERT INTO item_matchings(top_item_id, bottom_item_id, match_type, model_picture) VALUES ('.$topItemId.', '.$bottomItemId.', 1, "'.$modelPicture.'")') or die(mysql_error());
 
+		$_SESSION['match_update_message'] = "Match added successfully";
+		$_SESSION['match_update_success'] = true;
 		header("location: manage_matches.php");
 	}
 } else if ($_GET["action"] == "update") {
@@ -24,7 +35,17 @@ if ($_GET["action"] == "add") {
 		
 		if (!empty($_FILES["imageToUpload"]["name"])) {
 			deleteImage($modelPicture, MODELS_IMAGES_TARGET_DIR);
-			$updatedModelPicture = uploadImage("imageToUpload", MODELS_IMAGES_TARGET_DIR);
+			
+			$uploadResult = uploadImage("imageToUpload", MODELS_IMAGES_TARGET_DIR);
+			if ($uploadResult["success"]) {
+				$updatedModelPicture = $uploadResult["uploadedFileName"];
+			} else {
+				// Upload failed, set message and return
+				$_SESSION['match_update_message']="Error uploading item image: ".$uploadResult["message"];
+				$_SESSION['match_update_success'] = false;
+				header('Location: manage_matches.php');
+				exit;
+			}						
 		} else {
 			$updatedModelPicture = $modelPicture;
 		}
@@ -35,7 +56,8 @@ if ($_GET["action"] == "add") {
 		// Update the match
 		mysql_query('UPDATE item_matchings SET model_picture = "'.$updatedModelPicture.'", top_item_id="'.$topItemId.'", bottom_item_id="'.$bottomItemId.'" WHERE match_id = '.$matchId) or die(mysql_error());
 		
-		
+		$_SESSION['match_update_message'] = "Match updated successfully";
+		$_SESSION['match_update_success'] = true;
 		header("location: manage_matches.php");
 	}				
 } else if ($_GET["action"] == "remove") {
@@ -54,5 +76,7 @@ if ($_GET["action"] == "add") {
 		
 		// TODO delete the rating history?
 		
+		$_SESSION['match_update_message'] = "Match removed successfully";
+		$_SESSION['match_update_success'] = true;
 		header("location: manage_matches.php");
 }?>
