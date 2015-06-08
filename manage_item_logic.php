@@ -33,7 +33,6 @@ if ($_GET["action"] == "add") {
 		$item = Item::itemFromArray($_POST);
 		$item->designerId = $_POST["designerId"];
 		$item->picture = uploadImage("imageToUpload", ITEM_IMAGES_TARGET_DIR);
-		
 		mysql_query('INSERT INTO items(name, gender, type, description, price, designer_id, picture) VALUES ("'.$item->name.'", "'.$item->gender.'", "'.$item->type.'", "'.$item->description.'", '.$item->price.', '.$item->designerId.', "'.$item->picture.'")') or die(mysql_error());
 	
 		$newItemId = mysql_insert_id();

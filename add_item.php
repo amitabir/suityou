@@ -59,14 +59,14 @@ if(!empty($_GET["itemId"])) {
 
 		                <div class="form-group">
 		                    <label class="control-label" for="name">Name</label>
-		                    <input class="form-control" type="text" name="name" id="name" value="<?php echo $itemForUpdate->name; ?>" />
+		                    <input class="form-control" type="text" name="name" id="name" <value="<?phpif ($itemForUpdate != NULL) { echo $itemForUpdate->name; }?>" />
 		                </div>
 		                <div class="form-group">
 		                    <label class="control-label" for="name">Item Gender</label>
 		                    <select class="form-control" name="gender">
 								<option></option>
-		                        <option <?php if ($itemForUpdate->gender == 'FEMALE') echo "selected"; ?> value="FEMALE">FEMALE</option>
-		                        <option <?php if ($itemForUpdate->gender == 'MALE') echo "selected"; ?> value="MALE">MALE</option>
+		                        <option <?php if ($itemForUpdate != NULL) {if ($itemForUpdate->gender == 'FEMALE') echo "selected"; } ?> value="FEMALE">FEMALE</option>
+		                        <option <?php if ($itemForUpdate != NULL) {if ($itemForUpdate->gender == 'MALE') echo "selected";} ?> value="MALE">MALE</option>
 		                    </select>
 							<label for="gender" class="error" style="display: none;"></label> 
 		                </div>
@@ -74,22 +74,22 @@ if(!empty($_GET["itemId"])) {
 		                    <label class="control-label" for="type">Item Type</label>
 		                    <select class="form-control" name="type">
 								<option></option>
-		                        <option <?php if ($itemForUpdate->type == 'TOP') echo "selected"; ?> value="TOP">TOP</option>
-		                        <option <?php if ($itemForUpdate->gender == 'BOTTOM') echo "selected"; ?> value="BOTTOM">BOTTOM</option>
+		                        <option <?php if ($itemForUpdate != NULL) {if ($itemForUpdate->type == 'TOP') echo "selected";} ?> value="TOP">TOP</option>
+		                        <option <?php if ($itemForUpdate != NULL) {if ($itemForUpdate->gender == 'BOTTOM') echo "selected";} ?> value="BOTTOM">BOTTOM</option>
 		                    </select>
 							<label for="type" class="error" style="display: none;"></label>
 						</div>
 						
 						 <div class="form-group">
 							 <label class="control-label" for="description">Description</label>
-							 <textarea class="form-control" name="description" id="description"/><?php echo $itemForUpdate->description; ?></textarea>
+							 <textarea class="form-control" name="description" id="description"/><?php if ($itemForUpdate != NULL) {echo $itemForUpdate->description;} ?></textarea>
 						 </div>
 						 
 						 <div class="form-group">
 							 <label class="control-label" for="price">Item Price</label>
 							 <div class="input-group">
 							   <span class="input-group-addon">$</span>
-							   <input class="form-control" type="text" name="price" id="price" value="<?php echo $itemForUpdate->price; ?>"/>
+							   <input class="form-control" type="text" name="price" id="price" value="<?php if ($itemForUpdate != NULL) {echo $itemForUpdate->price;} ?>"/>
 							  </div>
 							  <label for="price" class="error" style="display: none;"></label> 
 						 </div>
@@ -97,7 +97,7 @@ if(!empty($_GET["itemId"])) {
 			            <div class="form-group">
 							<?php if ($itemForUpdate != NULL) { ?>
 						 	  <p> <label class="control-label">Item Image</label></p>
-							<img class="thumbnail" src="images/items/<?php echo $itemForUpdate->picture; ?>" />
+							<img class="thumbnail" src="images/items/<?php if ($itemForUpdate != NULL) {echo $itemForUpdate->picture;} ?>" />
 						
 							<?php }?>
 						
