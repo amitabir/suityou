@@ -147,7 +147,7 @@ if(isset($_SESSION['user_id'],$_SESSION['email']))
 						  		<div class="form-group">
 						  			<label class="control-label" for="avatar">Image:</label> <br/>
 									<img src="images/users/<?php echo htmlentities($user->{'avatar'}, ENT_QUOTES, 'UTF-8'); ?>" width="170"/>
-									<?php if(isset($_POST['editButton']) or isset($_POST['editDesignerButtonButton']))		
+									<?php if(isset($_POST['editButton']) or isset($_POST['editDesignerButton']))		
 										{?>
 						  			<input class="form-control" type="file" form="update_form" name="imageToUpload" id="imageToUpload" <?php echo $read_only;?> >
 										<?php } ?>

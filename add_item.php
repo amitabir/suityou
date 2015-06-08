@@ -49,6 +49,8 @@ if(!empty($_GET["itemId"])) {
 </script>
 
 <div class="container">
+		<h3 class="page-header">Item Description</h3>
+	
 				<?php if ($itemForUpdate != NULL) { ?>
 	            	<form id="add_item_form" class="form-horizontal" action="manage_item_logic.php?action=update&itemId=<?php echo $itemForUpdate->itemId;?>" method="post" enctype="multipart/form-data" role="form"/>
 				<?php } else { ?>
@@ -105,7 +107,7 @@ if(!empty($_GET["itemId"])) {
 						</div>
 							
 						<div class="form-group">
-						<label for="Categories">Categories:</label>
+							<h3 class="page-header">Categories</h3>
 						<table class="table">
 							<thead>
 							<tr><th class="col-md-3">Category</th><th class="col-md-9">Attribute</th></tr>
@@ -146,7 +148,7 @@ if(!empty($_GET["itemId"])) {
 					</div>	
 			           
 					<div class="form-group">
-						<label class="control-label" for="stock">Item Stock:</label>
+						<h3 class="page-header">Item Stock</h3>
 						
 						<p><label for="size[]" class="error" style="display: none;"></label></p>
 						<p><label for="quantity[]" class="error" style="display: none;"></label></p>

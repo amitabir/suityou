@@ -37,12 +37,19 @@ if(User::issetUserDetailsinArray($_POST) && isset($_SESSION['user_id'],$_SESSION
 		$user = User::UserFromArray($_POST);
 		
 		if (!empty($_FILES["imageToUpload"]["name"])) {
-			var_dump($_FILES);
 			$desQuery = mysql_query("SELECT * FROM users WHERE user_id =".$_SESSION['user_id']);
 			$desRow = mysql_fetch_array($desQuery);
 			$avatar = $desRow['avatar'];
 			deleteImage($avatar, USERS_IMAGES_TARGET_DIR);
-			$user->avatar = uploadImage("imageToUpload", USERS_IMAGES_TARGET_DIR);
+			$uploadResult = uploadImage("imageToUpload", USERS_IMAGES_TARGET_DIR);
+			if ($uploadResult["success"]) {
+				$user->avatar = $uploadResult["uploadedFileName"];
+			} else {
+				// Upload failed, set message and return
+				$_SESSION['update_message']="Error uploading avatar: ".$uploadResult["message"];
+				header('Location: profile.php');
+				exit;
+			}
 		} 
 		
 		foreach($user as $key=>$value)

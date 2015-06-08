@@ -4,51 +4,50 @@ if (isset($_SESSION['user_id'],$_SESSION['email'])){
 		if (isset($_SESSION['is_admin']) && !empty($_SESSION['is_admin'])){
 // TODO this page is meant to be only for admin
 
-$matchQuery = mysql_query('SELECT * FROM item_matchings WHERE match_type = 1');
+$item_per_page = 2;
+$countQuery = mysql_query('SELECT count(*) FROM item_matchings WHERE match_type = 1');
+$countRow = mysql_fetch_array($countQuery);
+	
+$total_pages = ceil($countRow[0]/$item_per_page);
 ?>
-    <div id="content_header"></div>
-    <div id="site_content">
-        <div id="content">
-            <div id="content-part">
-                <h2>Welcome to SuitYou!</h2>
-            </div>
-			<a href='add_match.php'> Add New Match </a>
-			<table border="1px">
-				<tr>
-					<td>ID</td>
-					<td>Top Item</td>
-					<td>Bottom Item</td>
-					<td>Percent</td>
-					<td>Count</td>
-					<td>Model</td>
-					<td>Action</td>
-				</tr>
-<?php
-			   	while($matchRow = mysql_fetch_array($matchQuery)) {
-					$matchId = $matchRow['match_id'];
-			   		$topItemId = $matchRow['top_item_id'];
-			   		$bottomItemId = $matchRow['bottom_item_id'];
-					$matchCount = $matchRow['match_count'];
-					$matchPercent = $matchRow['match_percent'];
-					$modelPicture = $matchRow['model_picture'];
-					echo "<tr>";
-			   		echo "<td> $matchId </td> <td> <a href='show_item.php?itemId=$topItemId'> Top Item </a> </td> <td> <a href='show_item.php?itemId=$bottomItemId'> Bottom Item </a> </td> <td> ".round($matchPercent,2)."% </td> <td> $matchCount </td> <td> <img width='170' src=images/models/$modelPicture /> </td> <td> <a href='add_match?matchId=$matchId'> Update Match </a><br/><a href='manage_match_logic?action=remove&matchId=$matchId'> Remove Match </a> </td>";
-					echo "</tr>";
-			   	}
-			   ?>
-			</table>
-			
-			
-        </div>
-    </div>
+<script type="text/javascript">
+$(document).ready(function() {
+	
+	function loadResults(page) {
+	    $("#results").load("manage_matches_fetch.php", {"page":page, "itemsPerPage":<?php echo $item_per_page ?>}); 
+	}
+	
+	loadResults(1); //load initial records
+	
+	<?php if ($total_pages > 1) {  ?>
+	$('#pages').twbsPagination({
+	        totalPages: <?php echo $total_pages; ?>,
+	        visiblePages: 5,
+	        onPageClick: function (event, page) {
+				loadResults(page);
+	    	}
+	});
+	<?php } ?>
+});
+</script>
+        
+<div id="results"><!-- content will be loaded here --></div>
 
+<div class="container">
+	<div class="row text-center">
+        <div class="col-lg-12">
+			<ul id="pages" class="pagination-sm"></ul>
+		</div>
+	</div>
 </div>
+
 
   </body>
 </html>
+
 <?php
 }
 }else{
-	header("location: index.php");
+	echo '<script>window.location.replace("index.php")</script>';
 }
 ?>
