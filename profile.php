@@ -162,6 +162,9 @@ if(isset($_SESSION['user_id'],$_SESSION['email']))
 						 			<button class="btn btn-default btn-block" type="submit" name="editDesignerButton">Edit Your Details</button>
 								</div>
 							</form>
+					 		<div>
+					 			<a href="designer_profile?designerId=<?php echo $_SESSION['user_id']?>"><button class="btn btn-default btn-block">View Designer Page</button></a>
+							</div>
 					    </div>
 				    </div>
 				</div>

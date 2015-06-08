@@ -36,7 +36,7 @@ $designerRow = mysql_fetch_array($designerNameQuery);
         <div class="col-md-9">
             <h3>Item Description</h3>
             <p><?php echo $item->description; ?></p>
-            <p>Designer: <a href = designer_profile.php?designerId=$desId><?php echo $designerRow["first_name"]." ".$designerRow["last_name"]; ?></a></p>
+            <p>Designer: <a href = "designer_profile.php?designerId=<?php echo $item->designerId; ?>"><?php echo $designerRow["first_name"]." ".$designerRow["last_name"]; ?></a></p>
 			<p>Price: <?php echo "$".$item->price; ?></p>
 							<form id="addToCartForm" name="addToCartForm" method="post" action="cart.php?action=add" class="form-inline">
 								 <select id="size" name='size' class="form-control">
