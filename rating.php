@@ -1,7 +1,5 @@
 <?php
-function showRating($matchId, $userId, $matchItemId, $size) {
-	echo $redirectTo;
-	
+function showRating($matchId, $userId, $matchItemId, $size) {	
 	$queryUserMatch = mysql_query('SELECT rating FROM user_matchings WHERE user_id='.$userId.' AND match_id= ' . $matchId);
 	if (mysql_num_rows($queryUserMatch)>0){
 		$row = mysql_fetch_array($queryUserMatch);
