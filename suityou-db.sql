@@ -1,13 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.1.14
+-- version 3.5.8.2
 -- http://www.phpmyadmin.net
 --
--- Host: 127.0.0.1
--- Generation Time: Jun 10, 2015 at 03:32 PM
--- Server version: 5.6.17-log
--- PHP Version: 5.5.12
+-- Host: localhost
+-- Generation Time: Jun 10, 2015 at 05:00 PM
+-- Server version: 5.6.21
+-- PHP Version: 5.5.14
 
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
 
@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS `attributes` (
   `category_id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
   PRIMARY KEY (`attribute_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=47 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=47 ;
 
 --
 -- Dumping data for table `attributes`
@@ -88,7 +88,7 @@ CREATE TABLE IF NOT EXISTS `attribute_scores` (
   `attribute1_id` int(11) NOT NULL,
   `attribute2_id` int(11) NOT NULL,
   `score` double NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -101,7 +101,7 @@ CREATE TABLE IF NOT EXISTS `categories` (
   `name` varchar(255) NOT NULL,
   `weight` double NOT NULL,
   PRIMARY KEY (`category_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
 
 --
 -- Dumping data for table `categories`
@@ -126,7 +126,7 @@ CREATE TABLE IF NOT EXISTS `constants` (
   `description` text NOT NULL,
   `value` float NOT NULL,
   UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `constants`
@@ -134,7 +134,7 @@ CREATE TABLE IF NOT EXISTS `constants` (
 
 INSERT INTO `constants` (`name`, `description`, `value`) VALUES
 ('AVERAGE_LIMIT', 'The average rating of a couple of attributes needs to be greater or equal to this constant in order to be considered a trend.', 8),
-('BAD_RATING_REPEAT_LIMIT', 'A user rating the exact same rating this constant times in a row is to be considered as a spammer.', 2),
+('BAD_RATING_REPEAT_LIMIT', 'A user rating the exact same rating this constant times in a row is to be considered as a spammer.', 3),
 ('BAD_TIME_REPEAT_LIMIT', 'A user rating faster than the allowed time this constant times in a row is to be considered as a spammer.', 2),
 ('COUPON_PRIZE', 'The coupon meter gets bigger by this constant every time the user rates a match.', 10),
 ('DIFF_FOR_ACCEPT_NEW_VOTE', 'A new rating is to be taken to account for a match avereage if it is not different more than this constant from the current average.', 10),
@@ -168,7 +168,7 @@ CREATE TABLE IF NOT EXISTS `items` (
   PRIMARY KEY (`item_id`),
   UNIQUE KEY `id` (`item_id`),
   FULLTEXT KEY `name` (`name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Items table' AUTO_INCREMENT=33 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Items table' AUTO_INCREMENT=33 ;
 
 --
 -- Dumping data for table `items`
@@ -212,7 +212,7 @@ CREATE TABLE IF NOT EXISTS `items_stock` (
   `quantity` int(11) NOT NULL,
   PRIMARY KEY (`item_stock_id`),
   UNIQUE KEY `id` (`item_stock_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='The sizes and quantities of each size' AUTO_INCREMENT=35 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='The sizes and quantities of each size' AUTO_INCREMENT=35 ;
 
 --
 -- Dumping data for table `items_stock`
@@ -245,7 +245,7 @@ INSERT INTO `items_stock` (`item_stock_id`, `item_id`, `size`, `quantity`) VALUE
 CREATE TABLE IF NOT EXISTS `item_attributes` (
   `item_id` int(11) NOT NULL,
   `attribute_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `item_attributes`
@@ -358,7 +358,7 @@ CREATE TABLE IF NOT EXISTS `item_matchings` (
   `ignored_match_percent` double NOT NULL DEFAULT '0',
   `ignored_match_count` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`match_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
 
 --
 -- Dumping data for table `item_matchings`
@@ -366,10 +366,10 @@ CREATE TABLE IF NOT EXISTS `item_matchings` (
 
 INSERT INTO `item_matchings` (`match_id`, `top_item_id`, `bottom_item_id`, `match_percent`, `match_count`, `trend_percent`, `match_type`, `model_picture`, `ignored_match_percent`, `ignored_match_count`) VALUES
 (1, 3, 4, 50.307692307692, 65, NULL, 1, 'model1.jpg', 48, 5),
-(2, 25, 23, 39.642857142857, 56, NULL, 1, '63007.jpg', 0, 0),
-(3, 6, 24, 41.481481481482, 54, NULL, 1, '36418.jpg', 52.222222222222, 9),
+(2, 25, 23, 39.344262295081, 61, NULL, 1, '63007.jpg', 67.777777777778, 9),
+(3, 6, 24, 43.28125, 64, NULL, 1, '36418.jpg', 0, 0),
 (4, 19, 22, 52.5, 8, 76.111111111111, 0, NULL, 0, 0),
-(5, 29, 22, 54.333333333332, 60, NULL, 1, '74200.jpg', 0, 0);
+(5, 29, 22, 54.333333333332, 60, NULL, 1, '74200.jpg', 53.333333333333, 6);
 
 -- --------------------------------------------------------
 
@@ -382,7 +382,7 @@ CREATE TABLE IF NOT EXISTS `purchases` (
   `user_id` int(11) NOT NULL,
   `total_price` double NOT NULL,
   PRIMARY KEY (`purchase_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
 
 --
 -- Dumping data for table `purchases`
@@ -406,7 +406,7 @@ CREATE TABLE IF NOT EXISTS `purchase_items` (
   `quantity` int(11) NOT NULL,
   UNIQUE KEY `purchase_id` (`purchase_id`,`item_stock_id`),
   UNIQUE KEY `purchase_id_2` (`purchase_id`,`item_stock_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `purchase_items`
@@ -442,16 +442,17 @@ CREATE TABLE IF NOT EXISTS `users` (
   `description` text,
   `website_link` varchar(500) DEFAULT NULL,
   `is_spammer` tinyint(1) NOT NULL DEFAULT '0',
+  `is_spammer_time` timestamp NULL DEFAULT NULL,
   `time_tracking_ctr` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`user_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`user_id`, `email`, `first_name`, `last_name`, `address`, `gender`, `birth_date`, `is_designer`, `is_admin`, `avatar`, `coupon_meter`, `description`, `website_link`, `is_spammer`, `time_tracking_ctr`) VALUES
-(1, 'amabir@gmail.com', 'Amit', 'Abir', 'BBB', 'MALE', '1988-12-31', 1, 1, '14325.jpeg', 80, ' Bootstrap 3 Flat Web Kit is a useful package that contains PSD+HTML/CSS of the all controls designed based on latest Twitter bootstrap 3 a flat look to the user interface elements. There are no gradients, shadows, or rounded corners - everything looks clean and simple. The package will be especially useful for programmers who do not want to waste time & budget on custom design but still require trendy style to their products. Also it can be useful for everyone who requires flat design for their product based on easy-to-use bootstrap 3 code.\r\n ', 'http://google.com', 1, 0);
+INSERT INTO `users` (`user_id`, `email`, `first_name`, `last_name`, `address`, `gender`, `birth_date`, `is_designer`, `is_admin`, `avatar`, `coupon_meter`, `description`, `website_link`, `is_spammer`, `is_spammer_time`, `time_tracking_ctr`) VALUES
+(1, 'amabir@gmail.com', 'Amit', 'Abir', 'BBB', 'MALE', '1988-12-31', 1, 1, '14325.jpeg', 60, ' Bootstrap 3 Flat Web Kit is a useful package that contains PSD+HTML/CSS of the all controls designed based on latest Twitter bootstrap 3 a flat look to the user interface elements. There are no gradients, shadows, or rounded corners - everything looks clean and simple. The package will be especially useful for programmers who do not want to waste time & budget on custom design but still require trendy style to their products. Also it can be useful for everyone who requires flat design for their product based on easy-to-use bootstrap 3 code.\r\n ', 'http://google.com', 1, '2015-06-10 16:18:07', 0);
 
 -- --------------------------------------------------------
 
@@ -467,7 +468,7 @@ CREATE TABLE IF NOT EXISTS `user_matchings` (
   `rating_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `skipped` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`user_match_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=44 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=71 ;
 
 --
 -- Dumping data for table `user_matchings`
@@ -487,7 +488,34 @@ INSERT INTO `user_matchings` (`user_match_id`, `user_id`, `match_id`, `rating`, 
 (40, 1, 3, 6, '2015-06-09 09:38:26', 0),
 (41, 1, 3, 3, '2015-06-09 09:38:27', 0),
 (42, 1, 2, 1, '2015-06-10 07:34:18', 0),
-(43, 1, 5, 1, '2015-06-10 07:34:18', 0);
+(43, 1, 5, 1, '2015-06-10 07:34:18', 0),
+(44, 1, 3, 6, '2015-06-10 13:41:31', 0),
+(45, 1, 2, 8, '2015-06-10 13:41:32', 0),
+(46, 1, 2, 4, '2015-06-10 13:48:14', 0),
+(47, 1, 2, 6, '2015-06-10 13:48:15', 0),
+(48, 1, 2, 3, '2015-06-10 13:56:54', 0),
+(49, 1, 2, 5, '2015-06-10 13:56:59', 0),
+(50, 1, 2, NULL, '2015-06-10 13:57:13', 1),
+(51, 1, 2, NULL, '2015-06-10 13:57:14', 1),
+(52, 1, 2, NULL, '2015-06-10 13:57:18', 1),
+(53, 1, 2, 3, '2015-06-10 13:57:20', 0),
+(54, 1, 2, 7, '2015-06-10 13:57:23', 0),
+(55, 1, 2, 4, '2015-06-10 13:57:24', 0),
+(56, 1, 2, 4, '2015-06-10 13:57:26', 0),
+(57, 1, 2, 7, '2015-06-10 13:57:27', 0),
+(58, 1, 2, 8, '2015-06-10 13:57:33', 0),
+(59, 1, 2, 7, '2015-06-10 13:59:10', 0),
+(60, 1, 2, 8, '2015-06-10 13:59:12', 0),
+(61, 1, 2, 5, '2015-06-10 13:59:15', 0),
+(62, 1, 2, 4, '2015-06-10 13:59:25', 0),
+(63, 1, 5, 7, '2015-06-10 13:59:26', 0),
+(64, 1, 5, 10, '2015-06-10 13:59:28', 0),
+(65, 1, 5, 3, '2015-06-10 15:35:14', 0),
+(66, 1, 5, 8, '2015-06-10 15:35:16', 0),
+(67, 1, 5, 2, '2015-06-10 16:14:54', 0),
+(68, 1, 5, 2, '2015-06-10 16:14:56', 0),
+(69, 1, 5, 2, '2015-06-10 16:14:58', 0),
+(70, 1, 5, 2, '2015-06-10 16:18:07', 0);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

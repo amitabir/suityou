@@ -277,10 +277,11 @@
 	function setUserAsSpammer($userID) {
 		if ($userID == NULL) {
 			$_SESSION["user_data"]["is_spammer"] = true;
+			$_SESSION["user_data"]["is_spammer_time"] = date('Y-m-d G:i:s');
 		} else {
 			mysql_query("UPDATE users
-						 SET is_spammer = 1
-						 WHERE user_id = ".$userID) or die(mysql_error());
+						 SET is_spammer = 1, is_spammer_time = '".date('Y-m-d G:i:s').
+						 "' WHERE user_id = ".$userID) or die(mysql_error());
 		}
 	}
 	
@@ -382,7 +383,7 @@
 		if(isset($_SESSION['user_data'])){
 			if(isset($_SESSION['user_data']["is_spammer"]) and $_SESSION['user_data']["is_spammer"]){
 				mysql_query("UPDATE users
-							 SET is_spammer = 1, time_tracking_ctr = ".$_SESSION['user_data']["time_tracking"].", coupon_meter = ".$_SESSION['user_data']['coupon_meter']."
+							 SET is_spammer = 1, is_spammer_time = '".$_SESSION['user_data']["is_spammer_time"]."', time_tracking_ctr = ".$_SESSION['user_data']["time_tracking"].", coupon_meter = ".$_SESSION['user_data']['coupon_meter']."
 							 WHERE user_id = ".$userID);
 				foreach($_SESSION['user_data']["user_matchings"] as $matchID=>$matchData){
 					$matchExistQuery = mysql_query("SELECT * FROM user_matchings WHERE match_id = ".$matchID) or die(mysql_error());

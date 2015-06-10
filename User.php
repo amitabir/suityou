@@ -16,6 +16,7 @@ class User
 	public $website_link;
 	public $time_tracking_ctr;
 	public $is_spammer;
+	public $is_spammer_time;
 	 
 	public static function getUserfromDBbyID($user_id)
 	{

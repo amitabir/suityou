@@ -6,6 +6,8 @@ session_start();
 ------------------Required Configuration---------------
 ******************************************************/
 
+// Set the timezone
+date_default_timezone_set('Asia/Jerusalem');
 
 //We log to the DataBase
   mysql_connect("localhost", "root", "");

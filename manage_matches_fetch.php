@@ -53,6 +53,8 @@ $matchesQuery = mysql_query('SELECT matches.*, it1.picture as top_item_picture, 
 			$bottomItemPicture = $matchRow['bottom_item_picture'];
 			$matchCount = $matchRow['match_count'];
 			$matchPercent = $matchRow['match_percent'];
+			$matchIgnoreCount = $matchRow['ignored_match_count'];
+			$matchIgnorePercent = $matchRow['ignored_match_percent'];
 			$modelPicture = $matchRow['model_picture'];
  ?>
 				<tr>
@@ -69,6 +71,8 @@ $matchesQuery = mysql_query('SELECT matches.*, it1.picture as top_item_picture, 
 					<td>
 						<p><strong><?php echo round($matchPercent,2); ?>% Match</strong></p>
 						<p>Number Of Ratings: <?php echo $matchCount; ?></p>
+						<p>Ignores Match: <?php echo round($matchIgnorePercent,2); ?>%</p>
+						<p>Ignored Ratings: <?php echo $matchIgnoreCount; ?></p>
 					</td>
 					<td>
 						 <img src="images/models/<?php echo $modelPicture; ?>" alt="" style="width:300px;height:300px">
