@@ -80,10 +80,9 @@ if ($_GET["action"] == "add") {
 		$updatedItem->designerId = $oldItem->designerId;
 		
 		if (!empty($_FILES["imageToUpload"]["name"])) {
-			deleteImage($oldItem->picture, ITEM_IMAGES_TARGET_DIR);
-			
 			$uploadResult = uploadImage("imageToUpload", ITEM_IMAGES_TARGET_DIR);
 			if ($uploadResult["success"]) {
+				deleteImage($oldItem->picture, ITEM_IMAGES_TARGET_DIR);
 				$updatedItem->picture = $uploadResult["uploadedFileName"];
 			} else {
 				// Upload failed, set message and return

@@ -3,7 +3,11 @@ include("header.php");
 include("algorithms.php");
 include("rating.php");
 
-$userId = $_SESSION['user_id'];
+if(isset($_SESSION['user_id'])){
+	$userId = $_SESSION['user_id'];
+} else {
+	$userId = NULL;
+}
 $query = mysql_query('SELECT itmatch.*, it1.picture as top_pic, it1.price as top_price, it1.name as top_name, it2.picture as bottom_pic, it2.price as bottom_price, it2.name as bottom_name FROM item_matchings itmatch INNER JOIN items it1, items it2 WHERE itmatch.top_item_id = it1.item_id AND itmatch.bottom_item_id = it2.item_id AND itmatch.match_type = 0');
 echo '<table border="1px">';
 while($row = mysql_fetch_array($query)) {

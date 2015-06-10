@@ -4,7 +4,11 @@ include("item.php");
 include("rating.php");
 
 
-$userId = $_SESSION["user_id"];
+if(isset($_SESSION['user_id'])){
+	$userId = $_SESSION['user_id'];
+} else {
+	$userId = NULL;
+}
 $matchId = $_GET["matchId"];
 $matchItemId = $_GET["matchItemId"];
 

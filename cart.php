@@ -99,7 +99,7 @@ function showUpdate(elementId) {
 	<div id="shopping-cart" class="container">
 		
 		<?php
-		if(isset($_SESSION["cart_item"])){
+		if(isset($_SESSION["cart_item"])) {
 		    $item_total = 0;
 			if ($displayMaxMessage) {
 				?> 
@@ -172,7 +172,12 @@ function showUpdate(elementId) {
 			</table>	
 			
 <?php
+	} else {
+?>
+	<h3>Your shopping cart is empty</h3>
+<?php
 	}
+	
 ?>
 </div>
 

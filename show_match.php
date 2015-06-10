@@ -1,50 +1,68 @@
 <?php
-	include("config.php");
-	
+include("config.php");
+
+if(isset($_SESSION['user_id'])){
 	$userId = $_SESSION['user_id'];
-	
-	if ($userId != NULL) {
-		$user = User::getUserfromDBbyID($userId);
-		$couponMeterValue = $user->coupon_meter;
-	} else {
-		$couponMeterValue = 0;
-	}
-	
-	$matchId = $_GET['matchId'];
-	
-	$matchQuery = mysql_query("SELECT * FROM item_matchings WHERE match_id = ". $matchId);
-	
-	$row = mysql_fetch_array($matchQuery);
-	$topItemId = $row['top_item_id'];
-	$bottomItemId = $row['bottom_item_id'];
-	$modelPic = $row['model_picture'];
+} else {
+	$userId = NULL;
+}
+
+if ($userId != NULL) {
+	$user = User::getUserfromDBbyID($userId);
+	$couponMeterValue = $user->coupon_meter;
+} else {
+	$couponMeterValue = 0;
+}
+
+$matchId = $_GET['matchId'];
+
+$matchQuery = mysql_query('SELECT matches.*, it1.name as top_item_name, it2.name as bottom_item_name, it1.description as top_item_description, it2.description as bottom_item_description, it1.price as top_item_price, it2.price as bottom_item_price FROM item_matchings matches INNER JOIN items it1, items it2 WHERE match_type = 1 AND matches.top_item_id = it1.item_id AND matches.bottom_item_id = it2.item_id AND matches.match_id = '. $matchId);
+
+$row = mysql_fetch_array($matchQuery);
+$topItemId = $row['top_item_id'];
+$topItemName = $row['top_item_name'];
+$topItemDescription = $row['top_item_description'];
+$topItemPrice = $row['top_item_price'];
+$bottomItemId = $row['bottom_item_id'];
+$bottomItemName = $row['bottom_item_name'];
+$bottomItemDescription = $row['bottom_item_description'];
+$bottomItemPrice = $row['bottom_item_price'];
+$modelPic = $row['model_picture'];
 ?>
+<script>
+	refreshGage(<?php echo $couponMeterValue; ?>);
+</script>
 		<div class="row">
-			<div class="col-md-9" align="right">
-				<img id='match_pic' src=images/models/<?php echo $modelPic;?> height='500' width='500'/> 
+			<div class="col-md-8" align="center">
+				<p><img id='match_pic' src=images/models/<?php echo $modelPic;?> height='500' width='500' /> </p>
+				<p> <div id="jRate"></div> </p>
+				<p><h3> <label class="label label-warning" id="rating_label">0/10</label> </h3> </p>
 			</div>
-			<div class="col-md-3">
-				<div id="gauge" style="width: 100px; height:80px;"></div>
-        		<script>
-				var g = new JustGage({
-				  id: "gauge",
-				  value: <?php echo $couponMeterValue ?>,
-				  min: 0,
-				  max: 100,
-				  title: "Coupon Meter"
-				});
-				</script>
-			</div>
-		</div>
-	
-		<div class="row">
-			<div class="col-md-5" align="right">
-				<a href='show_item.php?itemId=<?php echo $topItemId?>'><button class="btn btn-primary"> Buy Top Item </button> </a>
-			</div>
-			<div class="col-md-2">
-			</div>
-			<div class="col-md-5" align="left">
-				<a href='show_item.php?itemId=<?php echo $bottomItemId?>'><button class="btn btn-primary"> Buy Bottom Item </button> </a>
+			<div class="col-md-4">
+				<div class="panel panel-default">
+					<div class="panel-heading" align="left">
+						<h3 class="panel-title">Top Item</h3>
+				    </div>
+					<div class="panel-body" align="left">
+						<p><strong><?php echo $topItemName; ?></strong></p>
+						<p><?php echo $topItemDescription; ?></p>
+						<p>$<?php echo $topItemPrice; ?></p>
+						<p style="margin: 0"><a href='show_item.php?itemId=<?php echo $topItemId?>'> Get It Now! </a></p>
+					</div>
+				</div>
+				
+				
+				<div class="panel panel-default">
+					<div class="panel-heading" align="left">
+						<h3 class="panel-title">Bottom Item</h3>
+				    </div>
+					<div class="panel-body" align="left">
+						<p><strong><?php echo $bottomItemName; ?></strong></p>
+						<p><?php echo $bottomItemDescription; ?></p>
+						<p>$<?php echo $bottomItemPrice; ?></p>
+						<p style="margin: 0"><a href='show_item.php?itemId=<?php echo $bottomItemId?>'> Get It Now! </a></p>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -62,6 +80,9 @@
 				width: 30,
 				height: 30,
 				precision: 0.5,
+				onChange: function(rating) {
+					$("#rating_label").text(rating*2+"/10");
+				},
 				onSet: function(rating) {
 					var endTime = new Date().getTime();
 					var ratingTime = endTime-startTime;
@@ -70,6 +91,7 @@
 					        success: function(result) {
 					          $("#match").html(result);
 							  $("#match_pic").effect("slide", {direction: "left"}, 800);
+							  $("#rating_label").effect("highlight", 800);							  
 					        }});
 				}
 			});	
@@ -85,11 +107,6 @@
 		    });
 		});
 	</script>
-		<div class="row">
-			<div class="col-lg-12" align="center">
-				<div id="jRate"></div>
-			</div>
-		</div>
 		
 		<div class="row">
 			<div class="col-lg-12" align="right">

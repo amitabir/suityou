@@ -24,7 +24,13 @@ if(isset($_SESSION['item_update_message']) and isset($_SESSION['item_update_succ
 $outOfStockValue = "OUT_OF_STOCK";
 
 $itemId = $_GET["itemId"];
-$userId = $_SESSION['user_id'];
+
+if(isset($_SESSION['user_id'])){
+	$userId = $_SESSION['user_id'];
+} else {
+	$userId = NULL;
+}
+
 $item = Item::getItemByID($itemId);
 if ($item->type=="TOP"){
 	$typeColId="top_item_id";

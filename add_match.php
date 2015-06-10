@@ -16,65 +16,75 @@ if(!empty($_GET["matchId"])) {
 		$.ajax({ url: "select_item_for_match.php?gender="+gender+"&type="+type,
 		 context: document.body,
 		 success: function(result) {
-		 			$("#selection").html(result);
+		 			$("#result").html(result);
 	 			}
 		});
 	};
 
-	$(function() {
-		$("#dialog").dialog({
-				autoOpen: false,				
-				modal: true,
-				resizable: false,
-		});
- 
-	    $( "#openerTop" ).click(function() {
-	      $("#dialog").dialog("open");
-  				loadItems("male", "top");
-				return false
-			});
-		
-	    $( "#openerBottom" ).click(function() {
-	      $("#dialog").dialog("open");
-		  	loadItems("male", "bottom");
-			return false
-		});		
-	  });
+	$(document).ready(function() {
+		$('#itemsModal').on('show.bs.modal', function (event) {
+		  var button = $(event.relatedTarget) // Button that triggered the modal
+		  var type = button.data('whatever') // Extract info from data-* attributes
+		  loadItems("male", type);
+		 
+		  var modal = $(this)
+			var title = "";
+			if (type == "top") {
+				title = "Top"
+			} else {
+				title = "Bottom"
+			}
+		  modal.find('.modal-title').text('Select '  + title + ' Item')
+		})
+	});
  </script>
 	  
-<div id="dialog" title="Item Selection">
-	<div id="selection"></div>
-</div>
+<div class="modal fade" id="itemsModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="exampleModalLabel">New message</h4>
+      </div>
+      <div class="modal-body" id="result"></div>
+      </div>
+    </div>
+  </div>
 
-<div id="content_header"></div>
-	<div id="site_content">
-		<div id="content">
-			<div class="add_match_form">
-				<?php if ($matchForUpdate == NULL) { ?>
-			    	<form id="add_match_form" action="manage_match_logic.php?action=add" method="post" enctype="multipart/form-data".>
-				<?php } else { ?>
-					<form action="manage_match_logic.php?action=update&matchId=<?php echo $matchForUpdate['matchId']; ?>" method="post" enctype="multipart/form-data".>
+<div class="container">
+	<div class="row">
+			<?php if ($matchForUpdate == NULL) { ?>
+		    	<form class="form-horizontal" id="add_match_form" action="manage_match_logic.php?action=add" method="post" enctype="multipart/form-data" role="form">
+					<h3 class="page-header">Add New Match</h3>
+			<?php } else { ?>
+				<form class="form-horizontal" action="manage_match_logic.php?action=update&matchId=<?php echo $matchForUpdate['matchId']; ?>" method="post" enctype="multipart/form-data" role="form">
+					<h3 class="page-header">Update Match</h3>
+			<?php } ?>
+		       	<div class="form-group controls form-inline">
+		        	<label class="control-label" for="top_item_id">Top Item ID: </label>
+					<input class="form-control" type="text" id="top_item_id" name="top_item_id" value="<?php if ($matchForUpdate != NULL) echo $matchForUpdate['topItemId']; ?>" />
+					<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#itemsModal" data-whatever="top">Select Top Item</button>
+				</div>
+		       	<div class="form-group controls form-inline">
+		        	<label class="control-label" for="bottom_item_id">Bottom Item ID: </label>
+					<input class="form-control" type="text" id="bottom_item_id" name="bottom_item_id" value="<?php if ($matchForUpdate != NULL) echo $matchForUpdate['bottomItemId']; ?>" />
+					<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#itemsModal" data-whatever="bottom">Select Bottom Item</button>
+				</div>
+				<?php if ($matchForUpdate != NULL) { ?>
+			    	<img src="images/models/<?php echo $matchForUpdate['modelPicture']; ?>" width="170"/><br/>
 				<?php } ?>
-			        Add New Match:<br />
-			        <div class="center">
-			        	<label for="top_item_id">Top Item ID: </label><input type="text" id="top_item_id" name="top_item_id" value="<?php if ($matchForUpdate != NULL) echo $matchForUpdate['topItemId']; ?>" /><button id="openerTop">Select Item</button><br />
-			        	<label for="bottom_item_id">Bottom Item ID: </label><input type="text" id="bottom_item_id" name="bottom_item_id" value="<?php if ($matchForUpdate != NULL) echo $matchForUpdate['bottomItemId']; ?>" /><button id="openerBottom">Select Item</button><br />
-						<?php if ($matchForUpdate != NULL) { ?>
-					    	<img src="images/models/<?php echo $matchForUpdate['modelPicture']; ?>" width="170"/><br/>
-						<?php } ?>
-						<label for="imageToUpload">Upload Item Image:</label><input type="file" name="imageToUpload" id="imageToUpload" <?php if ($matchForUpdate == NULL) echo "required"; ?>><br/>
-						<?php if ($matchForUpdate == NULL) { ?>			
-			           		<input type="submit" value="Add Match" name="submit"/>
-						<?php } else { ?>
-							<input type="submit" value="Update Match" name="submit"/>
-						<?php } ?>
-					</div>
-			    </form>
-			</div>			
+				<div class="form-group">
+					<label class="control-label" for="imageToUpload">Upload Match Image:</label>
+					<input class="form-control" type="file" name="imageToUpload" id="imageToUpload" <?php if ($matchForUpdate == NULL) echo "required"; ?>>
+				</div>
+				<?php if ($matchForUpdate == NULL) { ?>			
+	           		<button type="submit" class="btn btn-primary" name="submit">Add Match</button>
+				<?php } else { ?>
+					<button type="submit" class="btn btn-primary" name="submit">Update Match</button>
+				<?php } ?>
+		    </form>
+		</div>
 	</div>
-</div>
-
-</div>
 
   </body>
 </html>

@@ -34,10 +34,9 @@ if ($_GET["action"] == "add") {
 		$modelPicture = $matchRow['model_picture'];
 		
 		if (!empty($_FILES["imageToUpload"]["name"])) {
-			deleteImage($modelPicture, MODELS_IMAGES_TARGET_DIR);
-			
 			$uploadResult = uploadImage("imageToUpload", MODELS_IMAGES_TARGET_DIR);
 			if ($uploadResult["success"]) {
+				deleteImage($modelPicture, MODELS_IMAGES_TARGET_DIR);
 				$updatedModelPicture = $uploadResult["uploadedFileName"];
 			} else {
 				// Upload failed, set message and return

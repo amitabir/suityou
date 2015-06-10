@@ -1,5 +1,6 @@
 <?php
 require_once 'config.php';
+include 'algorithms.php';
 //If the user is logged, we log him out
 if(isset($_SESSION['user_id']) && isset($_SESSION['email']) && $_SESSION['email'] != '')
 {
@@ -27,6 +28,7 @@ else
 			$_SESSION['user_id']=$dn['user_id'];
 			$_SESSION['is_designer']=$dn['is_designer'];
 			$_SESSION['is_admin']=$dn['is_admin'];
+			insertAnonUserToDB($_SESSION['user_id']);
 			header("Location: index.php");
 		}
 		else

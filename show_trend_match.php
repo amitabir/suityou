@@ -3,8 +3,12 @@ include("config.php");
 include("item.php");
 include("rating.php");
 
+if(isset($_SESSION['user_id'])){
+	$userId = $_SESSION['user_id'];
+} else {
+	$userId = NULL;
+}
 
-$userId = $_SESSION["user_id"];
 $matchId = $_GET["matchId"];
 
 $queryMatches = mysql_query('SELECT * from item_matchings WHERE match_id = '.$matchId);
