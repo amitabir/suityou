@@ -65,6 +65,7 @@ if(User::issetUserDetailsinArray($_POST) && isset($_SESSION['user_id'],$_SESSION
 		{
 			//logging him into session automatically
 			$_SESSION['email'] = $_POST['email'];
+			unset($_SESSION['firstTime']);
 			$message = 'Updated Successfully';			
 		}
 		else

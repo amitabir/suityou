@@ -27,7 +27,8 @@ if(isset($_POST['email'], $_POST['first_name'], $_POST['last_name'], $_POST['add
 						//if the user chose to sign up as a designer, fwd to add designer details page
 						if($dn['is_designer'] == 1)
 						{
-							header('Location: edit_designer_profile.php?designerId='.$dn['user_id']);
+							$_SESSION['firstTime'] = true;
+							header('Location: profile.php');
 						}
 						else
 						{

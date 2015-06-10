@@ -21,20 +21,29 @@ if(isset($_SESSION['update_message']))
 		unset($_SESSION['update_message']);
 	}
 }
+if(isset($_SESSION['firstTime']) && $_SESSION['firstTime'])
+{
+	$first_time = true;
+}
+else
+{
+	$first_time = false;
+}
 if(isset($_SESSION['user_id'],$_SESSION['email']))
 {		
 		$user = User::getUserfromDBbyID($_SESSION['user_id']);
 		if($user != null)
 		{
-			if(isset($_POST['editButton']) || isset($_POST['editDesignerButton']))		
+			if(isset($_POST['editButton']) || isset($_POST['editDesignerButton']) || $first_time)		
 			{
 				if (isset($_POST['editButton'])){
 					$designerTabActive="";
 					$userTabActive="active";
-				}else if(isset($_POST['editDesignerButton'])){
+				}else if(isset($_POST['editDesignerButton']) || $first_time){
 					$designerTabActive="active";
 					$userTabActive="";
 				}
+				
 				$read_only='';
 				$disabled='';
 				$hidden='';
@@ -42,6 +51,7 @@ if(isset($_SESSION['user_id'],$_SESSION['email']))
 			}
 			else
 			{
+
 				$designerTabActive="";
 				$userTabActive="active";
 				$read_only='readonly';
@@ -145,26 +155,50 @@ if(isset($_SESSION['user_id'],$_SESSION['email']))
 						  			<input class="form-control" form="update_form" type="text" name="website_link" id="website_link" value="<?php echo htmlentities($user->{'website_link'}, ENT_QUOTES, 'UTF-8'); ?>" <?php echo $read_only;?>/>
 						  		</div>
 						  		<div class="form-group">
-						  			<label class="control-label" for="avatar">Image:</label> <br/>
+						  		<?php 	
+						  		if(!$first_time)
+						  		{
+						  		?>
+						  			<label class="control-label" for="avatar">Image:</label></br>
 									<img src="images/users/<?php echo htmlentities($user->{'avatar'}, ENT_QUOTES, 'UTF-8'); ?>" width="170"/>
-									<?php if(isset($_POST['editButton']) or isset($_POST['editDesignerButton']))		
-										{?>
+						  		<?php	
+						  		}
+						  		?>
+								<?php 
+								if(isset($_POST['editButton']) || isset($_POST['editDesignerButton']) || $first_time)		
+								{
+								?>
 						  			<input class="form-control" type="file" form="update_form" name="imageToUpload" id="imageToUpload" <?php echo $read_only;?> >
-										<?php } ?>
+								<?php 
+								} 
+								?>
 						  		</div>
-								<div class="form-actions">
+						  		<?php
+						  		if(!$first_time)
+						  		{
+						  		?>
+						  		<div class="form-actions">
 						        	<button class="btn btn-default btn-block" form="update_form" type="submit" <?php echo $read_only.' '; echo $disabled.' '; echo $hidden?> >Update</button>
 						        </div> 	
-						        
-						   
-						    <form class="form-horizontal" method="POST" action='' role="form" <?php echo $hiddenEdit; ?> >
-						 		<div class="form-actions">
-						 			<button class="btn btn-default btn-block" type="submit" name="editDesignerButton">Edit Your Details</button>
+						    	<form class="form-horizontal" method="POST" action='' role="form" <?php echo $hiddenEdit; ?> >
+							 		<div class="form-actions">
+							 			<button class="btn btn-default btn-block" type="submit" name="editDesignerButton">Edit Your Details</button>
+									</div>
+								</form>
+						 		<div>
+						 			<a href="designer_profile?designerId=<?php echo $_SESSION['user_id']?>"><button class="btn btn-default btn-block">View Designer Page</button></a>
 								</div>
-							</form>
-					 		<div>
-					 			<a href="designer_profile?designerId=<?php echo $_SESSION['user_id']?>"><button class="btn btn-default btn-block">View Designer Page</button></a>
-							</div>
+								<?php
+						  		}
+						  		else
+						  		{
+						  		?>
+						  		<div class="form-actions">
+						        	<button class="btn btn-default btn-block" form="update_form" type="submit" <?php echo $read_only.' '; echo $disabled.' '; echo $hidden?> >Complete Registration</button>
+						        </div> 	
+						  		<?php
+						  		}
+								?>
 					    </div>
 				    </div>
 				</div>
