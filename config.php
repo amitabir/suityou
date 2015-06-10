@@ -21,6 +21,8 @@ $url_root = 'http://www.example.com/';
 
 //Loading Classes
 require_once 'User.php';
+require_once 'Item.php';
+
 
 /******************************************************
 -----------------Optional Configuration----------------

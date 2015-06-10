@@ -1,6 +1,5 @@
 <?php
 include("config.php");
-include("pagination.php");
 
 $designerId = $_SESSION["user_id"];
 

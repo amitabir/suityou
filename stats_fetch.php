@@ -2,8 +2,6 @@
 include("config.php");
 include("pagination.php");
 
-
-
 if(isset($_POST["page"])){
 	$page_number = filter_var($_POST["page"], FILTER_SANITIZE_NUMBER_INT, FILTER_FLAG_STRIP_HIGH); //filter number
 	if(!is_numeric($page_number)){die('Invalid page number!');} //in case of invalid page number

@@ -1,6 +1,5 @@
 <?php
 include("config.php");
-include("pagination.php");
 
 $gender = $_GET["gender"];
 $type = $_GET["type"];
@@ -82,15 +81,4 @@ $itemsQuery = mysql_query('SELECT * FROM items WHERE gender = "'.$gender.'" AND 
 <?php 	}
 ?>
 
-	<div class="row text-center">
-        <div class="col-lg-12">
-<?php 
-			//echo '<div align="center">';
-			/* We call the pagination function here to generate Pagination link for us. 
-			As you can see I have passed several parameters to the function. */
-			//echo paginate_function($item_per_page, $page_number, $get_total_rows[0], $total_pages);
-			//echo '</div>';
-?>
-		</div>
-	</div>
 </div>

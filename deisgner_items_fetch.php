@@ -1,6 +1,5 @@
 <?php
 include("config.php");
-include("pagination.php");
 
 $designerId = $_GET["designerId"];
 

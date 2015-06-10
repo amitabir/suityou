@@ -1,6 +1,5 @@
 <?php
 include("header.php");
-include('Item.php');
 
 $displayMaxMessage = false;
 

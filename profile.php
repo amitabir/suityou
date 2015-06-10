@@ -186,7 +186,7 @@ if(isset($_SESSION['user_id'],$_SESSION['email']))
 									</div>
 								</form>
 						 		<div>
-						 			<a href="designer_profile?designerId=<?php echo $_SESSION['user_id']?>"><button class="btn btn-default btn-block">View Designer Page</button></a>
+						 			<a href="designer_profile.php?designerId=<?php echo $_SESSION['user_id']?>"><button class="btn btn-default btn-block">View Designer Page</button></a>
 								</div>
 								<?php
 						  		}

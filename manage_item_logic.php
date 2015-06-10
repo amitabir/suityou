@@ -1,7 +1,6 @@
 <?php
 include("config.php");
 include("image_upload.php");
-include("Item.php");
 
 define("ITEM_IMAGES_TARGET_DIR", "images/items/");
 

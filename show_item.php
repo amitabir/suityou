@@ -1,7 +1,6 @@
 <?php
 include("config.php");
 include("header.php");
-include('Item.php');
 include("rating.php");
 
 if(isset($_SESSION['item_update_message']) and isset($_SESSION['item_update_success'])) {

@@ -1,6 +1,5 @@
 <?php
 include("config.php");
-include("item.php");
 include("rating.php");
 
 if(isset($_SESSION['user_id'])){

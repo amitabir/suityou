@@ -1,6 +1,5 @@
 <?php
 include("header.php");
-
 ?>	
 <script type="text/javascript">
 	function loadCatTable(page, category, att1, att2) {

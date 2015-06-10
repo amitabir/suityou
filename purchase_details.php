@@ -1,6 +1,5 @@
 <?php
 include("header.php");
-include("item.php");
 
 if(isset($_GET['purchaseId'])) {
 	$purchaseItemQuery = mysql_query("SELECT * FROM purchase_items WHERE purchase_id=".$_GET['purchaseId']);

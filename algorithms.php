@@ -1,5 +1,4 @@
 <?php
-	include("Item.php");
 	define("PERCENT_FACTOR", 10);
 	
 	// Get the constants from DB, should be cached in the future to avoid so many database accesses

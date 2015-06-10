@@ -1,6 +1,5 @@
 <?php
 include("header.php");
-include("item.php");
 
 if(isset($_SESSION['item_update_message']) and isset($_SESSION['item_update_success'])) {
 	$message = $_SESSION['item_update_message'];
