@@ -70,72 +70,11 @@
 		return totalRating / totalWeight;
 	}
 	
-	/* This function receives a rating for two items and computes what movement all the counters associated with them
-		should take. */
-	// Trends
-/* 	function calcCounterMovementForAttributesFromTwoItems($rating){
-		switch($rating){
-			case 10 :
-				return -5;
-			case 20 :
-				return -4;
-			case 30 :
-				return -3;
-			case 40 :
-				return -2;
-			case 50 :
-				return -1;
-			case 60 :
-				return 1;
-			case 70 :
-				return 2;
-			case 80 :
-				return 3;
-			case 90 :
-				return 4;
-			case 100 :
-				return 5;
-			default :
-				return 0;
-		}
-	} */
-	
 	function isSpammer($userID){
 		$query = mysql_query("SELECT is_spammer FROM Users WHERE user_id = ".$userID);
 		$row = mysql_fetch_array($query);
 		return $row['is_spammer'];
 	}
-	
-	/* This function receives an old average rating. a new average rating and the match ID and updates all the attributes counters
-		associated if necessary. */
-	// Trends
-/* 	function dealWithNewVoteTrend(){
-
-		$query = mysql_query("SELECT * FROM item_matchings WHERE match_id = $matchID");
-		$row = mysql_fetch_array($query);
-		$topID = $row['top_item_id'];
-		$bottomID = $row['bottom_item_id'];
-		$topItem = Item::getItemByID($topID);
-		$bottomItem = Item::getItemByID($bottomID);
-		$topAttArray = $topItem->getItemAttributes();
-		$bottomAttArray = $bottomItem->getItemAttributes();
-		foreach($topAttArray as $category=>$info){
-			if(array_key_exists($category, $bottomAttArray)){
-				$topAttributeID = $info['att_id'];
-				$bottomAttributeID = $bottomAttArray[$category]['att_id'];
-				$attQuery = mysql_query("SELECT * FROM attribute_scores WHERE attribute1_id = $topAttributeID AND attribute2_id = $bottomAttributeID");
-				if(mysql_num_rows($attQuery) > 0){
-					$attRow = mysql_fetch_array($attQuery);
-					$newScore = $attRow['score'] + $counterMovement;
-					mysql_query("UPDATE attribute_scores
-								 SET score = $newScore
-								 WHERE attribute1_id = $topAttributeID AND attribute2_id = $bottomAttributeID");
-				} else {
-					mysql_query('INSERT INTO attribute_scores(attribute1_id, attribute2_id, score) VALUES ('.$topAttributeID.', '.$bottomAttributeID.', '.$counterMovement.')') or die(mysql_error());
-				}
-			}
-		}
-	} */
 	
 	function calculateTotalScoreForTrends($trendID){
 		$constantsArray = getConstants();
@@ -252,6 +191,11 @@
 				$_SESSION["user_data"] = array();
 			}
 			
+			// Don't increase coupon meter for spammers
+			if (isset($_SESSION["user_data"]["is_spammer"]) and $_SESSION["user_data"]["is_spammer"]) {
+				return;
+			}
+				
 			if(	isset($_SESSION['user_data']['coupon_meter'])){
 				$_SESSION['user_data']['coupon_meter'] += $increaseSize;
 			} else {
@@ -261,8 +205,12 @@
 				$_SESSION['user_data']['coupon_meter'] = $constantsArray['MAX_COUPON'];
 			}
 		} else {
-			$couponQuery = mysql_query("SELECT coupon_meter FROM users WHERE user_id = ".$userID) or die(mysql_error());
+			$couponQuery = mysql_query("SELECT coupon_meter, is_spammer FROM users WHERE user_id = ".$userID) or die(mysql_error());
 			$couponRow = mysql_fetch_array($couponQuery);
+			if ($couponRow['is_spammer'] == 1) {
+				// Don't increase coupon meter for spammers
+				return;
+			}
 			$newCouponMeter = $couponRow["coupon_meter"] + $increaseSize;
 			if($newCouponMeter > $constantsArray['MAX_COUPON']){
 				$newCouponMeter = $constantsArray['MAX_COUPON'];

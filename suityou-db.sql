@@ -1,13 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 3.5.8.2
+-- version 4.1.14
 -- http://www.phpmyadmin.net
 --
--- Host: localhost
--- Generation Time: Jun 02, 2015 at 04:04 PM
--- Server version: 5.6.21
--- PHP Version: 5.5.14
+-- Host: 127.0.0.1
+-- Generation Time: Jun 10, 2015 at 03:32 PM
+-- Server version: 5.6.17-log
+-- PHP Version: 5.5.12
 
-SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
 
@@ -118,6 +118,40 @@ INSERT INTO `categories` (`category_id`, `name`, `weight`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `constants`
+--
+
+CREATE TABLE IF NOT EXISTS `constants` (
+  `name` varchar(255) NOT NULL,
+  `description` text NOT NULL,
+  `value` float NOT NULL,
+  UNIQUE KEY `name` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `constants`
+--
+
+INSERT INTO `constants` (`name`, `description`, `value`) VALUES
+('AVERAGE_LIMIT', 'The average rating of a couple of attributes needs to be greater or equal to this constant in order to be considered a trend.', 8),
+('BAD_RATING_REPEAT_LIMIT', 'A user rating the exact same rating this constant times in a row is to be considered as a spammer.', 2),
+('BAD_TIME_REPEAT_LIMIT', 'A user rating faster than the allowed time this constant times in a row is to be considered as a spammer.', 2),
+('COUPON_PRIZE', 'The coupon meter gets bigger by this constant every time the user rates a match.', 10),
+('DIFF_FOR_ACCEPT_NEW_VOTE', 'A new rating is to be taken to account for a match avereage if it is not different more than this constant from the current average.', 10),
+('IGNORED_VOTES_LIMIT_FOR_ACCEPT', 'The number of ignored ratings needs to be greater than this constant in order for all the ignored ratings to be taken for the match average.', 10),
+('MATCH_CONSTANT', 'The weight of the users opinion of a trend is given by this lovely constant.', 0.5),
+('MATCH_SCORE_LIMIT', 'A trend''s users'' opinion must be greater than or equal to this constant in order to be considered a trend.', 50),
+('MAX_COUPON', 'The coupon meter max value is defined by this wonderful constant. ', 100),
+('MINIMAL_TIME', 'A vote made faster than this constant is suspicious for being too fast and the user might be a spammer.', 100),
+('NUMBER_OF_CATEGORIES', 'The number of categories is given to you here and now by this beautiful constant.', 6),
+('STDEV_LIMIT', 'The STDEV of ratings of a couple of attributes needs to be smaller or equal to this constant in order to be considered a trend.', 1),
+('TREND_CONSTANT', 'The weight of the our prediction of a trend is given by this once in a lifetime constant.', 0.5),
+('TREND_SCORE_LIMIT', 'A trend''s prediction by us must be greater than or equal to this constant in order to be considered a trend.', 50),
+('VOTES_LIMIT_FOR_ACCEPT_NEW_VOTE', 'Any rating is accepted for a match if the total number of ratings for that match is lower than this brand new constant.', 10);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `items`
 --
 
@@ -134,7 +168,7 @@ CREATE TABLE IF NOT EXISTS `items` (
   PRIMARY KEY (`item_id`),
   UNIQUE KEY `id` (`item_id`),
   FULLTEXT KEY `name` (`name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Items table' AUTO_INCREMENT=32 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Items table' AUTO_INCREMENT=33 ;
 
 --
 -- Dumping data for table `items`
@@ -162,8 +196,6 @@ INSERT INTO `items` (`item_id`, `name`, `gender`, `type`, `description`, `price`
 (23, 'Khaki Pants', 'MALE', 'BOTTOM', 'desc', 56.7, 1, '2015-05-23 22:33:11', '1244.jpeg'),
 (24, 'Khaki Pants', 'MALE', 'BOTTOM', 'desc', 56.7, 1, '2015-05-23 22:33:53', '49227.jpeg'),
 (25, 'dsa', 'FEMALE', 'TOP', 'dsa', 12.3, 1, '2015-05-24 16:21:55', '49227.jpeg'),
-(26, 'dsa', 'FEMALE', 'TOP', 'dsa', 12.3, 1, '2015-05-24 17:18:09', ''),
-(27, 'dsa', 'FEMALE', 'TOP', 'dsa', 12.3, 1, '2015-05-24 17:18:36', ''),
 (28, 'Ofer', 'MALE', 'BOTTOM', 'Ofer', 12.9, 1, '2015-05-26 10:47:25', '19233.jpeg'),
 (29, 'Black Jacket', 'MALE', 'TOP', 'Black Black 2', 80, 1, '2015-05-29 15:23:56', '88384.jpeg');
 
@@ -180,7 +212,7 @@ CREATE TABLE IF NOT EXISTS `items_stock` (
   `quantity` int(11) NOT NULL,
   PRIMARY KEY (`item_stock_id`),
   UNIQUE KEY `id` (`item_stock_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='The sizes and quantities of each size' AUTO_INCREMENT=34 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='The sizes and quantities of each size' AUTO_INCREMENT=35 ;
 
 --
 -- Dumping data for table `items_stock`
@@ -189,7 +221,7 @@ CREATE TABLE IF NOT EXISTS `items_stock` (
 INSERT INTO `items_stock` (`item_stock_id`, `item_id`, `size`, `quantity`) VALUES
 (1, 3, 'LARGE', 10),
 (2, 3, 'MEDIUM', 20),
-(3, 3, '', 50),
+(3, 3, 'SMALL', 50),
 (4, 4, 'MEDIUM', 55),
 (5, 4, 'LARGE', 0),
 (8, 23, 'LARGE', 30),
@@ -197,9 +229,6 @@ INSERT INTO `items_stock` (`item_stock_id`, `item_id`, `size`, `quantity`) VALUE
 (10, 24, 'MEDIUM', 15),
 (11, 24, 'SMALL', 0),
 (12, 25, 'LARGE', 30),
-(13, 26, 'LARGE', 30),
-(14, 27, 'LARGE', 30),
-(15, 27, 'SMALL', 24),
 (26, 21, 'large', 6),
 (27, 28, 'LARGE', 12),
 (28, 7, 'SMALL', 13),
@@ -293,18 +322,6 @@ INSERT INTO `item_attributes` (`item_id`, `attribute_id`) VALUES
 (25, 22),
 (25, 25),
 (25, 31),
-(26, 41),
-(26, 10),
-(26, 15),
-(26, 22),
-(26, 25),
-(26, 31),
-(27, 41),
-(27, 10),
-(27, 15),
-(27, 22),
-(27, 25),
-(27, 31),
 (21, 1),
 (21, 45),
 (21, 46),
@@ -348,11 +365,11 @@ CREATE TABLE IF NOT EXISTS `item_matchings` (
 --
 
 INSERT INTO `item_matchings` (`match_id`, `top_item_id`, `bottom_item_id`, `match_percent`, `match_count`, `trend_percent`, `match_type`, `model_picture`, `ignored_match_percent`, `ignored_match_count`) VALUES
-(1, 3, 4, 53.725490196078, 51, NULL, 1, 'model1.jpg', 35, 2),
+(1, 3, 4, 50.307692307692, 65, NULL, 1, 'model1.jpg', 48, 5),
 (2, 25, 23, 39.642857142857, 56, NULL, 1, '63007.jpg', 0, 0),
-(3, 6, 24, 41.176470588236, 51, NULL, 1, '36418.jpg', 66, 5),
-(4, 19, 22, 60, 5, 76.111111111111, 0, NULL, 0, 0),
-(5, 29, 22, 54.999999999999, 50, NULL, 1, '74200.jpg', 54.285714285714, 7);
+(3, 6, 24, 41.481481481482, 54, NULL, 1, '36418.jpg', 52.222222222222, 9),
+(4, 19, 22, 52.5, 8, 76.111111111111, 0, NULL, 0, 0),
+(5, 29, 22, 54.333333333332, 60, NULL, 1, '74200.jpg', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -365,7 +382,7 @@ CREATE TABLE IF NOT EXISTS `purchases` (
   `user_id` int(11) NOT NULL,
   `total_price` double NOT NULL,
   PRIMARY KEY (`purchase_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
 
 --
 -- Dumping data for table `purchases`
@@ -374,7 +391,8 @@ CREATE TABLE IF NOT EXISTS `purchases` (
 INSERT INTO `purchases` (`purchase_id`, `user_id`, `total_price`) VALUES
 (1, 1, 302.4),
 (4, 1, 390.6),
-(5, 1, 334);
+(5, 1, 334),
+(6, 1, 26.1);
 
 -- --------------------------------------------------------
 
@@ -400,7 +418,8 @@ INSERT INTO `purchase_items` (`purchase_id`, `item_stock_id`, `quantity`) VALUES
 (3, 29, 1),
 (4, 8, 6),
 (4, 29, 1),
-(5, 2, 20);
+(5, 2, 20),
+(6, 4, 2);
 
 -- --------------------------------------------------------
 
@@ -432,7 +451,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 --
 
 INSERT INTO `users` (`user_id`, `email`, `first_name`, `last_name`, `address`, `gender`, `birth_date`, `is_designer`, `is_admin`, `avatar`, `coupon_meter`, `description`, `website_link`, `is_spammer`, `time_tracking_ctr`) VALUES
-(1, 'amabir@gmail.com', 'Ami', 'Abir', 'adsa', 'MALE', '1988-12-31', 1, 0, '', 0, '', '', 1, 1);
+(1, 'amabir@gmail.com', 'Amit', 'Abir', 'BBB', 'MALE', '1988-12-31', 1, 1, '14325.jpeg', 80, ' Bootstrap 3 Flat Web Kit is a useful package that contains PSD+HTML/CSS of the all controls designed based on latest Twitter bootstrap 3 a flat look to the user interface elements. There are no gradients, shadows, or rounded corners - everything looks clean and simple. The package will be especially useful for programmers who do not want to waste time & budget on custom design but still require trendy style to their products. Also it can be useful for everyone who requires flat design for their product based on easy-to-use bootstrap 3 code.\r\n ', 'http://google.com', 1, 0);
 
 -- --------------------------------------------------------
 
@@ -448,7 +467,27 @@ CREATE TABLE IF NOT EXISTS `user_matchings` (
   `rating_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `skipped` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`user_match_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=44 ;
+
+--
+-- Dumping data for table `user_matchings`
+--
+
+INSERT INTO `user_matchings` (`user_match_id`, `user_id`, `match_id`, `rating`, `rating_time`, `skipped`) VALUES
+(24, 1, 3, 3, '2015-06-06 08:49:31', 0),
+(25, 1, 3, 5, '2015-06-06 08:49:34', 0),
+(26, 1, 3, 6, '2015-06-06 08:49:35', 0),
+(27, 1, 3, 8, '2015-06-06 08:49:37', 0),
+(28, 1, 3, 9, '2015-06-06 08:49:39', 0),
+(35, 1, 4, 4, '2015-06-06 10:42:48', 0),
+(36, 1, 3, 3, '2015-06-07 19:37:30', 0),
+(37, 1, 3, 6, '2015-06-07 19:37:33', 0),
+(38, 1, 3, 8, '2015-06-07 19:37:36', 0),
+(39, 1, 3, 9, '2015-06-07 19:37:38', 0),
+(40, 1, 3, 6, '2015-06-09 09:38:26', 0),
+(41, 1, 3, 3, '2015-06-09 09:38:27', 0),
+(42, 1, 2, 1, '2015-06-10 07:34:18', 0),
+(43, 1, 5, 1, '2015-06-10 07:34:18', 0);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

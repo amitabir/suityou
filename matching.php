@@ -28,6 +28,10 @@ function refreshGage(value) {
 	}
 }
 
+function showSpammerLabel() {
+	$("#spammer_label").show("blind", {direction: "up"}, 800);
+}
+
 $(document).ready(function(){	
 	
 $.ajax({ url: "show_match.php?matchId=<?php echo $matchId; ?>",
@@ -55,11 +59,17 @@ $.ajax({ url: "show_match.php?matchId=<?php echo $matchId; ?>",
 				
 				</script>
 				<div id="max_coupon" style="display: none">
-				<div class="alert alert-warning alert-dismissible" role="alert" >
-				  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				  <p><strong>Congratulations!</strong></p> <p>You got a 10% discount coupon! </p> <p><a href="cart.php"> Go to Shopping Cart </a> </p>
+					<div class="alert alert-warning alert-dismissible" role="alert" >
+					  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					  <p><strong>Congratulations!</strong></p> <p>You got a 10% discount coupon! </p> <p><a href="cart.php"> Go to Shopping Cart </a> </p>
+					</div>
 				</div>
-			</div>
+				<div id="spammer_label" style="display: none">
+					<div class="alert alert-danger alert-dismissible" role="alert" >
+					  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					  <p><strong>Warning!</strong></p> <p> Our system determined your activity as suspicious. You can no longer rate the matches to earn coupons. Please try again later. </p>
+					</div>
+				</div>
 			</div>
 			<div class="col-md-9" id="match">
 			</div>

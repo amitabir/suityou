@@ -10,8 +10,18 @@ if(isset($_SESSION['user_id'])){
 if ($userId != NULL) {
 	$user = User::getUserfromDBbyID($userId);
 	$couponMeterValue = $user->coupon_meter;
+	if ($user->is_spammer == 1) {
+		$isSpammer = true;
+	} else {
+		$isSpammer = false;
+	}
 } else {
 	$couponMeterValue = 0;
+	if (isset($_SESSION["user_data"]["is_spammer"]) and $_SESSION["user_data"]["is_spammer"]) {
+		$isSpammer = true;
+	} else {
+		$isSpammer = false;
+	}
 }
 
 $matchId = $_GET['matchId'];
@@ -31,6 +41,7 @@ $modelPic = $row['model_picture'];
 ?>
 <script>
 	refreshGage(<?php echo $couponMeterValue; ?>);
+	<?php if ($isSpammer) { ?> showSpammerLabel(); <?php } ?>
 </script>
 		<div class="row">
 			<div class="col-md-8" align="center">
