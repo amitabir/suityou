@@ -26,19 +26,36 @@ if ($userId != NULL) {
 
 $matchId = $_GET['matchId'];
 
-$matchQuery = mysql_query('SELECT matches.*, it1.name as top_item_name, it2.name as bottom_item_name, it1.description as top_item_description, it2.description as bottom_item_description, it1.price as top_item_price, it2.price as bottom_item_price FROM item_matchings matches INNER JOIN items it1, items it2 WHERE match_type = 1 AND matches.top_item_id = it1.item_id AND matches.bottom_item_id = it2.item_id AND matches.match_id = '. $matchId);
-
-$row = mysql_fetch_array($matchQuery);
-$topItemId = $row['top_item_id'];
-$topItemName = $row['top_item_name'];
-$topItemDescription = $row['top_item_description'];
-$topItemPrice = $row['top_item_price'];
-$bottomItemId = $row['bottom_item_id'];
-$bottomItemName = $row['bottom_item_name'];
-$bottomItemDescription = $row['bottom_item_description'];
-$bottomItemPrice = $row['bottom_item_price'];
-$modelPic = $row['model_picture'];
+if ($matchId == -1) {
 ?>
+		<div class="row">
+			<div class="col-md-4"></div>
+			
+			<div class="col-md-4" align="center">
+				<div id="finished_rating">
+					<div class="alert alert-info alert-dismissible" role="alert" >
+					  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					  <p><strong>Finished!</strong></p> <p>You rated them all</p> <p>Please come back later!</p>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4"></div>
+		</div>
+<?php	
+} else {
+	$matchQuery = mysql_query('SELECT matches.*, it1.name as top_item_name, it2.name as bottom_item_name, it1.description as top_item_description, it2.description as bottom_item_description, it1.price as top_item_price, it2.price as bottom_item_price FROM item_matchings matches INNER JOIN items it1, items it2 WHERE match_type = 1 AND matches.top_item_id = it1.item_id AND matches.bottom_item_id = it2.item_id AND matches.match_id = '. $matchId);
+
+	$row = mysql_fetch_array($matchQuery);
+	$topItemId = $row['top_item_id'];
+	$topItemName = $row['top_item_name'];
+	$topItemDescription = $row['top_item_description'];
+	$topItemPrice = $row['top_item_price'];
+	$bottomItemId = $row['bottom_item_id'];
+	$bottomItemName = $row['bottom_item_name'];
+	$bottomItemDescription = $row['bottom_item_description'];
+	$bottomItemPrice = $row['bottom_item_price'];
+	$modelPic = $row['model_picture'];
+	?>
 <script>
 	refreshGage(<?php echo $couponMeterValue; ?>);
 	<?php if ($isSpammer) { ?> showSpammerLabel(); <?php } ?>
@@ -100,6 +117,7 @@ $modelPic = $row['model_picture'];
 					$.ajax({ url: "handle_match_rating.php?skipped=false&matchId=<?php echo $matchId; ?>&userId=<?php echo $userId; ?>&rating="+rating*2+"&ratingTime="+ratingTime,
 					        context: document.body,
 					        success: function(result) {
+								console.log("NEXT: " +result);
 					          $("#match").html(result);
 							  $("#match_pic").effect("slide", {direction: "left"}, 800);
 							  $("#rating_label").effect("highlight", 800);							  
@@ -126,6 +144,8 @@ $modelPic = $row['model_picture'];
 				</div>
 			</div>
 		</div>
-
+<?php 
+	} 
+?>
 
 				

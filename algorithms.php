@@ -132,7 +132,7 @@
 		return array($matchExists, $trendExists);
 	}
 	
-	function dealWithNewVoteTrend(){
+	function dealWithNewVoteTrend() {
 		$constantsArray = getConstants();
 		$query = mysql_query("SELECT att1.attribute_id, att2.attribute_id, AVG(user_matchings.rating), 
 		STDDEV(user_matchings.rating) FROM user_matchings INNER JOIN users, item_matchings, items it1, items it2, 
@@ -144,7 +144,7 @@
 		$attributesData = array();
 		while($row = mysql_fetch_array($query)){
 			$attributesData[$row[0]."-".$row[1]] = array("avg" => $row[2], "stdev" => $row[3]);
-		}
+		}		
 		foreach($attributesData as $attributes=>$data){
 			$attributesID = explode("-", $attributes);
 			$itemsQuery = mysql_query("SELECT it1.item_id, it2.item_id FROM items it1, items it2,
@@ -155,17 +155,17 @@
 			if(empty($items)){
 				continue;
 			}
+			
 			$topItem = Item::getItemByID($items[0]);
 			$bottomItem = Item::getItemByID($items[1]);
 			$topItemAttributes = $topItem->getItemAttributes();
 			$bottomItemAttributes = $bottomItem->getItemAttributes();
 			$matchAndTrendExists = checkIfMatchAndTrendExists($items[0], $items[1]);
-			if(!$matchAndTrendExists[0]){
+			if(!$matchAndTrendExists[0]) {
 				$trendScore = calculateTrendScore($topItemAttributes, $bottomItemAttributes, $attributesData);
-				if($matchAndTrendExists[1]){
+				if($matchAndTrendExists[1]) {
 					mysql_query("UPDATE item_matchings SET trend_percent = ".$trendScore."
 					WHERE top_item_id = ".$items[0]." AND bottom_item_id = ".$items[1]) or die(mysql_error());
-					exit;
 				} else if(isGoodCouple($data) and $trendScore >= $constantsArray['TREND_SCORE_LIMIT']) {
 					mysql_query("INSERT INTO item_matchings(top_item_id, bottom_item_id, trend_percent, match_type)
 					VALUES (".$items[0].", ".$items[1].", ".$trendScore.", 0)") or die(mysql_error());
@@ -175,7 +175,6 @@
 					} */
 			}
 		}
-		
 	}
 	
 	function removeOldTrends(){
@@ -263,9 +262,10 @@
 			$result = calcNewRatingForTwoItems($rating, $averageRating, $numberOfVotes, $numberOfIgnoredVotes, $ignoredAverage);
 			mysql_query("UPDATE item_matchings
 					 	 SET match_percent =".$result[0].", match_count = ".$result[1].", ignored_match_percent = ".$result[2].", ignored_match_count = ".$result[3]." WHERE match_id = ".$matchID) or die(mysql_error());
-		
-			dealWithNewVoteTrend();
+				
+			dealWithNewVoteTrend();			
 			removeOldTrends();
+			
 		}
 	}
 	
@@ -424,7 +424,7 @@
 				}
 			} else {
 				while($row = mysql_fetch_array($itemsQuery)) {
-					if($row["match_type"] == 0){
+					if($row["match_type"] == 0) {
 						continue;
 					}
 					//if(!array_key_exists($row["match_id"], $_SESSION["user_data"]["user_matchings"])){
@@ -437,7 +437,6 @@
 				if($row["match_type"] == 0){
 					continue;
 				}
-				return $row["match_id"];//TODO remove
 				$userMatchesQuery = mysql_query("SELECT * FROM user_matchings WHERE match_id = ".$row["match_id"]);
 				$userAnswered = mysql_num_rows($userMatchesQuery);
 				if ($userAnswered == 0) {
@@ -445,7 +444,6 @@
 				}
 			}
 		}
-		// TODO - return something else when the user answered everything
-		return $row["match_id"];
+		return -1;
 	}
 ?>
