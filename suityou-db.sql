@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jun 11, 2015 at 06:45 PM
+-- Generation Time: Jun 13, 2015 at 02:00 PM
 -- Server version: 5.6.21
 -- PHP Version: 5.5.14
 
@@ -157,7 +157,8 @@ INSERT INTO `constants` (`name`, `description`, `value`) VALUES
 ('STDEV_LIMIT', 'The STDEV of ratings of a couple of attributes needs to be smaller or equal to this constant in order to be considered a trend.', 1),
 ('TREND_CONSTANT', 'The weight of the our prediction of a trend is given by this once in a lifetime constant.', 0.5),
 ('TREND_SCORE_LIMIT', 'A trend''s prediction by us must be greater than or equal to this constant in order to be considered a trend.', 50),
-('VOTES_LIMIT_FOR_ACCEPT_NEW_VOTE', 'Any rating is accepted for a match if the total number of ratings for that match is lower than this brand new constant.', 10);
+('VOTES_LIMIT_FOR_ACCEPT_NEW_VOTE', 'Any rating is accepted for a match if the total number of ratings for that match is lower than this brand new constant.', 10),
+('TREND_MIN_COUNT', 'The minimum number of ratings for two attributes to become a trend', 3);
 
 -- --------------------------------------------------------
 
@@ -453,7 +454,7 @@ INSERT INTO `item_attributes` (`item_id`, `attribute_id`) VALUES
 (29, 32),
 (30, 2),
 (30, 12),
-(30, 47),
+(30, 48),
 (30, 23),
 (30, 29),
 (30, 32),
@@ -567,7 +568,7 @@ INSERT INTO `item_attributes` (`item_id`, `attribute_id`) VALUES
 (50, 33),
 (51, 3),
 (51, 10),
-(51, 19),
+(51, 48),
 (51, 24),
 (51, 50),
 (51, 33),
@@ -645,9 +646,9 @@ INSERT INTO `item_attributes` (`item_id`, `attribute_id`) VALUES
 (63, 33),
 (64, 55),
 (64, 14),
-(64, 19),
+(64, 48),
 (64, 24),
-(64, 50),
+(64, 28),
 (64, 32),
 (65, 5),
 (65, 13),
@@ -728,7 +729,7 @@ CREATE TABLE IF NOT EXISTS `item_matchings` (
   `ignored_match_percent` double NOT NULL DEFAULT '0',
   `ignored_match_count` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`match_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=34 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=181 ;
 
 --
 -- Dumping data for table `item_matchings`
@@ -737,29 +738,29 @@ CREATE TABLE IF NOT EXISTS `item_matchings` (
 INSERT INTO `item_matchings` (`match_id`, `top_item_id`, `bottom_item_id`, `match_percent`, `match_count`, `trend_percent`, `match_type`, `model_picture`, `ignored_match_percent`, `ignored_match_count`) VALUES
 (6, 46, 42, 66.666666666667, 3, NULL, 1, '61108.jpg', 0, 0),
 (7, 49, 43, 50, 2, NULL, 1, '62732.jpg', 0, 0),
-(8, 50, 41, 65, 2, NULL, 1, '95156.jpg', 0, 0),
+(8, 50, 41, 82.5, 4, NULL, 1, '95156.jpg', 0, 0),
 (9, 47, 33, 55, 2, NULL, 1, '1960.jpg', 0, 0),
-(10, 47, 30, 40, 2, NULL, 1, '73105.jpg', 0, 0),
-(11, 44, 39, 55, 2, NULL, 1, '6705.jpg', 0, 0),
-(12, 49, 40, 40, 2, NULL, 1, '10990.jpg', 0, 0),
-(13, 51, 30, 55, 2, NULL, 1, '71454.jpg', 0, 0),
+(10, 47, 30, 56.666666666667, 3, NULL, 1, '73105.jpg', 0, 0),
+(11, 44, 39, 66, 5, NULL, 1, '6705.jpg', 0, 0),
+(12, 49, 40, 70, 4, NULL, 1, '10990.jpg', 0, 0),
+(13, 51, 30, 40, 3, NULL, 1, '71454.jpg', 0, 0),
 (14, 51, 37, 65, 2, NULL, 1, '48175.jpg', 0, 0),
-(15, 61, 39, 40, 2, NULL, 1, '63916.jpg', 0, 0),
+(15, 61, 39, 60, 5, NULL, 1, '63916.jpg', 0, 0),
 (16, 45, 70, 50, 3, NULL, 1, '79519.jpg', 0, 0),
 (17, 58, 72, 60, 2, NULL, 1, '53754.jpg', 0, 0),
 (18, 65, 70, 60, 2, NULL, 1, '49948.jpg', 0, 0),
-(19, 63, 68, 40, 3, NULL, 1, '91571.jpg', 0, 0),
+(19, 63, 68, 64, 5, NULL, 1, '91571.jpg', 0, 0),
 (20, 54, 36, 50, 2, NULL, 1, '9543.jpg', 0, 0),
 (21, 57, 38, 20, 2, NULL, 1, '46082.jpg', 0, 0),
 (22, 53, 36, 45, 2, NULL, 1, '16812.jpg', 0, 0),
-(23, 48, 73, 55, 2, NULL, 1, '74884.jpg', 0, 0),
+(23, 48, 73, 65, 4, NULL, 1, '74884.jpg', 0, 0),
 (24, 59, 74, 75, 2, NULL, 1, '84408.jpg', 0, 0),
-(25, 52, 71, 43.333333333333, 3, NULL, 1, '8521.jpg', 0, 0),
-(26, 49, 73, 63.333333333333, 3, NULL, 1, '3910.jpg', 0, 0),
+(25, 52, 71, 45, 4, NULL, 1, '8521.jpg', 0, 0),
+(26, 49, 73, 42, 5, NULL, 1, '3910.jpg', 0, 0),
 (27, 55, 34, 50, 2, NULL, 1, '29407.jpg', 0, 0),
 (28, 60, 69, 75, 2, NULL, 1, '36759.jpg', 0, 0),
-(29, 64, 69, 50, 1, NULL, 1, '24726.jpg', 0, 0),
-(30, 61, 40, 40, 1, NULL, 1, '48361.jpg', 0, 0),
+(29, 64, 69, 78, 5, NULL, 1, '24726.jpg', 0, 0),
+(30, 61, 40, 76.666666666667, 3, NULL, 1, '48361.jpg', 0, 0),
 (31, 57, 67, 65, 2, NULL, 1, '85608.jpg', 0, 0),
 (32, 56, 35, 40, 3, NULL, 1, '87686.jpg', 0, 0);
 
@@ -774,16 +775,7 @@ CREATE TABLE IF NOT EXISTS `purchases` (
   `user_id` int(11) NOT NULL,
   `total_price` double NOT NULL,
   PRIMARY KEY (`purchase_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
-
---
--- Dumping data for table `purchases`
---
-
-INSERT INTO `purchases` (`purchase_id`, `user_id`, `total_price`) VALUES
-(1, 1, 302.4),
-(4, 1, 390.6),
-(5, 1, 334);
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -798,18 +790,6 @@ CREATE TABLE IF NOT EXISTS `purchase_items` (
   UNIQUE KEY `purchase_id` (`purchase_id`,`item_stock_id`),
   UNIQUE KEY `purchase_id_2` (`purchase_id`,`item_stock_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `purchase_items`
---
-
-INSERT INTO `purchase_items` (`purchase_id`, `item_stock_id`, `quantity`) VALUES
-(1, 29, 6),
-(2, 29, 1),
-(3, 29, 1),
-(4, 8, 6),
-(4, 29, 1),
-(5, 2, 20);
 
 -- --------------------------------------------------------
 
@@ -842,9 +822,9 @@ CREATE TABLE IF NOT EXISTS `users` (
 --
 
 INSERT INTO `users` (`user_id`, `email`, `first_name`, `last_name`, `address`, `gender`, `birth_date`, `is_designer`, `is_admin`, `avatar`, `coupon_meter`, `description`, `website_link`, `is_spammer`, `is_spammer_time`, `time_tracking_ctr`) VALUES
-(1, 'amabir@gmail.com', 'Amitt', 'ab', 'adsa', 'MALE', '1988-12-31', 1, 0, '8576.jpg', 100, '                     ewgj;ljadegrj'';era                     ', 'abcd', 0, NULL, 0),
+(1, 'amabir@gmail.com', 'Amitt', 'ab', 'adsa', 'MALE', '1988-12-31', 1, 0, '8576.jpg', 20, '                     ewgj;ljadegrj'';era                     ', 'abcd', 0, NULL, 0),
 (2, 'gabagaba@info.com', 'Umberto', 'de Cazale', '123 shapopo', 'MALE', '0001-01-01', 1, 0, '54770.png', 0, ' designing the best and most cutting edge clothing in all of west Mordor ', 'http://www.google.com', 0, NULL, 0),
-(3, 'boss@Boss.com', 'Boss', 'Bossss', 'Boss lane boss city', 'FEMALE', '1990-01-01', 0, 1, '', 100, '', '', 1, NULL, 7);
+(3, 'boss@Boss.com', 'Boss', 'Bossss', 'Boss lane boss city', 'FEMALE', '1990-01-01', 0, 1, '', 100, '', '', 0, NULL, 0);
 
 -- --------------------------------------------------------
 
