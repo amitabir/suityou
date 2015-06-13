@@ -4,14 +4,17 @@ include("header.php");
 if(isset($_GET['purchaseId'])) {
 	$purchaseItemQuery = mysql_query("SELECT * FROM purchase_items WHERE purchase_id=".$_GET['purchaseId']);
 ?>
-	<table border="1">
-		<tr>
-				<td>Name</td>
-				<td>Size</td>
-				<td>Quantity</td>
-				<td>Price</td>
-				<td>Item Details</td>
-		</tr>
+<div class="container">	
+	<table class="table" border="1">
+		<thead>
+			<tr>
+				<th>Name</th>
+				<th>Size</th>
+				<th>Quantity</th>
+				<th>Price</th>
+				<th>Item Details</th>
+			</tr>
+		</thead>
 <?php
 	while($purchaseItemRow = mysql_fetch_array($purchaseItemQuery)) {
 		$itemStockQuery = mysql_query("SELECT * FROM items_stock WHERE item_stock_id = ".$purchaseItemRow['item_stock_id']);
@@ -29,6 +32,10 @@ if(isset($_GET['purchaseId'])) {
 	}
 ?>
 	</table>
+</div>	
+	
 <?php
 }
 ?>
+</body>
+</html>

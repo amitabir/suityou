@@ -1,6 +1,5 @@
 <?php
 include("config.php");
-include("pagination.php");
 
 if(isset($_POST["page"])){
 	$page_number = filter_var($_POST["page"], FILTER_SANITIZE_NUMBER_INT, FILTER_FLAG_STRIP_HIGH); //filter number
@@ -40,8 +39,6 @@ if(isset($_GET["categoryID"]) and !empty($_GET["categoryID"])){
 	$query = $queryStart." AND att1.category_id = ".$categoryID;
 	$query = $queryStart.$queryEnd;
 }
-
-//echo $query;
 
 //SQL query that will fetch group of records depending on starting position and item per page. See SQL LIMIT clause
 $attQuery = mysql_query($query) or die(mysql_error());

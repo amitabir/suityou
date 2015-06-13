@@ -6,6 +6,7 @@ if(isset($_SESSION['user_id']) && isset($_SESSION['email']) && $_SESSION['email'
 {
 	//We log him out by clearing session
 	User::unSetArrayFromUser($_SESSION);
+	unset($_SESSION["cart_item"]);
 	header("Location: index.php");
 }
 else

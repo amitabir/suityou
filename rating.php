@@ -1,13 +1,28 @@
 <?php
-function showRating($matchId, $userId, $matchItemId, $size) {	
-	$queryUserMatch = mysql_query('SELECT rating FROM user_matchings WHERE user_id='.$userId.' AND match_id= ' . $matchId);
-	if (mysql_num_rows($queryUserMatch)>0){
-		$row = mysql_fetch_array($queryUserMatch);
-		$rating = $row['rating'];
+function showRating($matchId, $userId, $matchItemId, $size) {
+	if($userId == NULL){
+		if (!isset($_SESSION["user_data"])) {
+			$_SESSION["user_data"] = array();
+		}
+		if(isset($_SESSION['user_data']['user_matchings'])){
+			if(isset($_SESSION['user_data']['user_matchings'][$matchId])){
+				$rating = $_SESSION['user_data']['user_matchings'][$matchId]['rating'];
+			} else {
+				$rating = -1;
+			}
+		} else {
+			$rating = -1;
+		}
 	} else {
-		$rating = -1;
+		$queryUserMatch = mysql_query('SELECT rating FROM user_matchings WHERE user_id='.$userId.' AND match_id= ' . $matchId);
+		if (mysql_num_rows($queryUserMatch) > 0){
+			$row = mysql_fetch_array($queryUserMatch);
+			$rating = $row['rating'];
+		} else {
+			$rating = -1;
+		}
 	}
-	?>
+		?>
 		
 		<script type="text/javascript">
 				$(function () {

@@ -91,7 +91,7 @@ if(!empty($_GET["itemId"])) {
 		                    <select class="form-control" name="type">
 								<option></option>
 		                        <option <?php if ($itemForUpdate != NULL) {if ($itemForUpdate->type == 'TOP') echo "selected";} ?> value="TOP">TOP</option>
-		                        <option <?php if ($itemForUpdate != NULL) {if ($itemForUpdate->gender == 'BOTTOM') echo "selected";} ?> value="BOTTOM">BOTTOM</option>
+		                        <option <?php if ($itemForUpdate != NULL) {if ($itemForUpdate->type == 'BOTTOM') echo "selected";} ?> value="BOTTOM">BOTTOM</option>
 		                    </select>
 							<label for="type" class="error" style="display: none;"></label>
 						</div>
