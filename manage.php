@@ -11,6 +11,7 @@ if (isset($_SESSION['user_id'],$_SESSION['email'])){
 				<ul>				
 					<li><a href="manage_matches.php"> Manage Matches </a> </li>
 					<li><a href="stats.php"> Statistics </a> </li>
+					<li><a href="view_score.php"> Trend Scores </a> </li>
 					<li><a href="constants.php"> Manage Constants </a> </li>
 				</ul></h4>
 

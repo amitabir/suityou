@@ -822,9 +822,17 @@ CREATE TABLE IF NOT EXISTS `users` (
 --
 
 INSERT INTO `users` (`user_id`, `email`, `first_name`, `last_name`, `address`, `gender`, `birth_date`, `is_designer`, `is_admin`, `avatar`, `coupon_meter`, `description`, `website_link`, `is_spammer`, `is_spammer_time`, `time_tracking_ctr`) VALUES
-(1, 'amabir@gmail.com', 'Amitt', 'ab', 'adsa', 'MALE', '1988-12-31', 1, 0, '8576.jpg', 20, '                     ewgj;ljadegrj'';era                     ', 'abcd', 0, NULL, 0),
+(1, 'charlotte@suityou.fr', 'Charlotte', 'd''Avignon', 'adsa, République française', 'FEMALE', '1988-12-31', 1, 0, '8576.jpg', 0, 'Je suis le meilleur designer en europe!', 'abcd', 0, NULL, 0),
 (2, 'gabagaba@info.com', 'Umberto', 'de Cazale', '123 shapopo', 'MALE', '0001-01-01', 1, 0, '54770.png', 0, ' designing the best and most cutting edge clothing in all of west Mordor ', 'http://www.google.com', 0, NULL, 0),
-(3, 'boss@Boss.com', 'Boss', 'Bossss', 'Boss lane boss city', 'FEMALE', '1990-01-01', 0, 1, '', 100, '', '', 0, NULL, 0);
+(3, 'boss@Boss.com', 'Boss', 'Bossss', 'Boss lane boss city', 'FEMALE', '1990-01-01', 0, 1, '', 100, '', '', 0, NULL, 0),
+(4, 'user1@suityou.com', 'user', 'one', 'aa', 'MALE', '2015-06-01', 0, 0, '', 0, NULL, NULL, 0, NULL, 0),
+(5, 'user2@suityou.com', 'user', 'two', 'agf 2', 'FEMALE', '0001-01-01', 0, 0, '', 10, NULL, NULL, 0, NULL, 0),
+(6, 'user3@suityou.com', 'user', 'three', 'aa', 'MALE', '2015-06-01', 0, 0, '', 0, NULL, NULL, 0, NULL, 0),
+(7, 'user4@suityou.com', 'user', 'four', 'agf 2', 'FEMALE', '0000-00-00', 0, 0, '', 0, NULL, NULL, 0, NULL, 0),
+(8, 'hishi@suityou.jp', 'Hideko', 'Shinji', 'waka 14 JP', 'MALE', '0000-00-00', 1, 0, '', 0, NULL, 'http://japan.com', 0, NULL, 0),
+(9, 'clarasmith@suityou.co.uk', 'Clara', 'Smith', 'blabla 14 London, UK', 'FEMALE', '0000-00-00', 1, 0, '', 0, NULL, 'http://www.gmail.com', 0, NULL, 0),
+(10, 'mzaltzman@gmail.com', 'Riku', 'Zaltzman', 'TAU, Tel-Aviv', 'MALE', '0000-00-00', 0, 1, '', 0, NULL, 'http://japan.com', 0, NULL, 0),
+(11, 'amabir@gmail.com', 'Amit', 'Abir', 'TAU, Tel-Aviv', 'MALE', '0000-00-00', 0, 1, '', 0, NULL, 'http://www.gmail.com', 0, NULL, 0);
 
 -- --------------------------------------------------------
 
