@@ -85,7 +85,7 @@ if (!empty($_GET["gender"])){
 					<input class="form-control" type="text" id="bottom_item_id" name="bottom_item_id" value="<?php if ($match != NULL) echo $match['bottomItemId']; ?>" />
 					<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#itemsModal" data-whatever="bottom">Select Bottom Item</button>
 				</div>
-			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#meter" >Show Score!</button>
+			
 <div class="modal fade" id="itemsModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -98,16 +98,13 @@ if (!empty($_GET["gender"])){
       </div>
     </div>
   </div>
- 
+  
+
   
   <div class="row">
-<div class="col-md-12" align="center">
-	<select id="gender"> 
-	<option />
-	<option value="male" <?php if ($gender == "male") echo "selected"; ?> >Men</option>
-	<option value="female" <?php if ($gender == "female") echo "selected"; ?>>Women</option>
-</select>
-</div>
+  <div id=topItem class="col-md-12" align="center">
+ <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#meter" >Show Score!</button>
+  </div>
 </div>
 
 

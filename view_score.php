@@ -16,17 +16,7 @@ include("header.php");
 
 $(document).ready(function() {
 
-	loadMatchInit(); //load initial records
-	
-	/* 	<?php if ($total_pages > 1) {  ?>
-		$('#pages').twbsPagination({
-				totalPages: <?php echo $total_pages; ?>,
-				visiblePages: 5,
-				onPageClick: function (event, page) {
-					loadResults(page);
-				}
-		});
-		<?php } ?> */
+	loadMatchInit();
 });
 </script>
         
@@ -53,6 +43,7 @@ $(document).ready(function() {
 			<ul id="pages" class="pagination-sm"></ul>
 		</div>
 	</div>
+	
 </div>
 
 
