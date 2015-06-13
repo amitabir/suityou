@@ -114,7 +114,12 @@ function showUpdate(elementId) {
 		    $item_total = 0;
 			if ($displayMaxMessage) {
 				?> 
-					<h3> The quantity has been changed to an amount that is currently available for this item. </h3>
+					<div id="max_coupon">
+						<div class="alert alert-warning alert-dismissible" role="alert" >
+						  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						  <p>The quantity has been changed to an amount that is currently available for this item.</p>
+						</div>
+					</div>
 		<?php 
 		}
 		?>	

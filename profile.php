@@ -194,7 +194,7 @@ if(isset($_SESSION['user_id'],$_SESSION['email']))
 						  		{
 						  		?>
 						  		<div class="form-actions">
-						        	<button class="btn btn-default btn-block" form="update_form" type="submit" <?php echo $read_only.' '; echo $disabled.' '; echo $hidden?> >Complete Registration</button>
+						        	<button class="btn btn-default btn-block" form="update_form" type="submit" <?php echo $read_only.' '; echo $disabled.' '; echo $hidden?> >Complete Registration</button
 						        </div> 	
 						  		<?php
 						  		}
@@ -203,13 +203,11 @@ if(isset($_SESSION['user_id'],$_SESSION['email']))
 				    </div>
 				</div>
 	    </div>
-	    </div>
 	    <?php	 	
 	    }
 	    ?>
+		</div>
 	  </div>
-	</div>
-</div>
 <?php 
 		}
 		else 

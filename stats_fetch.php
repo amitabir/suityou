@@ -129,52 +129,52 @@ $('#att2').on('change', function() {
 				</div>
 		</div>
 
-	
+	<div class="row">
+		<table class="table">
+			<thead>
+				<th>Attribute 1</th>
+				<th>Attribute 2</th>
+				<th>Average</th>
+				<th>St. Dev.</th>
+				<th>Count</th>
+			</thead>
+			<tbody>
 <?php
 		while($row = mysql_fetch_array($attQuery)) {
 			$att1Name = $row[0];
 			$att2Name = $row[1];
 			$avg = $row[2];
 			$stDev = $row[3];
+			$count = $row[4];
  ?>
- 
-			<div class="row">
-				<div class="col-md-3">
+ 			<tr>
+				<td>
 					<?php echo $att1Name ?>
-				</div>
-				<div class="col-md-3">
+				</td>
+				<td>
 					<?php echo $att2Name ?>
-				</div>
-				<div class="col-md-3">
-				<div id="jRate"></div>
-				<div id="gauge" style="width: 100px; height:80px;"></div>
+				</td>
+				<td>
+				<div id="gauge_<?php echo $att1Name; ?>_<?php echo $att2Name; ?>" style="width: 100px; height:80px;"></div>
 					<script>
 					var g = new JustGage({
-					  id: "gauge",
+					  id: "gauge_<?php echo $att1Name; ?>_<?php echo $att2Name; ?>",
 					  value: <?php echo round($avg,2) ?>,
 					  min: 0,
 					  max: 10,
-					  title: "Average"
+					  title: " ",
+					  levelColors:["#FF0000", "#FFCC33","#00FF00"]
 					});
 					</script>
-				</div>
-				<div class="col-md-3">
+				</td>
+				<td>
 					<?php echo round($stDev,2) ?>
-				</div>
-
-			</div>
+				</td>
+				<td>
+					<?php echo $count ?>
+				</td>
+			</tr>
 	<?php	} ?>
-
-
-	<div class="row text-center">
-        <div class="col-lg-12">
-<?php 
-			//echo '<div align="center">';
-			/* We call the pagination function here to generate Pagination link for us. 
-			As you can see I have passed several parameters to the function. */
-			//echo paginate_function($item_per_page, $page_number, $get_total_rows[0], $total_pages);
-			//echo '</div>';
-?>
-		</div>
-	</div>
+		</tbody>
+	</table>
 </div>

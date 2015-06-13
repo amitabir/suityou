@@ -415,8 +415,8 @@
 	}
 	
 	function getUserNextMatchQuestion($userId) {
-		$itemsQuery = mysql_query("SELECT matches.* FROM item_matchings matches INNER JOIN items it1, items it2 WHERE matches.match_type = 1 AND it1.item_id = matches.top_item_id AND it2.item_id = matches.bottom_item_id AND it1.designer_id != ".$userId." AND it2.designer_id != ".$userId." ORDER BY match_count");
 		if($userId == NULL) {
+			$itemsQuery = mysql_query("SELECT * FROM item_matchings WHERE match_type = 1 ORDER BY match_count");
 			if(!isset($_SESSION["user_data"]["user_matchings"])){
 				while($row = mysql_fetch_array($itemsQuery)) {
 					return $row["match_id"];
@@ -429,6 +429,7 @@
 				}
 			}
 		} else {
+			$itemsQuery = mysql_query("SELECT matches.* FROM item_matchings matches INNER JOIN items it1, items it2 WHERE matches.match_type = 1 AND it1.item_id = matches.top_item_id AND it2.item_id = matches.bottom_item_id AND it1.designer_id != ".$userId." AND it2.designer_id != ".$userId." ORDER BY match_count");
 			while($row = mysql_fetch_array($itemsQuery)) {
 				$userMatchesQuery = mysql_query("SELECT * FROM user_matchings WHERE match_id = ".$row["match_id"]);
 				$userAnswered = mysql_num_rows($userMatchesQuery);

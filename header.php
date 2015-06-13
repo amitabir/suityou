@@ -55,6 +55,7 @@ require_once 'config.php';
      ?>
           <p class="navbar-text">Hello <?php echo $_SESSION['email']?></p> 
           <li><a href="cart.php">Shopping Cart</a></li>
+		  <li><a href="user_purchases.php">My Purchases</a></li>
           <li><a href="profile.php">Profile</a></li>  
           <li><a href="connexion.php">Logout</a></li>
      <?php if (isset($_SESSION['is_designer']) && !empty($_SESSION['is_designer']))

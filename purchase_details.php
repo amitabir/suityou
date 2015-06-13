@@ -25,7 +25,7 @@ if(isset($_GET['purchaseId'])) {
 		<td><?php echo $item->name; ?></td>
 		<td><?php echo $itemStockRow['size']; ?></td>
 		<td><?php echo $purchaseItemRow['quantity']; ?></td>
-		<td><?php echo $item->price; ?></td>
+		<td><?php echo "$".$item->price; ?></td>
 		<td><a href="show_item?itemId=<?php echo $item->itemId; ?>">Show Details</a></td>
 	</tr>
 <?php

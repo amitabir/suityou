@@ -1,5 +1,6 @@
 <?php
 include("header.php");
+
 ?>	
 <script type="text/javascript">
 	function loadCatTable(page, category, att1, att2) {
@@ -14,15 +15,6 @@ $(document).ready(function() {
 
 	loadInitialCatTable(1); //load initial records
 	
-	/* 	<?php if ($total_pages > 1) {  ?>
-		$('#pages').twbsPagination({
-				totalPages: <?php echo $total_pages; ?>,
-				visiblePages: 5,
-				onPageClick: function (event, page) {
-					loadResults(page);
-				}
-		});
-		<?php } ?> */
 });
 </script>
         
