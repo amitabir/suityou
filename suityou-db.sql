@@ -1,13 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 3.5.8.2
+-- version 4.1.14
 -- http://www.phpmyadmin.net
 --
--- Host: localhost
--- Generation Time: Jun 13, 2015 at 02:00 PM
--- Server version: 5.6.21
--- PHP Version: 5.5.14
+-- Host: 127.0.0.1
+-- Generation Time: Jun 14, 2015 at 06:06 PM
+-- Server version: 5.6.17
+-- PHP Version: 5.5.12
 
-SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
 
@@ -187,48 +187,46 @@ CREATE TABLE IF NOT EXISTS `items` (
 
 INSERT INTO `items` (`item_id`, `name`, `gender`, `type`, `description`, `price`, `designer_id`, `creation_time`, `picture`) VALUES
 (30, 'Red pants with black blotts', 'FEMALE', 'BOTTOM', 'Red And Black pants', 23.9, 1, '2015-06-08 19:24:52', '3428.jpg'),
-(33, 'White skirt with cat pattern', 'FEMALE', 'BOTTOM', 'Adorable short white skirt with cute black cats pattern', 25, 2, '2015-06-09 01:13:05', '52905.jpg'),
+(33, 'White skirt with cat pattern', 'FEMALE', 'BOTTOM', 'Adorable short white skirt with cute black cats pattern', 25, 9, '2015-06-09 01:13:05', '52905.jpg'),
 (34, 'White Skirt with owls', 'FEMALE', 'BOTTOM', 'We Bring you another wonderfull creation by the great Umberto- another adorable white dress with the cutest owl pattern you have ever seen!', 20, 2, '2015-06-09 01:15:35', '16849.jpg'),
-(35, 'Elegant black skirt', 'FEMALE', 'BOTTOM', 'An elegant black skirt. perfect for IDK. stuff I guess..', 10, 2, '2015-06-09 01:17:23', '47998.jpg'),
-(36, 'Pants', 'MALE', 'BOTTOM', 'these are definetly pants. the kind you wear.', 100, 2, '2015-06-09 01:19:17', '10126.jpg'),
+(35, 'Elegant black skirt', 'FEMALE', 'BOTTOM', 'An elegant black skirt. perfect for IDK. stuff I guess..', 10, 9, '2015-06-09 01:17:23', '47998.jpg'),
+(36, 'Pants', 'MALE', 'BOTTOM', 'these are definetly pants. the kind you wear.', 100, 1, '2015-06-09 01:19:17', '10126.jpg'),
 (37, 'Black Jeans', 'FEMALE', 'BOTTOM', 'These are hideous! don''t get caught wearing this atrocity ;) we promise to never make anything like this again. Umberto was blind drunk.', 1, 2, '2015-06-09 01:21:57', '44043.jpg'),
-(38, 'Denim shorts', 'FEMALE', 'BOTTOM', 'These are nice. you should buy them. come on. they work with errrrryyything!', 20, 2, '2015-06-09 01:24:33', '88357.jpg'),
-(39, 'Denim shorts for dudes', 'MALE', 'BOTTOM', 'name says it all. gotta love the belt buckle.', 35.99, 2, '2015-06-09 01:39:03', '32004.jpg'),
-(40, 'Gym teacher shorts (sorry Ofer..)', 'MALE', 'BOTTOM', 'NOT for running! check out that cool bright blue stripe, saying to your students: Im tough, but also elegant!.\r\n\r\n disclaimer: Umberto de Cazale will not be held liable for people being lonley forever after choosing to be a gym teacher. It''s YOUR responsibilty. Just do anything else.\r\n\r\nnote: I have NO unresolved issues with my former gym teacher, may he burn in hell.', 15.98, 2, '2015-06-09 01:47:47', '95739.jpg'),
+(38, 'Denim shorts', 'FEMALE', 'BOTTOM', 'These are nice. you should buy them. come on. they work with errrrryyything!', 20, 9, '2015-06-09 01:24:33', '88357.jpg'),
+(39, 'Denim shorts for dudes', 'MALE', 'BOTTOM', 'name says it all. gotta love the belt buckle.', 35.99, 1, '2015-06-09 01:39:03', '32004.jpg'),
+(40, 'Gym teacher shorts (sorry Ofer..)', 'MALE', 'BOTTOM', 'NOT for running! check out that cool bright blue stripe, saying to your students: Im tough, but also elegant!.\r\n\r\n disclaimer: Umberto de Cazale will not be held liable for people being lonley forever after choosing to be a gym teacher. It''s YOUR responsibilty. Just do anything else.\r\n\r\nnote: I have NO unresolved issues with my former gym teacher, may he burn in hell.', 15.98, 1, '2015-06-09 01:47:47', '95739.jpg'),
 (41, 'Gym Shorts', 'MALE', 'BOTTOM', 'great for a run in the park.', 10, 2, '2015-06-09 01:49:42', '4557.jpg'),
-(42, 'golden Elephant patterned black pants', 'FEMALE', 'BOTTOM', 'chill, bro..', 5, 2, '2015-06-09 01:56:08', '13996.jpg'),
-(43, 'Colorful shorts', 'MALE', 'BOTTOM', 'yeah.', 15.99, 2, '2015-06-09 02:00:25', '22544.jpg'),
-(44, 'Metallica-and justice for all... shirt', 'MALE', 'TOP', 'and justice for all... album cover shirt. wear it so other people will know what kind of music you like.', 10, 2, '2015-06-09 02:10:51', '77649.jpg'),
-(45, 'black denim vest', 'MALE', 'TOP', 'don''t do it.', 15, 2, '2015-06-09 02:14:22', '40210.jpg'),
-(46, 'grey undershirt', 'FEMALE', 'TOP', 'umm..hmm..', 10, 2, '2015-06-09 02:16:16', '33060.jpg'),
-(47, 'black undershirt', 'FEMALE', 'TOP', 'what the name says', 10, 2, '2015-06-09 02:17:54', '77118.jpg'),
+(42, 'golden Elephant patterned black pants', 'FEMALE', 'BOTTOM', 'chill, bro..', 5, 9, '2015-06-09 01:56:08', '13996.jpg'),
+(43, 'Colorful shorts', 'MALE', 'BOTTOM', 'yeah.', 15.99, 9, '2015-06-09 02:00:25', '22544.jpg'),
+(44, 'Metallica-and justice for all... shirt', 'MALE', 'TOP', '...and justice for all album cover shirt. wear it so other people will know what kind of music you like.', 10, 1, '2015-06-09 02:10:51', '77649.jpg'),
+(45, 'black denim vest', 'MALE', 'TOP', 'don''t do it.', 15, 9, '2015-06-09 02:14:22', '40210.jpg'),
+(46, 'grey tank top 2', 'FEMALE', 'TOP', 'umm..hmm..', 10, 9, '2015-06-09 02:16:16', '33060.jpg'),
+(47, 'black tank top', 'FEMALE', 'TOP', 'what the name says', 10, 2, '2015-06-09 02:17:54', '77118.jpg'),
 (48, 'grey shirt', 'MALE', 'TOP', 'cool cars.', 17.99, 2, '2015-06-09 02:19:58', '34152.jpg'),
-(49, 'yellow shirt', 'MALE', 'TOP', 'like the red one but yellow', 11.11, 2, '2015-06-09 02:21:56', '11829.jpg'),
-(50, 'red shirt', 'MALE', 'TOP', 'it''s like the red one but yellow', 11.09, 2, '2015-06-09 02:24:10', '20743.jpg'),
+(49, 'yellow shirt', 'MALE', 'TOP', 'like the red one but yellow', 11.11, 1, '2015-06-09 02:21:56', '11829.jpg'),
+(50, 'red shirt', 'MALE', 'TOP', 'it''s like the red one but yellow', 11.09, 1, '2015-06-09 02:24:10', '20743.jpg'),
 (51, 'Hippie undershirt', 'FEMALE', 'TOP', 'ugh..why..', 9.1101, 2, '2015-06-09 02:26:29', '90826.jpg'),
 (52, 'white shirt', 'FEMALE', 'TOP', 'a white shirt.', 15, 2, '2015-06-11 04:17:49', '94461.jpg'),
 (53, 'black coat', 'MALE', 'TOP', 'a warm black coat. tons of pockets.', 120, 2, '2015-06-11 04:19:00', '32367.jpg'),
-(54, 'a striped white shirt', 'MALE', 'TOP', '', 10, 2, '2015-06-11 04:20:03', '68796.jpg'),
+(54, 'a striped white shirt', 'MALE', 'TOP', '', 10, 9, '2015-06-11 04:20:03', '68796.jpg'),
 (55, 'grey tank top', 'FEMALE', 'TOP', '', 13.45, 2, '2015-06-11 04:21:10', '50476.jpg'),
-(56, 'blue shirt', 'FEMALE', 'TOP', 'bright blue shirt with white lace', 17.89, 2, '2015-06-11 04:22:30', '45816.jpg'),
-(57, 'white shirt with cool circle thing', 'FEMALE', 'TOP', 'awesome white shirt with cool circle thing. its great?', 12.11, 2, '2015-06-11 04:24:01', '86309.jpg'),
+(56, 'blue shirt', 'FEMALE', 'TOP', 'bright blue shirt with white lace', 17.89, 8, '2015-06-11 04:22:30', '45816.jpg'),
+(57, 'white shirt with cool circle thing', 'FEMALE', 'TOP', 'awesome white shirt with cool circle thing. its great?', 12.11, 8, '2015-06-11 04:24:01', '86309.jpg'),
 (58, 'orange', 'MALE', 'TOP', 'orange shirt. great for golfing with your buddies', 150, 2, '2015-06-11 04:25:22', '79818.jpg'),
-(59, 'white tank top w/ feather pattern', 'FEMALE', 'TOP', 'yup', 11.1111, 2, '2015-06-11 04:26:36', '58227.jpg'),
-(60, 'flannel 90s shirt', 'FEMALE', 'TOP', 'smells like awesome', 45.9, 2, '2015-06-11 04:28:28', '71975.jpg'),
+(59, 'white tank top w/ feather pattern', 'FEMALE', 'TOP', 'yup', 11.1111, 1, '2015-06-11 04:26:36', '58227.jpg'),
+(60, 'flannel 90s shirt', 'FEMALE', 'TOP', 'smells like awesome', 45.9, 9, '2015-06-11 04:28:28', '71975.jpg'),
 (61, 'pink/red shirt?', 'MALE', 'TOP', 'its pink? is it red? what?', 10.21, 2, '2015-06-11 04:29:37', '93963.jpg'),
-(62, 'pink/red shirt?', 'MALE', 'TOP', 'its pink? is it red? what?', 10.21, 2, '2015-06-11 04:29:52', '16770.jpg'),
-(63, 'red V neck shirt', 'MALE', 'TOP', '', 50, 2, '2015-06-11 04:31:16', '17102.jpg'),
-(64, 'colorful hippie shirt', 'FEMALE', 'TOP', 'whaaa', 99.99, 2, '2015-06-11 04:32:44', '95547.jpg'),
-(65, 'kawaii yellow jake the dog kigurumi- just top part', 'MALE', 'TOP', 'kawaiiiii', 10, 2, '2015-06-11 04:34:38', '44537.jpg'),
-(66, 'kawaii yellow jake the dog kigurumi- just top part', 'MALE', 'TOP', 'kawaiiiii', 10, 2, '2015-06-11 04:35:20', '45334.jpg'),
-(67, 'Flowery Denim shorts ', 'FEMALE', 'BOTTOM', 'flowerssss', 10, 2, '2015-06-11 04:37:12', '44037.jpg'),
+(63, 'red V neck shirt', 'MALE', 'TOP', '', 50, 9, '2015-06-11 04:31:16', '17102.jpg'),
+(64, 'colorful hippie shirt', 'FEMALE', 'TOP', 'whaaa', 99.99, 8, '2015-06-11 04:32:44', '95547.jpg'),
+(65, 'kawaii yellow jake the dog kigurumi- just top part', 'MALE', 'TOP', 'kawaiiiii', 10, 8, '2015-06-11 04:34:38', '44537.jpg'),
+(67, 'Flowery Denim shorts ', 'FEMALE', 'BOTTOM', 'flowerssss', 10, 8, '2015-06-11 04:37:12', '44037.jpg'),
 (68, 'Blue jeans', 'MALE', 'BOTTOM', '', 11.1, 2, '2015-06-11 04:38:06', '65817.jpg'),
-(69, 'bright blue jeans for the gals', 'FEMALE', 'BOTTOM', '', 1, 2, '2015-06-11 04:39:00', '50818.jpg'),
-(70, 'black training shorts', 'MALE', 'BOTTOM', 'cool', 101, 2, '2015-06-11 04:39:58', '8072.jpg'),
-(71, 'kawaii', 'FEMALE', 'BOTTOM', 'beautiful skirt. so cute. much awesome.', 32, 2, '2015-06-11 04:41:21', '97198.jpg'),
-(72, 'Black Jeans for the dudes', 'MALE', 'BOTTOM', 'better then the other pair', 190, 2, '2015-06-11 04:42:34', '91684.jpg'),
+(69, 'bright blue jeans for the gals', 'FEMALE', 'BOTTOM', '', 1, 8, '2015-06-11 04:39:00', '50818.jpg'),
+(70, 'black training shorts', 'MALE', 'BOTTOM', 'cool', 101, 1, '2015-06-11 04:39:58', '8072.jpg'),
+(71, 'kawaii', 'FEMALE', 'BOTTOM', 'beautiful skirt. so cute. much awesome.', 32, 8, '2015-06-11 04:41:21', '97198.jpg'),
+(72, 'Black Jeans for the dudes', 'MALE', 'BOTTOM', 'better then the other pair', 190, 9, '2015-06-11 04:42:34', '91684.jpg'),
 (73, 'yellow shorts', 'MALE', 'BOTTOM', '', 150, 2, '2015-06-11 04:43:37', '76538.jpg'),
-(74, 'another black skirt', 'FEMALE', 'BOTTOM', 'it''s different. totes diff. believe us.', 131, 2, '2015-06-11 04:45:07', '92825.jpg');
+(74, 'another black skirt', 'FEMALE', 'BOTTOM', 'it''s different. totes diff. believe us.', 131, 8, '2015-06-11 04:45:07', '92825.jpg');
 
 -- --------------------------------------------------------
 
@@ -815,7 +813,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `is_spammer_time` int(11) DEFAULT NULL,
   `time_tracking_ctr` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`user_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=12 ;
 
 --
 -- Dumping data for table `users`
