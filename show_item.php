@@ -41,6 +41,7 @@ $queryMatches = mysql_query('SELECT match_id, top_item_id, bottom_item_id from i
 $designerNameQuery = mysql_query('SELECT first_name, last_name from users WHERE user_id = '.$item->designerId);
 $designerRow = mysql_fetch_array($designerNameQuery);
 ?>
+<script type="text/javascript" src="show_item_validator.js?2"></script>
 <div class="container">	
 	<div class="row">
         <div class="col-md-12">
@@ -82,7 +83,9 @@ $designerRow = mysql_fetch_array($designerNameQuery);
 								<input type="text" name="quantity" value="1" />
 								<input type="submit" value="Add To Cart" class="btnAddCart" />
 							</form>
-							
+							<div id="errorBox">
+								
+							</div>
 							<script>
 							$(document).ready(function(){
 								$('#addToCartForm').submit(function() {
