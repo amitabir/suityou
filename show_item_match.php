@@ -17,10 +17,12 @@ $percent= $row['match_percent'];
 $matchItem = Item::getItemByID($matchItemId);
 
 ?>
-
-	<h4 align="center"><span class="label label-info"><?php echo round($percent, 0); ?>% Match!</span></h4>
-	
-	<a href="show_item.php?itemId=<?php echo $matchItemId; ?>" class="thumbnail">
-	<img src="<?php echo "images/items/".$matchItem->picture; ?>" alt="" width="100" height="100" />
-	</a>
-	<span align="center"><?php showRating($matchId, $userId, $matchItemId, 17); ?></span><br/>
+	<div class="container col-xs-6 col-md-4" style="text-align:center;" >
+			<h4 align="center"><span class="label label-info " style="position:relative; display:inline"><?php echo round($percent, 0); ?>% Match!</span></h4>
+			<div class="img-container-small" align="center">
+				<a href="show_item.php?itemId=<?php echo $matchItemId; ?>" class="thumbnail">
+				<img class="img-responsive" src="<?php echo "images/items/".$matchItem->picture; ?>" alt=""/>
+				</a>
+			</div>
+			<span align="center"><?php showRating($matchId, $userId, $matchItemId, 17); ?></span><br/>
+	</div>

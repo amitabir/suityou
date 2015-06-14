@@ -51,9 +51,11 @@ $itemsQuery = mysql_query('SELECT * FROM items WHERE designer_id = '.$designerId
  ?>
 				<tr>
 					<td>
+						<div class="img-container-thumbnail">
 						<a href="show_item.php?itemId=<?php echo $itemId; ?>" class="thumbnail">
-						    <img src="images/items/<?php echo $picture; ?>" alt="" style="width:200px;height:200px">
+						    <img class="img-responsive" src="images/items/<?php echo $picture; ?>" alt="" >
 						</a>
+						</div>
 					</td>
 					<td>
 						<p><strong><?php echo $name; ?></strong></p>

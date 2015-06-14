@@ -63,9 +63,9 @@ $itemsQuery = mysql_query('SELECT * FROM items WHERE gender = "'.$gender.'" AND 
 			if ($i % $itemsPerRow == 0) { ?>
 				<div class="row">
 <?php		} ?>
-					<div class="col-md-4">
+					<div class="col-md-4" >
 						<a href="show_item.php?itemId=<?php echo $itemId; ?>" class="thumbnail">
-						    <img src="images/items/<?php echo $picture; ?>" alt="" style="width:200px;height:200px">
+						    <img class="img-responsive shop_thumbnail" src="images/items/<?php echo $picture; ?>" alt=""  >
 						    <p align="center"> <?php echo $name; ?></p>
 							<p align="center"> $<?php echo $price; ?></p>
 						</a>

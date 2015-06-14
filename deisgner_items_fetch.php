@@ -31,10 +31,14 @@ $itemsQuery = mysql_query('SELECT * FROM items WHERE designer_id = '.$designerId
  ?>
 				<tr>
 					<td>
+					<div class="img-container-designer">
 						<a href="show_item.php?itemId=<?php echo $itemId; ?>" class="thumbnail">
-						    <img src="images/items/<?php echo $picture; ?>" alt="" style="width:100px;height:100px">
+						    <img class="img-responsive" src="images/items/<?php echo $picture; ?>" alt="" >
 						</a>
+					</div>
 					</td>
+
+
 					<td>
 						<p><strong><?php echo $name; ?></strong></p>
 						<p><?php echo $description; ?></p>

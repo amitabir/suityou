@@ -53,7 +53,7 @@ $designerRow = mysql_fetch_array($designerNameQuery);
 	<div class="row">
 		
         <div class="col-md-3">
-        	<div class="img-container-thumbnail">
+        	<div class="img-container-show">
             	<img class="img-responsive" src="<?php echo "images/items/". $item->picture; ?>" alt=""/>
             </div>
         </div>
