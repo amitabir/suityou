@@ -62,7 +62,9 @@ if ($matchId == -1) {
 </script>
 		<div class="row">
 			<div class="col-md-8" align="center">
-				<p><img id='match_pic' src=images/models/<?php echo $modelPic;?> height='500' width='500' /> </p>
+				<div class="img-container">
+				<p><img id='match_pic' src=images/models/<?php echo $modelPic;?> class="img-responsive"/> <!--height='500' width='500' --></p>
+				</div>
 				<p> <div id="jRate"></div> </p>
 				<p><h3> <label class="label label-warning" id="rating_label">0/10</label> </h3> </p>
 			</div>

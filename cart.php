@@ -154,7 +154,7 @@ function showUpdate(elementId) {
 						</td>
 						<td><?php echo $item["size"]; ?></td>
 						<td><form name="updateCartForm_<?php echo $item["id"]; ?>" method="post" action="cart.php?action=update&itemStockId=<?php echo $item["id"]; ?>">
-<input type="text" name="qty_<?php echo $item["id"]; ?>" value="<?php echo $item["quantity"]; ?>" size=8 onkeyup="showUpdate('qty_update_<?php echo $item["id"]; ?>')"/><input type="submit" value="Update" id="qty_update_<?php echo $item["id"]; ?>" style='display:none' /></form></td>
+<input type="text" name="qty_<?php echo $item["id"]; ?>" value="<?php echo $item["quantity"]; ?>" size=8 onkeyup="showUpdate('qty_update_<?php echo $item["id"]; ?>')"/><input class="btn btn-primary" type="submit" value="Update" id="qty_update_<?php echo $item["id"]; ?>" style='display:none' /></form></td>
 						<td align=right><?php echo "$".$item["price"]; ?></td>
 					</tr>
 <?php
