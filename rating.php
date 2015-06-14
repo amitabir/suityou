@@ -40,12 +40,15 @@ function showRating($matchId, $userId, $matchItemId, $size) {
 						width: <?php echo $size; ?>,
 						height: <?php echo $size; ?>,
 						precision: 0.5,
+						onChange: function(rating) {
+							$("#rating_label_<?php echo $matchId; ?>").text(rating*2+"/10");
+						},
 						onSet: function(rating) {
 							var endTime = new Date().getTime();
 							var ratingTime = endTime-startTime;
 							$.ajax({ url: "handle_match_rating.php?skipped=false&matchId=<?php echo $matchId; ?>&userId=<?php echo $userId; ?>&rating="+rating*2+"&ratingTime="+ratingTime+"&matchItemId=<?php echo $matchItemId; ?>",
 							        context: document.body,
-							        success: function(result) {									
+							        success: function(result) {							
 							        	$("#match_<?php echo $matchId; ?>").html(result);
 							        }});
 						}
@@ -56,6 +59,11 @@ function showRating($matchId, $userId, $matchItemId, $size) {
 			You Rated:
 		<?php } ?>
 		<div id="jRate_<?php echo $matchId?>"></div>
+		<?php if ($rating == -1) { ?>
+			<p><h3> <label class="label label-warning" id="rating_label_<?php echo $matchId?>">0/10</label> </h3> </p>
+		<?php } else { ?>
+			<p><h3> <label class="label label-warning" id="rating_label_<?php echo $matchId?>"><?php echo $rating; ?>/10</label> </h3> </p>
+		<?php } ?>
 <?php
 }
 ?>
