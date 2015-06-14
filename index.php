@@ -8,7 +8,7 @@
 	<div class="row">
     <div class="col-lg-12" align="center">
         <h1 class="page-header">
-            Welcome to SuitYou
+            Welcome to <br/><img src="images/Banner.png"/ height="84" width="228"> 
         </h1>
     </div>
 	</div>
