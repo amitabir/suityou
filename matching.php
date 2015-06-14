@@ -15,11 +15,7 @@ if ($userId != NULL) {
 	$couponMeterValue = 0;
 }
 $matchId = getUserNextMatchQuestion($userId);
-
-// TODO: don't show a designer mathces with his clothes
 ?>
-<script src="js/raphael.2.1.0.min.js"></script>
-<script src="js/justgage.1.0.1.min.js"></script>
 <script>
 function refreshGage(value) {
 	g.refresh(value);

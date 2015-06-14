@@ -83,7 +83,7 @@ $matchesQuery = mysql_query('SELECT matches.*, it1.picture as top_item_picture, 
 						</div>
 					</td>
 					<td>
-						<p><a href='add_match?matchId=<?php echo $matchId; ?>'> <button class="btn btn-primary">Update Match</button> </a></p>
+						<p><a href='add_match.php?matchId=<?php echo $matchId; ?>'> <button class="btn btn-primary">Update Match</button> </a></p>
 						<p><a href='manage_match_logic?action=remove&matchId=<?php echo $matchId; ?>'><button class="btn btn-primary"> Remove Match</button> </a></p>
 					</td>
 <?php 	}

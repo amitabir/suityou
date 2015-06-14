@@ -63,8 +63,8 @@ if ($matchId == -1) {
 </script>
 		<div class="row">
 			<div class="col-md-8" align="center">
-				<div class="img-container">
-				<p><img id='match_pic' src=images/models/<?php echo $modelPic;?> class="img-responsive"/> <!--height='500' width='500' --></p>
+				<div class="img-container" id="match_pic">
+				<p><img  src=images/models/<?php echo $modelPic;?> class="img-responsive"/> <!--height='500' width='500' --></p>
 				</div>
 				<p> <div id="jRate"></div> </p>
 				<p><h3> <label class="label label-warning" id="rating_label">0/10</label> </h3> </p>
@@ -116,7 +116,7 @@ if ($matchId == -1) {
 				},
 				onSet: function(rating) {
 					var endTime = new Date().getTime();
-					var ratingTime = endTime-startTime;
+					var ratingTime = endTime-startTime;										
 					$.ajax({ url: "handle_match_rating.php?skipped=false&matchId=<?php echo $matchId; ?>&userId=<?php echo $userId; ?>&rating="+rating*2+"&ratingTime="+ratingTime,
 					        context: document.body,
 					        success: function(result) {
@@ -138,7 +138,7 @@ if ($matchId == -1) {
 		    $("#skipBtn").click(function(){
 		        $.ajax({url: "handle_match_rating.php?skipped=true&matchId=<?php echo $matchId; ?>&userId=<?php echo $userId; ?>", success: function(result){
 		            $("#match").html(result);
-					$("#match_pic").effect("slide", {}, 800);
+					$("#match_pic").effect("slide", {direction: "left"}, 800);
 					<?php if($userId == NULL ){ ?>$("#skipBtn").tooltip({title:"Only signed up users can skip matches"});<?php } ?>
 		        }});
 		    });

@@ -94,6 +94,15 @@
 		return false;
 	}
 	
+	function calculateTrendScoreFor2Items($item1ID, $item2ID){
+		$attributesData = getAttributesData();
+		$item1 = Item::getItemByID($item1ID);
+		$item2 = Item::getItemByID($item2ID);
+		$item1Attributes = $item1->getItemAttributes();
+		$item2Attributes = $item2->getItemAttributes();
+		return calculateTrendScore($item1Attributes, $item2Attributes, $attributesData);
+	}
+	
 	function calculateTrendScore($topItemAttributes, $bottomItemAttributes, $attributesData){
 		$constantsArray = getConstants();
 		$score = 0;
@@ -132,8 +141,7 @@
 		return array($matchExists, $trendExists);
 	}
 	
-	function dealWithNewVoteTrend() {
-		$constantsArray = getConstants();
+	function getAttributesData(){
 		$query = mysql_query("SELECT att1.attribute_id, att2.attribute_id, AVG(user_matchings.rating), COUNT(user_matchings.rating),
 		STDDEV(user_matchings.rating) FROM user_matchings INNER JOIN users, item_matchings, items it1, items it2, 
 		item_attributes itatt1, item_attributes itatt2, attributes att1, attributes att2 WHERE user_matchings.rating 
@@ -145,6 +153,12 @@
 		while($row = mysql_fetch_array($query)) {
 			$attributesData[$row[0]."-".$row[1]] = array("avg" => $row[2], "count"=>$row[3], "stdev" => $row[4]);
 		}
+		return $attributesData;
+	}
+	
+	function dealWithNewVoteTrend() {
+		$constantsArray = getConstants();
+		$attributesData = getAttributesData();
 		foreach($attributesData as $attributes=>$data) {
 			$attributesID = explode("-", $attributes);
 			//echo "att1 = ".$attributesID[0]." att2 = ".$attributesID[1]."</br>";
@@ -423,15 +437,15 @@
 				}
 			} else {
 				while($row = mysql_fetch_array($itemsQuery)) {
-					//if(!array_key_exists($row["match_id"], $_SESSION["user_data"]["user_matchings"])){
-						return $row["match_id"]; //TODO uncomment if
-				//	}
+					if(!array_key_exists($row["match_id"], $_SESSION["user_data"]["user_matchings"])) {
+						return $row["match_id"]; 
+					}
 				}
 			}
 		} else {
 			$itemsQuery = mysql_query("SELECT matches.* FROM item_matchings matches INNER JOIN items it1, items it2 WHERE matches.match_type = 1 AND it1.item_id = matches.top_item_id AND it2.item_id = matches.bottom_item_id AND it1.designer_id != ".$userId." AND it2.designer_id != ".$userId." ORDER BY match_count");
 			while($row = mysql_fetch_array($itemsQuery)) {
-				$userMatchesQuery = mysql_query("SELECT * FROM user_matchings WHERE match_id = ".$row["match_id"]);
+				$userMatchesQuery = mysql_query("SELECT * FROM user_matchings WHERE match_id = ".$row["match_id"]." AND user_id = ".$userId);
 				$userAnswered = mysql_num_rows($userMatchesQuery);
 				if ($userAnswered == 0) {
 					return $row["match_id"];

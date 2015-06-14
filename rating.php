@@ -56,7 +56,7 @@ function showRating($matchId, $userId, $matchItemId, $size) {
 				});
 			</script>
 		<?php if ($rating != -1) { ?>
-			You Rated:
+			<p>You Rated: </p>
 		<?php } ?>
 		<div id="jRate_<?php echo $matchId?>"></div>
 		<?php if ($rating == -1) { ?>
