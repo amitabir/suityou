@@ -45,7 +45,7 @@ function showSlider($query,$id)
 			</div>
 			<div class="col-md-6" align="center">
 								<h3>Browse <?php if (strtoupper($gender)=="MALE"){ ?> Pants <?php } else { ?> Pants and Skirts <?php } ?></h3>
-								<?php showSlider($queryBottom,"bottom");?>
+								<?php showSlider($queryBottom,"bottom");?> <br/> 
 								<a href='shop.php?gender=<?php echo $gender;?>&type=bottom'><button type="button" class="btn btn-lg btn-primary">Show More</button></a>
 			</div>
     	</div>

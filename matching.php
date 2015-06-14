@@ -32,6 +32,11 @@ function showSpammerLabel() {
 	$("#spammer_label").show("blind", {direction: "up"}, 800);
 }
 
+function showUnsignedUserLabel()
+{
+	$("#unsigned_label").show("blind", {direction: "up"}, 800);
+}	
+
 $(document).ready(function(){	
 	
 $.ajax({ url: "show_match.php?matchId=<?php echo $matchId; ?>",
@@ -68,6 +73,12 @@ $.ajax({ url: "show_match.php?matchId=<?php echo $matchId; ?>",
 					<div class="alert alert-danger alert-dismissible" role="alert" >
 					  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 					  <p><strong>Warning!</strong></p> <p> Our system determined your activity as suspicious. You can no longer rate the matches to earn coupons. Please try again later. </p>
+					</div>
+				</div>
+				<div id="unsigned_label" style="display: none">
+					<div class="alert alert-info" role="alert" >
+					  <!--<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>-->
+					  <p><strong>You must sign up to gain coupons</strong></p><a href="sign_up.php">click here to sign up</a></p>
 					</div>
 				</div>
 			</div>
