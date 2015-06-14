@@ -9,10 +9,6 @@ include("header.php");
 	function loadMatchInit() {
 	    $("#results").load( "score_viewer.php"); 
 	}
-	
-	function loadScore(top, bot) {
-		$("#meter").load("score_meter.php?top="+top+"&bot="+bot);
-	}
 
 $(document).ready(function() {
 
@@ -20,7 +16,6 @@ $(document).ready(function() {
 });
 </script>
         
-<div class="loading-div"><img src="ajax-loader.gif" ></div>
 <div class="container">
 
 	<div class="row">
@@ -36,16 +31,6 @@ $(document).ready(function() {
 	
 <div id="results"><!-- content will be loaded here --></div>
 </div>
-
-<div class="container">
-	<div class="row text-center">
-        <div class="col-lg-12">
-			<ul id="pages" class="pagination-sm"></ul>
-		</div>
-	</div>
-	
-</div>
-
 
   </body>
 </html>

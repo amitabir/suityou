@@ -7,8 +7,8 @@ $queryBottom = mysql_query('SELECT * FROM items WHERE gender="'.strtoupper($gend
 
 function showSlider($query,$id)
 {
-	echo '<div id="slider'.$id.'_container" style="position: relative; top: 0px; left: 0px; width: 300px; height: 300px;">';
-	echo 	'<div u="slides" style="cursor: move; position: absolute; overflow: hidden; left: 0px; top: 0px; width: 300px; height: 300px;">';
+	echo '<div id="slider'.$id.'_container" style="position: relative; top: 0px; left: 0px; width: 330px; height: 500px;">';
+	echo 	'<div u="slides" style="cursor: move; position: absolute; overflow: hidden; left: 0px; top: 0px; width: 330px; height: 500px;">';
 	
 		while($row = mysql_fetch_array($query))
 		{
@@ -16,12 +16,12 @@ function showSlider($query,$id)
 			$price = $row['price'];
 			$itemId= $row['item_id'];
 			echo '<div><a href="show_item.php?itemId='.$itemId.'"><img u="image" src="images/items/'.$picture.'"/></a>';
-			echo '<div u="caption" t="MCLIP|B" t2="MCLIP|B" style="position: absolute; top: 250px; left: 0px;
-	            width: 600px; height: 50px;">
-	            <div style="position: absolute; top: 0px; left: 0px; width: 300px; height: 50px;
+			echo '<div u="caption" t="MCLIP|B" t2="MCLIP|B" style="position: absolute; top: 450px; left: 0px;
+	            width: 330px; height: 150px;">
+	            <div style="position: absolute; top: 0px; left: 0px; width: 330px; height: 50px;
 	                background-color: Black; opacity: 0.5; filter: alpha(opacity=50);">
 	            </div>
-	            <div style="position: absolute; top: 0px; left: 0px; width: 300px; height: 50px;
+	            <div style="position: absolute; top: 0px; left: 0px; width: 330px; height: 50px;
 	                color: White; font-size: 16px; font-weight: bold; line-height: 50px; text-align: center;"><div>
 	                Price: $'.$price.' </div>
 	            </div>
@@ -29,8 +29,8 @@ function showSlider($query,$id)
 		}
 		
     echo 	'</div>';
-    echo '<span u="arrowleft" class="jssora01l" style="top: 123px; left: 8px;"></span>';
-    echo '<span u="arrowright" class="jssora01r" style="top: 123px; right: 8px;"></span>';    
+    echo '<span u="arrowleft" class="jssora01l" style="top: 220px; left: 8px;"></span>';
+    echo '<span u="arrowright" class="jssora01r" style="top: 220px; right: 8px;"></span>';    
 	echo '</div>';	
 }
 ?>

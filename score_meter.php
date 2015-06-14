@@ -5,8 +5,7 @@ include("algorithms.php");
 
 $topId=$_GET['top'];
 $botId=$_GET['bot'];
-$score=7.5;
-//$score=calculateTrendScoreFor2Items($topId, $botId);
+$score=calculateTrendScoreFor2Items($topId, $botId);
 $imQuTop=mysql_query('SELECT picture FROM items WHERE item_id='.$topId);
 $imQuBot=mysql_query('SELECT picture FROM items WHERE item_id='.$botId);
 $rowTop=mysql_fetch_array($imQuTop);
@@ -24,10 +23,11 @@ $pictureBot=$rowBot[0];
 					<script>
 					var g = new JustGage({
 					  id: "gauge",
-					  value: <?php echo $score ?>,
+						value: <?php echo round($score, 0) ?>,
 					  min: 0,
-					  max: 10,
-					  title: "Our Score:"
+					  max: 100,
+					  title: "Our Score:",
+					  levelColors:["#FF0000", "#FFCC33","#00FF00"]
 					});
 					</script>
 				</div>

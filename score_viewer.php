@@ -7,7 +7,26 @@ $('#gender').on('change', function() {
   	loadMatch($(this).val(), "<?php if (isset($matchId)){ echo $matchId; }?>", "<?php  if (isset($firstId)){echo $firstId;} ?>", "<?php  if (isset($secondId)){echo $secondId;} ?>");
 });
 
+function loadItems(gender, type) {
+		$.ajax({ url: "select_item_for_match.php?gender="+gender+"&type="+type,
+		 context: document.body,
+		 success: function(items) {
+		 			$("#items").html(items);
+	 			}
+		});
+	};	
+	
+	function loadScore(top, bot) {
+		$("#meter").load("score_meter.php?top="+top+"&bot="+bot);
+	}
+
 $(document).ready(function() {
+		$('#show_score_btn').click( function (event) {
+		  var topId = $('#top_item_id').val();		  
+		  var botId = $('#bottom_item_id').val();		
+		  loadScore(topId, botId);
+		});
+		
 		$('#itemsModal').on('show.bs.modal', function (event) {
 		  var button = $(event.relatedTarget) // Button that triggered the modal
 		  var type = button.data('whatever') // Extract info from data-* attributes
@@ -23,30 +42,12 @@ $(document).ready(function() {
 		  modal.find('.modal-title').text('Select '  + title + ' Item')
 		})
 	});
-	
-	$(document).ready(function() {
-		$('#meter').on('show.bs.modal', function (event) {
-		  var button = $(event.relatedTarget) // Button that triggered the modal
-		  var topId = $('#top_item_id').val();		  
-		  var botId = $('#bottom_item_id').val();		
-		  loadScore(topId, botId);
-		})
-	});
 
-function loadItems(gender, type) {
-		$.ajax({ url: "select_item_for_match.php?gender="+gender+"&type="+type,
-		 context: document.body,
-		 success: function(items) {
-		 			$("#items").html(items);
-	 			}
-		});
-	};
-	
 	$('#topItem').on('show.bs.modal', function() {
   	loadMatch($(this).val(), "<?php if (isset($matchId)){ echo $matchId; }?>", "<?php  if (isset($firstId)){echo $firstId;} ?>", "<?php  if (isset($secondId)){echo $secondId;} ?>");
 });
 
-$('#bottomItem').on('change', function() {
+	$('#bottomItem').on('show.bs.modal', function() {
   	loadMatch($(this).val(), "<?php if (isset($matchId)){ echo $matchId; }?>", "<?php  if (isset($firstId)){echo $firstId;} ?>", "<?php  if (isset($secondId)){echo $secondId;} ?>");
 });
 	
@@ -103,7 +104,7 @@ if (!empty($_GET["gender"])){
   
   <div class="row">
   <div id=topItem class="col-md-12" align="center">
- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#meter" >Show Score!</button>
+ <button id="show_score_btn" type="button" class="btn btn-primary">Show Score!</button>
   </div>
 </div>
 
