@@ -58,14 +58,18 @@ $matchesQuery = mysql_query('SELECT matches.*, it1.picture as top_item_picture, 
  ?>
 				<tr>
 					<td>
-						<a href="show_item.php?itemId=<?php echo $topItemId; ?>" class="thumbnail">
-						    <img src="images/items/<?php echo $topItemPicture; ?>" alt="" style="width:150px;height:150px">
-						</a>
+						<div class="img-container-thumbnail">
+							<a href="show_item.php?itemId=<?php echo $topItemId; ?>" class="thumbnail">
+								    <img class="img-responsive" src="images/items/<?php echo $topItemPicture; ?>" alt="" ><!-- style="width:150px;height:150px"-->
+							</a>
+						</div>
 					</td>
 					<td>
-						<a href="show_item.php?itemId=<?php echo $bottomItemId; ?>" class="thumbnail">
-						    <img src="images/items/<?php echo $bottomItemPicture; ?>" alt="" style="width:150px;height:150px">
-						</a>
+						<div class="img-container-thumbnail">
+							<a href="show_item.php?itemId=<?php echo $bottomItemId; ?>" class="thumbnail">
+							    <img src="images/items/<?php echo $bottomItemPicture; ?>" alt="" ><!--style="width:150px;height:150px"-->
+							</a>
+						</div>
 					</td>
 					<td>
 						<p><strong><?php echo round($matchPercent,2); ?>% Match</strong></p>
@@ -74,7 +78,9 @@ $matchesQuery = mysql_query('SELECT matches.*, it1.picture as top_item_picture, 
 						<p>Ignored Ratings: <?php echo $matchIgnoreCount; ?></p>
 					</td>
 					<td>
-						 <img src="images/models/<?php echo $modelPicture; ?>" alt="" style="width:300px;height:300px">
+						<div class="img-container-table">
+							<img class="img-responsive" src="images/models/<?php echo $modelPicture; ?>" alt="" ><!--style="width:300px;height:300px" --> 
+						</div>
 					</td>
 					<td>
 						<p><a href='add_match?matchId=<?php echo $matchId; ?>'> <button class="btn btn-primary">Update Match</button> </a></p>
