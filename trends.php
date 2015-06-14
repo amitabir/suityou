@@ -24,7 +24,7 @@ if ($num_rows == 0) {
 		$key=calculateTotalScoreForTrends($row["match_id"]);
 		$array[$key]=$row;
 	}
-	arsort($array);
+	krsort($array);
 	?>
 	<div class="container">
 		<div class="row">

@@ -80,10 +80,10 @@
 		$matchQuery = mysql_query("SELECT match_percent, match_count, trend_percent 
 		FROM item_matchings WHERE match_id = ".$trendID) or die(mysql_error());
 		$matchRow = mysql_fetch_array($matchQuery);
-		if($matchRow["match_count"] > $constantsArray['VOTES_LIMIT_FOR_ACCEPT']){
+		if($matchRow["match_count"] > $constantsArray['VOTES_LIMIT_FOR_ACCEPT_NEW_VOTE']){
 			return ($constantsArray['TREND_CONSTANT'] * $matchRow["trend_percent"] + $constantsArray['MATCH_CONSTANT'] * $matchRow["match_percent"])/($constantsArray['TREND_CONSTANT'] + $constantsArray['MATCH_CONSTANT']);
 		}
-		return $matchRow["match_percent"];
+		return $matchRow["trend_percent"];
 	}
 	
 	function isGoodCouple($data){
@@ -134,7 +134,7 @@
 	
 	function dealWithNewVoteTrend() {
 		$constantsArray = getConstants();
-		$query = mysql_query("SELECT att1.attribute_id, att2.attribute_id, AVG(user_matchings.rating), 
+		$query = mysql_query("SELECT att1.attribute_id, att2.attribute_id, AVG(user_matchings.rating), COUNT(user_matchings.rating),
 		STDDEV(user_matchings.rating) FROM user_matchings INNER JOIN users, item_matchings, items it1, items it2, 
 		item_attributes itatt1, item_attributes itatt2, attributes att1, attributes att2 WHERE user_matchings.rating 
 		is not NULL AND users.user_id = user_matchings.user_id AND users.is_spammer = 0 AND user_matchings.match_id = item_matchings.match_id AND
@@ -142,44 +142,46 @@
 		itatt2.item_id = it2.item_id AND att1.attribute_id = itatt1.attribute_id AND att2.attribute_id = itatt2.attribute_id AND
 		att1.category_id = att2.category_id GROUP BY att1.attribute_id, att2.attribute_id") or die(mysql_error());
 		$attributesData = array();
-		while($row = mysql_fetch_array($query)){
-			$attributesData[$row[0]."-".$row[1]] = array("avg" => $row[2], "stdev" => $row[3]);
-		}		
-		foreach($attributesData as $attributes=>$data){
+		while($row = mysql_fetch_array($query)) {
+			$attributesData[$row[0]."-".$row[1]] = array("avg" => $row[2], "count"=>$row[3], "stdev" => $row[4]);
+		}
+		foreach($attributesData as $attributes=>$data) {
 			$attributesID = explode("-", $attributes);
+			//echo "att1 = ".$attributesID[0]." att2 = ".$attributesID[1]."</br>";
 			$itemsQuery = mysql_query("SELECT it1.item_id, it2.item_id FROM items it1, items it2,
 			item_attributes itatt1, item_attributes itatt2 WHERE itatt1.attribute_id =".$attributesID[0]." AND 
 			itatt2.attribute_id = ".$attributesID[1]." AND it1.item_id = itatt1.item_id AND it2.item_id = itatt2.item_id 
 			AND it1.type = 'TOP' AND  it2.type = 'BOTTOM' AND it1.gender = it2.gender") or die(mysql_error());
-			$items = mysql_fetch_array($itemsQuery);
+/* 			$items = mysql_fetch_array($itemsQuery);
 			if(empty($items)){
 				continue;
-			}
-			
-			$topItem = Item::getItemByID($items[0]);
-			$bottomItem = Item::getItemByID($items[1]);
-			$topItemAttributes = $topItem->getItemAttributes();
-			$bottomItemAttributes = $bottomItem->getItemAttributes();
-			$matchAndTrendExists = checkIfMatchAndTrendExists($items[0], $items[1]);
-			if(!$matchAndTrendExists[0]) {
-				$trendScore = calculateTrendScore($topItemAttributes, $bottomItemAttributes, $attributesData);
-				if($matchAndTrendExists[1]) {
-					mysql_query("UPDATE item_matchings SET trend_percent = ".$trendScore."
-					WHERE top_item_id = ".$items[0]." AND bottom_item_id = ".$items[1]) or die(mysql_error());
-				} else if(isGoodCouple($data) and $trendScore >= $constantsArray['TREND_SCORE_LIMIT']) {
-					mysql_query("INSERT INTO item_matchings(top_item_id, bottom_item_id, trend_percent, match_type)
-					VALUES (".$items[0].", ".$items[1].", ".$trendScore.", 0)") or die(mysql_error());
+			} */
+			while($items = mysql_fetch_array($itemsQuery)){
+				$topItem = Item::getItemByID($items[0]);
+				$bottomItem = Item::getItemByID($items[1]);
+				$topItemAttributes = $topItem->getItemAttributes();
+				$bottomItemAttributes = $bottomItem->getItemAttributes();
+				$matchAndTrendExists = checkIfMatchAndTrendExists($items[0], $items[1]);
+				if(!$matchAndTrendExists[0]) {
+				//	echo "match doesn't exist</br>";
+					$trendScore = calculateTrendScore($topItemAttributes, $bottomItemAttributes, $attributesData);
+				//	echo "Score is : ".$trendScore."</br>";
+					if($matchAndTrendExists[1]) {
+						mysql_query("UPDATE item_matchings SET trend_percent = ".$trendScore."
+						WHERE top_item_id = ".$items[0]." AND bottom_item_id = ".$items[1]) or die(mysql_error());
+					} else if(isGoodCouple($data) and $trendScore >= $constantsArray['TREND_SCORE_LIMIT'] and $data["count"] >= $constantsArray['TREND_MIN_COUNT']) {
+				//		echo "Inserting</br>";
+						mysql_query("INSERT INTO item_matchings(top_item_id, bottom_item_id, trend_percent, match_type)
+						VALUES (".$items[0].", ".$items[1].", ".$trendScore.", 0)") or die(mysql_error());
+					}
 				}
-/* 						if($matchAndTrendExists[1]){
-						mysql_query("DELETE FROM item_matchings WHERE top_item_id = items[0] AND bottom_item_id = items[1]");
-					} */
 			}
 		}
 	}
 	
 	function removeOldTrends(){
 		$constantsArray = getConstants();
-		$matchTrendQuery = mysql_query("DELETE FROM item_matchings WHERE match_type = 0 AND (trend_percent < ".$constantsArray['TREND_SCORE_LIMIT']." OR match_percent < ".$constantsArray['MATCH_SCORE_LIMIT'].")") or die(mysql_error());
+		$matchTrendQuery = mysql_query("DELETE FROM item_matchings WHERE match_type = 0 AND (trend_percent < ".$constantsArray['TREND_SCORE_LIMIT']." OR (match_percent < ".$constantsArray['MATCH_SCORE_LIMIT']." AND match_percent > 0) )") or die(mysql_error());
 	}
 	
 	function increaseCouponMeter($userID, $increaseSize){
@@ -413,30 +415,22 @@
 	}
 	
 	function getUserNextMatchQuestion($userId) {
-		$itemsQuery = mysql_query("SELECT * FROM item_matchings ORDER BY match_count");
-		if($userId == NULL){
+		if($userId == NULL) {
+			$itemsQuery = mysql_query("SELECT * FROM item_matchings WHERE match_type = 1 ORDER BY match_count");
 			if(!isset($_SESSION["user_data"]["user_matchings"])){
 				while($row = mysql_fetch_array($itemsQuery)) {
-					if($row["match_type"] == 0){
-						continue;
-					}
 					return $row["match_id"];
 				}
 			} else {
 				while($row = mysql_fetch_array($itemsQuery)) {
-					if($row["match_type"] == 0) {
-						continue;
-					}
 					//if(!array_key_exists($row["match_id"], $_SESSION["user_data"]["user_matchings"])){
 						return $row["match_id"]; //TODO uncomment if
 				//	}
 				}
 			}
 		} else {
+			$itemsQuery = mysql_query("SELECT matches.* FROM item_matchings matches INNER JOIN items it1, items it2 WHERE matches.match_type = 1 AND it1.item_id = matches.top_item_id AND it2.item_id = matches.bottom_item_id AND it1.designer_id != ".$userId." AND it2.designer_id != ".$userId." ORDER BY match_count");
 			while($row = mysql_fetch_array($itemsQuery)) {
-				if($row["match_type"] == 0){
-					continue;
-				}
 				$userMatchesQuery = mysql_query("SELECT * FROM user_matchings WHERE match_id = ".$row["match_id"]);
 				$userAnswered = mysql_num_rows($userMatchesQuery);
 				if ($userAnswered == 0) {

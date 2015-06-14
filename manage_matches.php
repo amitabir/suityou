@@ -20,7 +20,7 @@ if(isset($_SESSION['match_update_message']) and isset($_SESSION['match_update_su
 	unset($_SESSION['match_update_success']);
 }
 
-$item_per_page = 2;
+$item_per_page = 5;
 $countQuery = mysql_query('SELECT count(*) FROM item_matchings WHERE match_type = 1');
 $countRow = mysql_fetch_array($countQuery);
 	

@@ -1,20 +1,22 @@
 <?php
 include("header.php");
-
 ?>	
 <script type="text/javascript">
-	function loadCatTable(page, category, att1, att2) {
-	    $("#results").load( "stats_fetch.php?categoryID="+category+"&att1ID="+att1+"&att2ID="+att2, {"page":page}); 
+	function loadMatch(gender, matchId, firstId,secondId) {
+	    $("#results").load( "score_viewer.php?gender="+gender+"&matchId="+matchId+"&firstId="+firstId+"&firstId="+firstId); 
 	}
 
-	function loadInitialCatTable(page) {
-	    $("#results").load( "stats_fetch.php", {"page":page}); 
+	function loadMatchInit() {
+	    $("#results").load( "score_viewer.php"); 
+	}
+	
+	function loadScore(top, bot) {
+		$("#meter").load("score_meter.php?top="+top+"&bot="+bot);
 	}
 
 $(document).ready(function() {
 
-	loadInitialCatTable(1); //load initial records
-	
+	loadMatchInit();
 });
 </script>
         
@@ -24,12 +26,13 @@ $(document).ready(function() {
 	<div class="row">
 		<div class="col-lg-12">
 			<h1 class="page-header" align="center">
-				Statistics
+				Item Scores
 			</h1>
 		</div>
 	</div>	
 
-	
+
+
 	
 <div id="results"><!-- content will be loaded here --></div>
 </div>
@@ -40,6 +43,7 @@ $(document).ready(function() {
 			<ul id="pages" class="pagination-sm"></ul>
 		</div>
 	</div>
+	
 </div>
 
 

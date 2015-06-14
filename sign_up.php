@@ -1,5 +1,6 @@
 <?php
 require_once 'config.php';
+require_once 'algorithms.php'; 
 $message = '';
 //We check if the form has been sent
 if(isset($_POST['email'], $_POST['first_name'], $_POST['last_name'], $_POST['address'], $_POST['gender'], $_POST['birth_date'], $_POST['is_designer']))
@@ -24,6 +25,7 @@ if(isset($_POST['email'], $_POST['first_name'], $_POST['last_name'], $_POST['add
 						$_SESSION['user_id'] = $dn['user_id'];
 						$_SESSION['email'] = $dn['email'];
 						$_SESSION['is_designer'] = $dn['is_designer'];
+						insertAnonUserToDB($_SESSION['user_id']);
 						//if the user chose to sign up as a designer, fwd to add designer details page
 						if($dn['is_designer'] == 1)
 						{

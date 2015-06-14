@@ -38,7 +38,7 @@ if(!empty($_GET["action"])) {
 				$itemStockId = key($itemStockArr);
 		
 				// Create array with item's data, pointed by the item stock id.
-				$itemArray = array($itemStockId => array('name'=>$item->name, 'id'=>$itemStockId, 'price'=>$item->price, 'quantity'=>$quantity, 'size'=>$size, 'picture'=>$picture));
+				$itemArray = array($itemStockId => array('name'=>$item->name, 'id'=>$itemStockId, 'itemId'=>$itemId, 'price'=>$item->price, 'quantity'=>$quantity, 'size'=>$size, 'picture'=>$picture));
 				if(!empty($_SESSION["cart_item"])) {
 					if(array_key_exists($itemStockId, $_SESSION["cart_item"])) {
 						// Update quantity for existing items (stock items)
@@ -86,6 +86,18 @@ if(!empty($_GET["action"])) {
 		break;	
 	}
 }
+
+if(isset($_SESSION['user_id'])){
+	$userId = $_SESSION['user_id'];
+} else {
+	$userId = NULL;
+}
+if ($userId != NULL) {
+	$user = User::getUserfromDBbyID($userId);
+	$couponMeterValue = $user->coupon_meter;
+} else {
+	$couponMeterValue = 0;
+}
 ?>
 <script type="text/javascript" src="cart_qty_validate.js?2"></script>
 <script>
@@ -96,13 +108,18 @@ function showUpdate(elementId) {
 </script>
 	
 	<div id="shopping-cart" class="container">
-		
+		<div class="row">
 		<?php
 		if(isset($_SESSION["cart_item"])) {
 		    $item_total = 0;
 			if ($displayMaxMessage) {
 				?> 
-					<h3> The quantity has been changed to an amount that is currently available for this item. </h3>
+					<div id="max_coupon">
+						<div class="alert alert-warning alert-dismissible" role="alert" >
+						  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						  <p>The quantity has been changed to an amount that is currently available for this item.</p>
+						</div>
+					</div>
 		<?php 
 		}
 		?>	
@@ -123,7 +140,7 @@ function showUpdate(elementId) {
 						<td>
 							<div class="row">
 								<div class="col-xs-4">
-							<a href="show_item.php?itemId=<?php echo $item["id"]; ?>" class="thumbnail">
+							<a href="show_item.php?itemId=<?php echo $item["itemId"]; ?>" class="thumbnail">
 							    <img src="images/items/<?php echo $item["picture"]; ?>" alt="" style="width:200px;height:200px">
 							</a>
 							</div>
@@ -169,7 +186,24 @@ function showUpdate(elementId) {
 					</tr>
 				</tbody>
 			</table>	
+		</div>
+		<div class="row" align="center">
+			<div id="gauge" style="width:200px; height:120px"></div>
+			<p>Get discount by <a href="matching.php">rating</a> more matches!</p>
+    		<script>
+			var g = new JustGage({
+			  id: "gauge",
+			  value: <?php echo $couponMeterValue; ?>,
+			  min: 0,
+			  max: 100,
+			  title: "Your Coupon Meter",
+			  levelColors:["#8B7500", "#CDAD00","#EEC900","#FFD700"]
+				
+			});
 			
+			</script>
+		</div>
+		
 <?php
 	} else {
 ?>

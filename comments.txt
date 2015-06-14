@@ -1,0 +1,16 @@
+
+* showRating (the function is located in rating.php) - can't handle $user == NULL alothough show_item_match.php can and set it to NULL. 
+
+* the matching.php page let me rate as unsubscribed user, need to add message via the alrets mechanism that you will get coupons once you sign up. 
+
+* at the same page, need to add that only subscribied users can skip models. 
+
+* after checkout the cart as  unsubscribed user, should refer to sign up page. need also logic on sign up page that if the user came from checkout retrun him to it. 
+
+* Need to split cloths between more designers 
+
+*to insert <br> in shop_entrance 
+
+* try to retarget images to thier frame. 
+
+

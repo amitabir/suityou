@@ -4,8 +4,22 @@ include("header.php");
 
 if(isset($_SESSION['user_id'])) {
 	$purchasesQuery = mysql_query("SELECT * FROM purchases WHERE user_id=".$_SESSION['user_id']);
+	if (mysql_num_rows($purchasesQuery) == 0) {
+		?>
+		<div class="container">
+			<h3>
+				No Purchases History
+			</h3>
+		</div>
+		<?php
+	} else {
 ?>
-	<table border="1">
+<div class="container">
+	
+	<h1 class="page-header" align="center">
+		Purchases History
+	</h1>
+	<table class="table" border="1">
 <?php
 	while($purchaseRow = mysql_fetch_array($purchasesQuery)) {
 ?>
@@ -20,6 +34,8 @@ if(isset($_SESSION['user_id'])) {
 	}
 ?>
 	</table>
+</div>
 <?php
+}
 }
 ?>
