@@ -1,13 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.1.14
+-- version 3.5.8.2
 -- http://www.phpmyadmin.net
 --
--- Host: 127.0.0.1
--- Generation Time: Jun 14, 2015 at 06:06 PM
--- Server version: 5.6.17
--- PHP Version: 5.5.12
+-- Host: localhost
+-- Generation Time: Jun 14, 2015 at 05:03 PM
+-- Server version: 5.6.21
+-- PHP Version: 5.5.14
 
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
 
@@ -810,7 +810,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `description` text,
   `website_link` varchar(500) DEFAULT NULL,
   `is_spammer` tinyint(1) NOT NULL DEFAULT '0',
-  `is_spammer_time` int(11) DEFAULT NULL,
+  `is_spammer_time` timestamp NULL DEFAULT NULL,
   `time_tracking_ctr` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`user_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=12 ;

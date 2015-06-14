@@ -5,6 +5,10 @@ if(isset($_GET['purchaseId'])) {
 	$purchaseItemQuery = mysql_query("SELECT * FROM purchase_items WHERE purchase_id=".$_GET['purchaseId']);
 ?>
 <div class="container">	
+	<h1 class="page-header">
+		Purchases <?php echo $_GET['purchaseId']; ?> Details
+	</h1>
+	
 	<table class="table" border="1">
 		<thead>
 			<tr>
