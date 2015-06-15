@@ -55,15 +55,14 @@ function showRating($matchId, $userId, $matchItemId, $size) {
 					});	
 				});
 			</script>
-		<?php if ($rating != -1) { ?>
-			<p>You Rated: </p>
-		<?php } ?>
-		<div id="jRate_<?php echo $matchId?>"></div>
+		
+		<div id="jRate_<?php echo $matchId?>"><p >You Rated: </p></div>
 		<?php if ($rating == -1) { ?>
 			<p><h3> <label class="label label-warning" id="rating_label_<?php echo $matchId?>">0/10</label> </h3> </p>
 		<?php } else { ?>
 			<p><h3> <label class="label label-warning" id="rating_label_<?php echo $matchId?>"><?php echo $rating; ?>/10</label> </h3> </p>
 		<?php } ?>
+		
 <?php
 }
 ?>

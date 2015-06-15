@@ -39,6 +39,6 @@ if (mysql_num_rows($queryMatches) == 0) {
 					<img class="img-responsive" src="<?php echo "images/items/".$matchItem->picture; ?>" alt=""/>
 					</a>
 				</div>
-				<span align="center"><?php showRating($matchId, $userId, $matchItemId, 17); ?></span><br/>
+				<div><?php showRating($matchId, $userId, $matchItemId, 17); ?></div><br/>
 		</div>
 <?php } ?>
