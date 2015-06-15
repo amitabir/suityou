@@ -14,7 +14,7 @@ function showRating($matchId, $userId, $matchItemId, $size) {
 			$rating = -1;
 		}
 	} else {
-		$queryUserMatch = mysql_query('SELECT rating FROM user_matchings WHERE user_id='.$userId.' AND match_id= ' . $matchId);
+		$queryUserMatch = mysql_query('SELECT rating FROM user_matchings WHERE user_id='.$userId.' AND match_id = ' .$matchId." AND rating is not NULL");
 		if (mysql_num_rows($queryUserMatch) > 0){
 			$row = mysql_fetch_array($queryUserMatch);
 			$rating = $row['rating'];

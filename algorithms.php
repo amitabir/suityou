@@ -114,12 +114,12 @@
 					$bottomAttributeID = $bottomAttribute["att_id"];
 					if(array_key_exists($topAttributeID."-".$bottomAttributeID, $attributesData)){
 						$count++;
-						$score += PERCENT_FACTOR * $attributesData[$topAttributeID."-".$bottomAttributeID]["avg"]/$constantsArray['NUMBER_OF_CATEGORIES'];
+						$score += PERCENT_FACTOR * $attributesData[$topAttributeID."-".$bottomAttributeID]["avg"];
 					}
 				}
 			}
 		}
-		return $score;
+		return $score/$count;
 	}
 	
 	function checkIfMatchAndTrendExists($topItemID, $bottomItemID){
@@ -195,7 +195,7 @@
 	
 	function removeOldTrends(){
 		$constantsArray = getConstants();
-		$matchTrendQuery = mysql_query("DELETE FROM item_matchings WHERE match_type = 0 AND (trend_percent < ".$constantsArray['TREND_SCORE_LIMIT']." OR (match_percent < ".$constantsArray['MATCH_SCORE_LIMIT']." AND match_percent > 0 AND match_count > ".$constantsArray['TREND_MIN_RATINGS_COUNT'].") )") or die(mysql_error());
+		$matchTrendQuery = mysql_query("DELETE FROM item_matchings WHERE match_type = 0 AND (trend_percent < ".$constantsArray['TREND_SCORE_LIMIT']." OR (match_percent < ".$constantsArray['MATCH_SCORE_LIMIT']." AND match_percent > 0 AND match_count >= ".$constantsArray['TREND_MIN_RATINGS_COUNT'].") )") or die(mysql_error());
 	}
 	
 	function increaseCouponMeter($userID, $increaseSize){
@@ -246,6 +246,10 @@
 				$_SESSION["user_data"]["user_matchings"] = array();
 			}
 			
+			if (array_key_exists($matchID, $_SESSION["user_data"]["user_matchings"])) {
+				$_SESSION["user_data"]["user_matchings"][$matchID]["rating"] = $rating;
+			}
+			
 			$ratingRecord = array($matchID => array("rating" => $rating, "ratingTime" => time(), "skip" => $isSkip));
 
 			$_SESSION["user_data"]["user_matchings"] += $ratingRecord;
@@ -254,7 +258,12 @@
 			if($isSkip){
 				mysql_query('INSERT INTO user_matchings(user_id, match_id, skipped) VALUES ('.$userID.', '.$matchID.', 1)') or die(mysql_error());
 			} else {
-				mysql_query('INSERT INTO user_matchings(user_id, match_id, rating, skipped) VALUES ('.$userID.', '.$matchID.', '.$rating.', 0)') or die(mysql_error());
+				$existsQuery = mysql_query('SELECT * FROM user_matchings WHERE user_id = '.$userID.' AND match_id = '.$matchID);
+				if (mysql_num_rows($existsQuery) != 0) {
+					mysql_query('UPDATE user_matchings SET rating = '.$rating.', rating_time = "'.date('Y-m-d G:i:s').'", skipped = 0 WHERE user_id = '.$userID.' AND match_id = '.$matchID) or die(mysql_error());
+				} else {
+					mysql_query('INSERT INTO user_matchings(user_id, match_id, rating, skipped) VALUES ('.$userID.', '.$matchID.', '.$rating.', 0)') or die(mysql_error());
+				}
 			}
 		}	
 	}
@@ -367,7 +376,7 @@
 			$timeTracking = getUserTimeTracking($userId);
 			$timeTracking++;
 			updateUserTimeTracking($userId, $timeTracking);
-			if($timeTracking > $constantsArray['BAD_TIME_REPEAT_LIMIT']) {
+			if($timeTracking >= $constantsArray['BAD_TIME_REPEAT_LIMIT']) {
 				setUserAsSpammer($userId);
 				return true;
 			}
@@ -411,19 +420,13 @@
 							 SET is_spammer = 0, time_tracking_ctr = ".$_SESSION['user_data']["time_tracking"]."
 							 WHERE user_id = ".$userID);
 				foreach($_SESSION['user_data']["user_matchings"] as $matchID=>$matchData){
-					$matchExistQuery = mysql_query("SELECT * FROM user_matchings WHERE match_id = ".$matchID) or die(mysql_error());
-					if(mysql_num_rows($matchExistQuery) == 0){
+					$matchExistQuery = mysql_query("SELECT * FROM item_matchings WHERE match_id = ".$matchID) or die(mysql_error());
+					if(mysql_num_rows($matchExistQuery) != 0){
 						addUserRatingToHistory($userID, $matchID, $matchData["rating"], $matchData["skip"]);
 					}
 				}
 			}
 			increaseCouponMeter($userID, $_SESSION['user_data']['coupon_meter']);
-	/* 		$couponMeterQuery = mysql_query("SELECT coupon_meter FROM users WHERE user_id = ".$userID);
-			$couponMeterRow = mysql_fetch_array($couponMeterQuery);
-			$newCouponMeter = $couponMeterRow["coupon_meter"] + $userData['coupon_meter'];
-			mysql_query("UPDATE users
-						 SET coupon_meter = ".$newCouponMeter."
-						 WHERE user_id = ".$userID) or die(mysql_error()); */
 			unset($_SESSION['user_data']);
 		}
 	}

@@ -139,7 +139,6 @@ if ($matchId == -1) {
 		        $.ajax({url: "handle_match_rating.php?skipped=true&matchId=<?php echo $matchId; ?>&userId=<?php echo $userId; ?>", success: function(result){
 		            $("#match").html(result);
 					$("#match_pic").effect("slide", {direction: "left"}, 800);
-					<?php if($userId == NULL ){ ?>$("#skipBtn").tooltip({title:"Only signed up users can skip matches"});<?php } ?>
 		        }});
 		    });
 		});
@@ -150,7 +149,7 @@ if ($matchId == -1) {
 		<div class="row">
 			<div class="col-lg-12" align="right">
 				<div id="next">
-					<button class="btn btn-small btn-primary" data-toggle="tooltip" data-placement="left" id="skipBtn">Next</button>
+					<button class="btn btn-small btn-primary" id="skipBtn">Next</button>
 				</div>
 				
 			</div>

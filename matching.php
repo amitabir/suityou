@@ -74,7 +74,7 @@ $.ajax({ url: "show_match.php?matchId=<?php echo $matchId; ?>",
 				<div id="unsigned_label" style="display: none">
 					<div class="alert alert-info" role="alert" >
 					  <!--<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>-->
-					  <p><strong>You must sign up to gain coupons</strong></p><a href="sign_up.php">click here to sign up</a></p>
+					  <p><strong>You must sign up to gain coupons</strong></p>click to <a href="sign_up.php">sign up</a> or <a href="connexion.php">login</a></p>
 					</div>
 				</div>
 			</div>
