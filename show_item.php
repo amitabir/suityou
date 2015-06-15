@@ -100,7 +100,7 @@ $designerRow = mysql_fetch_array($designerNameQuery);
 								<input type="text" name="quantity" value="1" />
 								<input type="submit" value="Add To Cart" class="btnAddCart" />
 							</form>
-							<?php; if ($userId != NULL and $item->designerId == $userId) { ?>
+							<?php if ($userId != NULL and $item->designerId == $userId) { ?>
 								<p><a href='add_item.php?itemId=<?php echo $itemId;?>'> <button class="btn btn-primary">Update Item</button> </a></p>
 							<?php } ?>
 							<div id="errorBox">
