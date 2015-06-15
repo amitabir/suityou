@@ -5,11 +5,19 @@ if(isset($_SESSION['sign_up_message']))
     $message=$_SESSION['sign_up_message'];
     if(!empty($message))
     {
-        echo '<script language="javascript">';
-        echo 'alert("'.$message.'")';
-        echo '</script>';
+        echo '<div class="alert alert-danger alert-dismissible" role="alert">';
+        echo '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
+        echo $message;
+        echo '</div>';
         unset($_SESSION['sign_up_message']);
     }
+}
+if(isset($_SESSION['checkoutMessage']) && $_SESSION['checkoutMessage']=="1")
+{
+    echo '<div class="alert alert-warning alert-dismissible" role="alert">';
+    echo '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
+    echo "You must sign up before checkout";
+    echo '</div>';
 }
 ?>
 <script type="text/javascript" src="sign_up_validate.js"></script>
