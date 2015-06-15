@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jun 14, 2015 at 05:03 PM
+-- Generation Time: Jun 15, 2015 at 03:34 PM
 -- Server version: 5.6.21
 -- PHP Version: 5.5.14
 
@@ -91,18 +91,6 @@ INSERT INTO `attributes` (`attribute_id`, `category_id`, `name`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `attribute_scores`
---
-
-CREATE TABLE IF NOT EXISTS `attribute_scores` (
-  `attribute1_id` int(11) NOT NULL,
-  `attribute2_id` int(11) NOT NULL,
-  `score` double NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `categories`
 --
 
@@ -143,9 +131,9 @@ CREATE TABLE IF NOT EXISTS `constants` (
 --
 
 INSERT INTO `constants` (`name`, `description`, `value`) VALUES
-('AVERAGE_LIMIT', 'The average rating of a couple of attributes needs to be greater or equal to this constant in order to be considered a trend.', 8),
-('BAD_RATING_REPEAT_LIMIT', 'A user rating the exact same rating this constant times in a row is to be considered as a spammer.', 3),
-('BAD_TIME_REPEAT_LIMIT', 'A user rating faster than the allowed time this constant times in a row is to be considered as a spammer.', 2),
+('AVERAGE_LIMIT', 'The average rating of a couple of attributes needs to be greater or equal to this constant in order to be considered a trend.', 7),
+('BAD_RATING_REPEAT_LIMIT', 'A user rating the exact same rating this constant times in a row is to be considered as a spammer.', 10),
+('BAD_TIME_REPEAT_LIMIT', 'A user rating faster than the allowed time this constant times in a row is to be considered as a spammer.', 5),
 ('COUPON_PRIZE', 'The coupon meter gets bigger by this constant every time the user rates a match.', 10),
 ('DIFF_FOR_ACCEPT_NEW_VOTE', 'A new rating is to be taken to account for a match avereage if it is not different more than this constant from the current average.', 10),
 ('IGNORED_VOTES_LIMIT_FOR_ACCEPT', 'The number of ignored ratings needs to be greater than this constant in order for all the ignored ratings to be taken for the match average.', 10),
@@ -158,7 +146,8 @@ INSERT INTO `constants` (`name`, `description`, `value`) VALUES
 ('TREND_CONSTANT', 'The weight of the our prediction of a trend is given by this once in a lifetime constant.', 0.5),
 ('TREND_SCORE_LIMIT', 'A trend''s prediction by us must be greater than or equal to this constant in order to be considered a trend.', 50),
 ('VOTES_LIMIT_FOR_ACCEPT_NEW_VOTE', 'Any rating is accepted for a match if the total number of ratings for that match is lower than this brand new constant.', 10),
-('TREND_MIN_COUNT', 'The minimum number of ratings for two attributes to become a trend', 3);
+('TREND_MIN_COUNT', 'The minimum number of ratings for two attributes to become a trend', 3),
+('TREND_MIN_RATINGS_COUNT', 'Below this number we will not check if the trend should be removed because of the users average rating', 3);
 
 -- --------------------------------------------------------
 
@@ -643,7 +632,7 @@ INSERT INTO `item_attributes` (`item_id`, `attribute_id`) VALUES
 (63, 29),
 (63, 33),
 (64, 55),
-(64, 14),
+(64, 10),
 (64, 48),
 (64, 24),
 (64, 28),
@@ -727,40 +716,40 @@ CREATE TABLE IF NOT EXISTS `item_matchings` (
   `ignored_match_percent` double NOT NULL DEFAULT '0',
   `ignored_match_count` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`match_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=181 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=491 ;
 
 --
 -- Dumping data for table `item_matchings`
 --
 
 INSERT INTO `item_matchings` (`match_id`, `top_item_id`, `bottom_item_id`, `match_percent`, `match_count`, `trend_percent`, `match_type`, `model_picture`, `ignored_match_percent`, `ignored_match_count`) VALUES
-(6, 46, 42, 66.666666666667, 3, NULL, 1, '61108.jpg', 0, 0),
-(7, 49, 43, 50, 2, NULL, 1, '62732.jpg', 0, 0),
-(8, 50, 41, 82.5, 4, NULL, 1, '95156.jpg', 0, 0),
-(9, 47, 33, 55, 2, NULL, 1, '1960.jpg', 0, 0),
-(10, 47, 30, 56.666666666667, 3, NULL, 1, '73105.jpg', 0, 0),
-(11, 44, 39, 66, 5, NULL, 1, '6705.jpg', 0, 0),
-(12, 49, 40, 70, 4, NULL, 1, '10990.jpg', 0, 0),
-(13, 51, 30, 40, 3, NULL, 1, '71454.jpg', 0, 0),
-(14, 51, 37, 65, 2, NULL, 1, '48175.jpg', 0, 0),
-(15, 61, 39, 60, 5, NULL, 1, '63916.jpg', 0, 0),
-(16, 45, 70, 50, 3, NULL, 1, '79519.jpg', 0, 0),
-(17, 58, 72, 60, 2, NULL, 1, '53754.jpg', 0, 0),
-(18, 65, 70, 60, 2, NULL, 1, '49948.jpg', 0, 0),
-(19, 63, 68, 64, 5, NULL, 1, '91571.jpg', 0, 0),
-(20, 54, 36, 50, 2, NULL, 1, '9543.jpg', 0, 0),
-(21, 57, 38, 20, 2, NULL, 1, '46082.jpg', 0, 0),
-(22, 53, 36, 45, 2, NULL, 1, '16812.jpg', 0, 0),
-(23, 48, 73, 65, 4, NULL, 1, '74884.jpg', 0, 0),
-(24, 59, 74, 75, 2, NULL, 1, '84408.jpg', 0, 0),
-(25, 52, 71, 45, 4, NULL, 1, '8521.jpg', 0, 0),
-(26, 49, 73, 42, 5, NULL, 1, '3910.jpg', 0, 0),
-(27, 55, 34, 50, 2, NULL, 1, '29407.jpg', 0, 0),
-(28, 60, 69, 75, 2, NULL, 1, '36759.jpg', 0, 0),
-(29, 64, 69, 78, 5, NULL, 1, '24726.jpg', 0, 0),
-(30, 61, 40, 76.666666666667, 3, NULL, 1, '48361.jpg', 0, 0),
-(31, 57, 67, 65, 2, NULL, 1, '85608.jpg', 0, 0),
-(32, 56, 35, 40, 3, NULL, 1, '87686.jpg', 0, 0);
+(6, 46, 42, 0, 0, NULL, 1, '61108.jpg', 0, 0),
+(7, 49, 43, 0, 0, NULL, 1, '62732.jpg', 0, 0),
+(8, 50, 41, 0, 0, NULL, 1, '95156.jpg', 0, 0),
+(9, 47, 33, 0, 0, NULL, 1, '1960.jpg', 0, 0),
+(10, 47, 30, 0, 0, NULL, 1, '73105.jpg', 0, 0),
+(11, 44, 39, 0, 0, NULL, 1, '6705.jpg', 0, 0),
+(12, 49, 40, 0, 0, NULL, 1, '10990.jpg', 0, 0),
+(13, 51, 30, 0, 0, NULL, 1, '71454.jpg', 0, 0),
+(14, 51, 37, 0, 0, NULL, 1, '48175.jpg', 0, 0),
+(15, 61, 39, 0, 0, NULL, 1, '63916.jpg', 0, 0),
+(16, 45, 70, 0, 0, NULL, 1, '79519.jpg', 0, 0),
+(17, 58, 72, 0, 0, NULL, 1, '53754.jpg', 0, 0),
+(18, 65, 70, 0, 0, NULL, 1, '49948.jpg', 0, 0),
+(19, 63, 68, 0, 0, NULL, 1, '91571.jpg', 0, 0),
+(20, 54, 36, 0, 0, NULL, 1, '9543.jpg', 0, 0),
+(21, 57, 38, 0, 0, NULL, 1, '46082.jpg', 0, 0),
+(22, 53, 36, 0, 0, NULL, 1, '16812.jpg', 0, 0),
+(23, 48, 73, 0, 0, NULL, 1, '74884.jpg', 0, 0),
+(24, 59, 74, 0, 0, NULL, 1, '84408.jpg', 0, 0),
+(25, 52, 71, 0, 0, NULL, 1, '8521.jpg', 0, 0),
+(26, 49, 73, 0, 0, NULL, 1, '3910.jpg', 0, 0),
+(27, 55, 34, 0, 0, NULL, 1, '29407.jpg', 0, 0),
+(28, 60, 69, 0, 0, NULL, 1, '36759.jpg', 0, 0),
+(29, 64, 69, 0, 0, NULL, 1, '24726.jpg', 0, 0),
+(30, 61, 40, 0, 0, NULL, 1, '48361.jpg', 0, 0),
+(31, 57, 67, 0, 0, NULL, 1, '85608.jpg', 0, 0),
+(32, 56, 35, 0, 0, NULL, 1, '87686.jpg', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -773,7 +762,7 @@ CREATE TABLE IF NOT EXISTS `purchases` (
   `user_id` int(11) NOT NULL,
   `total_price` double NOT NULL,
   PRIMARY KEY (`purchase_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 -- --------------------------------------------------------
 
@@ -813,19 +802,19 @@ CREATE TABLE IF NOT EXISTS `users` (
   `is_spammer_time` timestamp NULL DEFAULT NULL,
   `time_tracking_ctr` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`user_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=12 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=13 ;
 
 --
 -- Dumping data for table `users`
 --
 
 INSERT INTO `users` (`user_id`, `email`, `first_name`, `last_name`, `address`, `gender`, `birth_date`, `is_designer`, `is_admin`, `avatar`, `coupon_meter`, `description`, `website_link`, `is_spammer`, `is_spammer_time`, `time_tracking_ctr`) VALUES
-(1, 'charlotte@suityou.fr', 'Charlotte', 'd''Avignon', 'adsa, République française', 'FEMALE', '1988-12-31', 1, 0, '8576.jpg', 0, 'Je suis le meilleur designer en europe!', 'abcd', 0, NULL, 0),
+(1, 'charlotte@suityou.fr', 'Charlotte', 'd''Avignon', 'adsa, Republique francaise', 'FEMALE', '1988-12-31', 1, 0, '21232.jpeg', 0, '  Je suis le meilleur designer en europe!  ', 'abcde', 0, NULL, 0),
 (2, 'gabagaba@info.com', 'Umberto', 'de Cazale', '123 shapopo', 'MALE', '0001-01-01', 1, 0, '54770.png', 0, ' designing the best and most cutting edge clothing in all of west Mordor ', 'http://www.google.com', 0, NULL, 0),
 (3, 'boss@Boss.com', 'Boss', 'Bossss', 'Boss lane boss city', 'FEMALE', '1990-01-01', 0, 1, '', 100, '', '', 0, NULL, 0),
 (4, 'user1@suityou.com', 'user', 'one', 'aa', 'MALE', '2015-06-01', 0, 0, '', 0, NULL, NULL, 0, NULL, 0),
-(5, 'user2@suityou.com', 'user', 'two', 'agf 2', 'FEMALE', '0001-01-01', 0, 0, '', 10, NULL, NULL, 0, NULL, 0),
-(6, 'user3@suityou.com', 'user', 'three', 'aa', 'MALE', '2015-06-01', 0, 0, '', 0, NULL, NULL, 0, NULL, 0),
+(5, 'user2@suityou.com', 'user', 'two', 'agf 2', 'FEMALE', '0001-01-01', 0, 0, '', 100, NULL, NULL, 0, NULL, 0),
+(6, 'user3@suityou.com', 'user', 'three', 'aa', 'MALE', '2015-06-01', 0, 0, '', 50, NULL, NULL, 0, NULL, 0),
 (7, 'user4@suityou.com', 'user', 'four', 'agf 2', 'FEMALE', '0000-00-00', 0, 0, '', 0, NULL, NULL, 0, NULL, 0),
 (8, 'hishi@suityou.jp', 'Hideko', 'Shinji', 'waka 14 JP', 'MALE', '0000-00-00', 1, 0, '', 0, NULL, 'http://japan.com', 0, NULL, 0),
 (9, 'clarasmith@suityou.co.uk', 'Clara', 'Smith', 'blabla 14 London, UK', 'FEMALE', '0000-00-00', 1, 0, '', 0, NULL, 'http://www.gmail.com', 0, NULL, 0),

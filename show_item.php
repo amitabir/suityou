@@ -1,6 +1,7 @@
 <?php
 include("header.php");
 include("rating.php");
+include("algorithms.php");
 
 if(isset($_SESSION['item_update_message']) and isset($_SESSION['item_update_success'])) {
 	$message = $_SESSION['item_update_message'];
@@ -35,7 +36,22 @@ if ($item->type=="TOP"){
 }else{
 	$typeColId="bottom_item_id";
 }
-$queryMatches = mysql_query('SELECT match_id, top_item_id, bottom_item_id from item_matchings WHERE '.$typeColId. '='.$item->itemId);
+$queryMatches = mysql_query('SELECT * from item_matchings WHERE '.$typeColId. '='.$item->itemId);
+
+$sorted_matches = array();
+while ($queryRow = mysql_fetch_array($queryMatches)) {
+	if ($queryRow["match_type"] == 1) {
+		$key = $queryRow['match_percent'];
+	} else {
+		$key = calculateTotalScoreForTrends($queryRow["match_id"]);
+	}
+	$consts = getConstants();
+	if ($key >= $consts['MATCH_SCORE_LIMIT']) {
+		$sorted_matches[$key] = $queryRow;
+	}	
+}
+krsort($sorted_matches);
+
 
 $designerNameQuery = mysql_query('SELECT first_name, last_name from users WHERE user_id = '.$item->designerId);
 $designerRow = mysql_fetch_array($designerNameQuery);
@@ -84,6 +100,9 @@ $designerRow = mysql_fetch_array($designerNameQuery);
 								<input type="text" name="quantity" value="1" />
 								<input type="submit" value="Add To Cart" class="btnAddCart" />
 							</form>
+							<?php; if ($userId != NULL and $item->designerId == $userId) { ?>
+								<p><a href='add_item.php?itemId=<?php echo $itemId;?>'> <button class="btn btn-primary">Update Item</button> </a></p>
+							<?php } ?>
 							<div id="errorBox">
 								
 							</div>
@@ -107,7 +126,7 @@ $designerRow = mysql_fetch_array($designerNameQuery);
         </div>
 	</div>
 		
-		<?php if (mysql_num_rows($queryMatches) > 0) {  ?>
+		<?php if (count($sorted_matches) > 0) {  ?>
 			<div class="row">
 				<div class="col-lg-12">
 				     <h4 class="page-header">
@@ -127,12 +146,12 @@ $designerRow = mysql_fetch_array($designerNameQuery);
 			</div>
 			<div class="row">
 				<?php
-				while($row = mysql_fetch_array($queryMatches)) {
-					$matchId = $row['match_id'];
+				foreach($sorted_matches as $key=>$matchRow) {
+					$matchId = $matchRow['match_id'];
 					if ($item->type == "TOP") {
-						$matchItemId= $row["bottom_item_id"];
+						$matchItemId= $matchRow["bottom_item_id"];
 					} else {
-						$matchItemId= $row['top_item_id'];
+						$matchItemId= $matchRow['top_item_id'];
 					}
 				?>
 					<script>

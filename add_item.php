@@ -113,8 +113,9 @@ if(!empty($_GET["itemId"])) {
 			            <div class="form-group">
 							<?php if ($itemForUpdate != NULL) { ?>
 						 	  <p> <label class="control-label">Item Image</label></p>
-							<img class="thumbnail" src="images/items/<?php if ($itemForUpdate != NULL) {echo $itemForUpdate->picture;} ?>" />
-						
+							 <div class="img-container-show">
+								 <img class="img-responsive" src="images/items/<?php if ($itemForUpdate != NULL) {echo $itemForUpdate->picture;} ?>" />
+							 </div>
 							<?php }?>
 						
 							<p><label class="control-label" for="imageToUpload"><?php if ($itemForUpdate != NULL) echo "Change Item Image: "; else echo "Upload Item Image: "; ?></label></p>

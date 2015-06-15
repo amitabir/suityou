@@ -61,7 +61,7 @@ if(User::issetUserDetailsinArray($_POST) && isset($_SESSION['user_id'],$_SESSION
 		}
 		$query = rtrim($query,","); //removing trailing ','
 		$query.=' WHERE user_id="'.$_SESSION['user_id'].'"';
-		if(mysql_query($query))
+		if(mysql_query($query) or die(mysql_error()))
 		{
 			//logging him into session automatically
 			$_SESSION['email'] = $_POST['email'];
@@ -70,7 +70,7 @@ if(User::issetUserDetailsinArray($_POST) && isset($_SESSION['user_id'],$_SESSION
 		}
 		else
 		{
-			$message = 'An error occurred while update you details please try again.';
+			$message = 'An error occurred while updating your details, please try again.';
 		}
 	}
 	$_SESSION['update_message']=$message;

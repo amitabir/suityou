@@ -7,9 +7,10 @@
 <div class="container">
 	<div class="row">
     <div class="col-lg-12" align="center">
-        <h1 class="page-header">
-            Welcome to <br/><img src="images/Banner.png"/ height="84" width="228"> 
-        </h1>
+        <h4 class="page-header">
+            <img src="images/Banner.png"/ height="84" width="228"> 
+			<p>Simply Suits You</p>
+        </h4>
     </div>
 	</div>
 	<div class="row">
@@ -87,7 +88,7 @@
                 <div class="panel-body">
                     <p>Come and see our supplies from top designers all around the world, waiting just for you. The clothes available on this site are guaranteed to be of the best possible quality and top standards. </p>
 					<p> Found yourself a pair of pants? Well great, you can see all the matching shirts according to our users! Never again have a hard time deciding what to wear. </p>
-                    <a href="shop_entrance.php?gender=male" class="btn btn-default">Men</a> <a href="shop_entrance.php?gender=female" class="btn btn-default">Women</a>
+                    <a href="shop_entrance.php?gender=male" class="btn btn-primary">Men</a> <a href="shop_entrance.php?gender=female" class="btn btn-primary">Women</a>
                 </div>
             </div>
         </div>
@@ -99,7 +100,7 @@
                 <div class="panel-body">
                     <p>Join our community and help rate the matches to help everyone decide what to wear! All you need to do is to rate the matches you found most appealing, and let our algorithms do the rest of the job. </p>
 					<p> The more you rate - the more you earn! Keep on rating and see your coupon meter rise - when it gets to 100 points - you win a discount! So what are you waiting for?</p>
-                    <a href="matching.php" class="btn btn-default">Rate & Earn Coupons</a>
+                    <a href="matching.php" class="btn btn-primary">Rate & Earn Coupons</a>
                 </div>
             </div>
         </div>
@@ -111,7 +112,7 @@
                 <div class="panel-body">
                     <p>Our Sophisticated algorithms are working behind the scene to give you the ultimate shopping experience. We constantly seek for new trends according to the users ratings, and find new matches that just fit! </p>
 					<p> Come and check the hottest trends waiting just for you, and help us getting even better by rating the new matches. </p>
-                    <a href="trends.php" class="btn btn-default">Check Trends</a>
+                    <a href="trends.php" class="btn btn-primary">Check Trends</a>
                 </div>
             </div>
         </div>

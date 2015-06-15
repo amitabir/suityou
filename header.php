@@ -8,9 +8,9 @@ require_once 'config.php';
   <meta name="description" content="website description" />
   <meta name="keywords" content="website keywords, website keywords" />
   <meta http-equiv="content-type" content="text/html; charset=windows-1252" />
-  <link rel="stylesheet" type="text/css" href="style/style.css?6" />
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+  <link rel="stylesheet" type="text/css" href="style/style.css?8" />
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
   <script src="js/jquery-ui.min.js"></script>
   <script type="text/javascript" src="jquery.validate.min.js"></script>
@@ -32,7 +32,7 @@ require_once 'config.php';
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.php">	<img src="images/Banner.png"/  height="26" width="76"> 
+      <a class="navbar-brand" href="index.php">	<img src="images/Banner.png"/  style="width: 76; height=26"> 
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->

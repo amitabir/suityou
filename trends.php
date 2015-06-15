@@ -55,16 +55,17 @@ if ($num_rows == 0) {
 				            </div>
 				<div class="panel-body">
 			<div class="col-md-4">
+			
 				<a href="show_item.php?itemId=<?php echo $topId; ?>" class="thumbnail">
-				    <img src="images/items/<?php echo $pictureTop; ?>" alt="" style="width:200px;height:200px">
-				    <p align="center"> <?php echo $nameTop; ?></p>
+				    <img src="images/items/<?php echo $pictureTop; ?>" class="img-responsive shop_thumbnail">
+						<p align="center"> <?php echo $nameTop; ?></p>
 					<p align="center"> $<?php echo $priceTop; ?></p>
 				</a>
 			</div>
 			<div class="col-md-4">
 	 			<a href="show_item.php?itemId=<?php echo $bottomId; ?>" class="thumbnail">
-	 			    <img src="images/items/<?php echo $pictureBottom; ?>" alt="" style="width:200px;height:200px">
-	 			    <p align="center"> <?php echo $nameBottom; ?></p>
+				    <img src="images/items/<?php echo $pictureBottom; ?>" class="img-responsive shop_thumbnail">
+					<p align="center"> <?php echo $nameBottom; ?></p>
 	 				<p align="center"> $<?php echo $priceBottom; ?></p>
 	 			</a>
 			</div>

@@ -195,7 +195,7 @@
 	
 	function removeOldTrends(){
 		$constantsArray = getConstants();
-		$matchTrendQuery = mysql_query("DELETE FROM item_matchings WHERE match_type = 0 AND (trend_percent < ".$constantsArray['TREND_SCORE_LIMIT']." OR (match_percent < ".$constantsArray['MATCH_SCORE_LIMIT']." AND match_percent > 0) )") or die(mysql_error());
+		$matchTrendQuery = mysql_query("DELETE FROM item_matchings WHERE match_type = 0 AND (trend_percent < ".$constantsArray['TREND_SCORE_LIMIT']." OR (match_percent < ".$constantsArray['MATCH_SCORE_LIMIT']." AND match_percent > 0 AND match_count > ".$constantsArray['TREND_MIN_RATINGS_COUNT'].") )") or die(mysql_error());
 	}
 	
 	function increaseCouponMeter($userID, $increaseSize){
