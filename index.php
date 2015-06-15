@@ -7,7 +7,7 @@
 <div class="container">
 	<div class="row">
     <div class="col-lg-12" align="center">
-        <h4 class="page-header">
+        <h4 class="page-header" style="margin :0">
             <img src="images/Banner.png"/ height="84" width="228"> 
 			<p>Simply Suits You</p>
         </h4>

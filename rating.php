@@ -56,10 +56,15 @@ function showRating($matchId, $userId, $matchItemId, $size) {
 				});
 			</script>
 		
-		<div id="jRate_<?php echo $matchId?>"><p >You Rated: </p></div>
-		<?php if ($rating == -1) { ?>
+		<?php if ($rating != -1) { ?>
+				<div id="jRate_<?php echo $matchId?>"><p>You Rated: </p></div>
+		<?php } else { ?>
+				<div id="jRate_<?php echo $matchId?>"></div>
+		<?php  }
+			if ($rating == -1) { ?>
 			<p><h3> <label class="label label-warning" id="rating_label_<?php echo $matchId?>">0/10</label> </h3> </p>
 		<?php } else { ?>
+			
 			<p><h3> <label class="label label-warning" id="rating_label_<?php echo $matchId?>"><?php echo $rating; ?>/10</label> </h3> </p>
 		<?php } ?>
 		

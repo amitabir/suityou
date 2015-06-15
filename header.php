@@ -32,7 +32,7 @@ require_once 'config.php';
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.php">	<img src="images/BannerTransBG.png"/  height="26" width="76"> 
+      <a class="navbar-brand" href="index.php">	<img src="images/BannerTransBG.png"/  height="26" width="100"> 
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
