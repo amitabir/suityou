@@ -68,7 +68,7 @@ if(isset($_SESSION['user_id'],$_SESSION['email']))
 				$designer= false;
 			}
 ?>
-<script type="text/javascript" src="profile_validate.js"></script>
+<script type="text/javascript" src="js/site_scripts/profile_validate.js"></script>
 <style type="text/css">
       .form-control[readonly],.form-control[disabled]
       {

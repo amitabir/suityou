@@ -10,7 +10,7 @@ if(!empty($_GET["matchId"])) {
 	$matchForUpdate = array("matchId" => $_GET["matchId"], "topItemId" => $matchRow['top_item_id'], "bottomItemId" => $matchRow['bottom_item_id'], "modelPicture" => $matchRow['model_picture']);
 }
 ?>
-<script type="text/javascript" src="add_match_validate.js?3"></script>
+<script type="text/javascript" src="js/site_scripts/add_match_validate.js?3"></script>
 <script>
 	function loadItems(gender, type) {
 		$.ajax({ url: "select_item_for_match.php?gender="+gender+"&type="+type,

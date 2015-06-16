@@ -23,7 +23,7 @@ if(!empty($_GET["itemId"])) {
 	$itemForUpdate = Item::getItemById($_GET["itemId"]);
 }
 ?>
-<script type="text/javascript" src="add_item_validate.js?12"></script>
+<script type="text/javascript" src="js/site_scripts/add_item_validate.js?12"></script>
 <script>
 	function checkNew(category_id, val) {
 		if (val == "new") {

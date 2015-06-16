@@ -1,7 +1,7 @@
 <?php
 include 'header.php';
 ?>
-	<script type="text/javascript" src="connexion.js"></script>
+	<script type="text/javascript" src="js/site_scripts/connexion.js"></script>
 	<div class="container">
 		<div class="row">
 			<div class="col-md-6 col-md-offset-3">

@@ -99,7 +99,7 @@ if ($userId != NULL) {
 	$couponMeterValue = 0;
 }
 ?>
-<script type="text/javascript" src="cart_qty_validate.js?2"></script>
+<script type="text/javascript" src="js/site_scripts/cart_qty_validate.js?2"></script>
 <script>
 function showUpdate(elementId) {
 	console.log("Going to update " + elementId);

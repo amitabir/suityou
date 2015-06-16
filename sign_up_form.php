@@ -20,7 +20,7 @@ if(isset($_SESSION['checkoutMessage']) && $_SESSION['checkoutMessage']=="1")
     echo '</div>';
 }
 ?>
-<script type="text/javascript" src="sign_up_validate.js"></script>
+<script type="text/javascript" src="js/libraries/sign_up_validate.js"></script>
 <div class="container">
     <div class="row">
         <div class="col-md-6 col-md-offset-3">

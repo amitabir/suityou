@@ -56,7 +56,7 @@ krsort($sorted_matches);
 $designerNameQuery = mysql_query('SELECT first_name, last_name from users WHERE user_id = '.$item->designerId);
 $designerRow = mysql_fetch_array($designerNameQuery);
 ?>
-<script type="text/javascript" src="show_item_validator.js?2"></script>
+<script type="text/javascript" src="js/site_scripts/show_item_validator.js?2"></script>
 <div class="container">	
 	<div class="row">
         <div class="col-md-12">
