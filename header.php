@@ -110,13 +110,11 @@ require_once 'config.php';
 
           <p class="navbar-text">Hello <?php echo $_SESSION['email']?></p> 
 
-          <li><a href="cart.php">Shopping Cart</a></li>
+          <li><a href="cart.php">Shopping Cart <span class ="glyphicon glyphicon-shopping-cart"></span></a></li>
 
-		  <li><a href="user_purchases.php">My Purchases</a></li>
+		  <li><a href="user_purchases.php">My Purchases <span class="glyphicon glyphicon-barcode"></span></a></li>
 
-          <li><a href="profile.php">Profile</a></li>  
-
-          <li><a href="connexion.php">Logout</a></li>
+          <li><a href="profile.php">Profile <span class="glyphicon glyphicon-user"></span></span></a></li>  
 
      <?php if (isset($_SESSION['is_designer']) && !empty($_SESSION['is_designer']))
 
@@ -124,7 +122,7 @@ require_once 'config.php';
 
      ?>
 
-          <li><a href="manage_items.php">Manage Items</a></li>
+          <li><a href="manage_items.php">Manage Items <span class="glyphicon glyphicon-briefcase"></span></a></li>
 
     <?php }
 
@@ -134,19 +132,24 @@ require_once 'config.php';
 
     ?>
 
-         <li><a href="manage.php">Manage Site</a></li>
+         <li><a href="manage.php">Manage Site <span class="glyphicon glyphicon-dashboard"></span></a></li>
 
    <?php }
 
         }  else  {
 
      ?>
+ 		  <li><a href="cart.php">Shopping Cart <span class ="glyphicon glyphicon-shopping-cart"></span></a></li>
+          
+		  <li><a href="sign_up.php">Sign up <span class="glyphicon glyphicon-list-alt"></span></a></li>
 
-          <li><a href="sign_up.php">Sign up</a></li>
+          <li><a href="connexion.php">Log in <span class="glyphicon glyphicon-log-in"></span></a></li>
 
-          <li><a href="connexion.php">Log in</a></li>
-
-  <?php } ?>  
+  <?php }
+	 if(isset($_SESSION['user_id'],$_SESSION['email']))   {
+  ?>
+  		<li><a href="connexion.php">Logout <span class="glyphicon glyphicon-log-out"></span></a></li>
+  <?php } ?>
 
       </ul>
 

@@ -404,7 +404,7 @@
 	}
 	
 	function insertAnonUserToDB($userID){
-		if(isset($_SESSION['user_data'])){
+		if(isset($_SESSION['user_data']) and !empty($_SESSION['user_data'])){
 			if(isset($_SESSION['user_data']["is_spammer"]) and $_SESSION['user_data']["is_spammer"]){
 				mysql_query("UPDATE users
 							 SET is_spammer = 1, is_spammer_time = '".$_SESSION['user_data']["is_spammer_time"]."', time_tracking_ctr = ".$_SESSION['user_data']["time_tracking"].", coupon_meter = ".$_SESSION['user_data']['coupon_meter']."
