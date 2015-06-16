@@ -181,7 +181,18 @@ function showUpdate(elementId) {
 
 							}
 							?>
-							<p align="right"><a href="checkout.php"><button class="btn btn-primary">Checkout</button></a></p>
+<?php 
+if($userId == NULL)
+{
+	$_SESSION['checkoutMessage']="1";
+	$link="sign_up.php";
+}
+else
+{
+	$link="checkout.php";
+}
+?>
+							<p align="right"><a href=<?php echo $link ?> ><button class="btn btn-primary">Checkout</button></a></p>
 						</td>
 					</tr>
 				</tbody>

@@ -32,6 +32,11 @@ if(isset($_POST['email'], $_POST['first_name'], $_POST['last_name'], $_POST['add
 							$_SESSION['firstTime'] = true;
 							header('Location: profile.php');
 						}
+						else if(isset($_SESSION['checkoutMessage']) && $_SESSION['checkoutMessage']=="1")
+						{
+							unset($_SESSION['checkoutMessage']);
+							header("Location: cart.php");
+						}
 						else
 						{
 							//we fwd to home page

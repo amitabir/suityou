@@ -32,7 +32,7 @@ require_once 'Item.php';
 $url_home = 'index.php';
 
 //Design Name
-$design = 'default';
-
+/*default design:*/ $design = 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css';
+///*second design:*/ $design = 'style/themes/Bootstrap_Theme.min.css';
 
 ?>
