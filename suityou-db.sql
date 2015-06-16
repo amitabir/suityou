@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jun 16, 2015 at 08:57 AM
+-- Generation Time: Jun 16, 2015 at 12:34 PM
 -- Server version: 5.6.21
 -- PHP Version: 5.5.14
 
@@ -136,17 +136,17 @@ INSERT INTO `constants` (`name`, `description`, `value`) VALUES
 ('BAD_TIME_REPEAT_LIMIT', 'A user rating faster than the allowed time this constant times in a row is to be considered as a spammer.', 10),
 ('COUPON_PRIZE', 'The coupon meter gets bigger by this constant every time the user rates a match.', 10),
 ('DIFF_FOR_ACCEPT_NEW_VOTE', 'A new rating is to be taken to account for a match avereage if it is not different more than this constant from the current average.', 10),
-('IGNORED_VOTES_LIMIT_FOR_ACCEPT', 'The number of ignored ratings needs to be greater than this constant in order for all the ignored ratings to be taken for the match average.', 3),
+('IGNORED_VOTES_LIMIT_FOR_ACCEPT', 'The number of ignored ratings needs to be greater than this constant in order for all the ignored ratings to be taken for the match average.', 10),
 ('MATCH_CONSTANT', 'The weight of the users opinion of a trend is given by this lovely constant.', 0.5),
 ('MATCH_SCORE_LIMIT', 'A trend''s users'' opinion must be greater than or equal to this constant in order to be considered a trend.', 50),
 ('MAX_COUPON', 'The coupon meter max value is defined by this wonderful constant. ', 100),
 ('MINIMAL_TIME', 'A vote made faster than this constant is suspicious for being too fast and the user might be a spammer.', 100),
-('STDEV_LIMIT', 'The STDEV of ratings of a couple of attributes needs to be smaller or equal to this constant in order to be considered a trend.', 1),
+('STDEV_LIMIT', 'The STDEV of ratings of a couple of attributes needs to be smaller or equal to this constant in order to be considered a trend.', 4.5),
 ('TREND_CONSTANT', 'The weight of the our prediction of a trend is given by this once in a lifetime constant.', 0.5),
 ('TREND_SCORE_LIMIT', 'A trend''s prediction by us must be greater than or equal to this constant in order to be considered a trend.', 50),
-('VOTES_LIMIT_FOR_ACCEPT_NEW_VOTE', 'Any rating is accepted for a match if the total number of ratings for that match is lower than this brand new constant.', 3),
-('TREND_MIN_COUNT', 'The minimum number of ratings for two attributes to become a trend', 3),
-('TREND_REMOVE_MIN_COUNT', 'Below this number we will not check if the trend should be removed because of the users average rating', 3);
+('VOTES_LIMIT_FOR_ACCEPT_NEW_VOTE', 'Any rating is accepted for a match if the total number of ratings for that match is lower than this brand new constant.', 10),
+('TREND_MIN_COUNT', 'The minimum number of ratings for two attributes to become a trend', 5),
+('TREND_REMOVE_MIN_COUNT', 'Below this number we will not check if the trend should be removed because of the users average rating', 10);
 
 -- --------------------------------------------------------
 
@@ -730,7 +730,7 @@ CREATE TABLE IF NOT EXISTS `item_matchings` (
 --
 
 INSERT INTO `item_matchings` (`match_id`, `top_item_id`, `bottom_item_id`, `match_percent`, `match_count`, `trend_percent`, `match_type`, `model_picture`, `ignored_match_percent`, `ignored_match_count`) VALUES
-(6, 46, 42, 0, 0, NULL, 1, '61108.jpg', 80, 1),
+(6, 46, 42, 0, 0, NULL, 1, '61108.jpg', 0, 0),
 (7, 49, 43, 0, 0, NULL, 1, '62732.jpg', 0, 0),
 (8, 50, 41, 0, 0, NULL, 1, '95156.jpg', 0, 0),
 (9, 47, 33, 0, 0, NULL, 1, '1960.jpg', 0, 0),
@@ -769,7 +769,7 @@ CREATE TABLE IF NOT EXISTS `purchases` (
   `user_id` int(11) NOT NULL,
   `total_price` double NOT NULL,
   PRIMARY KEY (`purchase_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
 -- --------------------------------------------------------
 
@@ -809,24 +809,26 @@ CREATE TABLE IF NOT EXISTS `users` (
   `is_spammer_time` timestamp NULL DEFAULT NULL,
   `time_tracking_ctr` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`user_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=15 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=17 ;
 
 --
 -- Dumping data for table `users`
 --
 
 INSERT INTO `users` (`user_id`, `email`, `first_name`, `last_name`, `address`, `gender`, `birth_date`, `is_designer`, `is_admin`, `avatar`, `coupon_meter`, `description`, `website_link`, `is_spammer`, `is_spammer_time`, `time_tracking_ctr`) VALUES
-(1, 'charlotte@suityou.fr', 'Charlotte', 'd''Avignon', 'adsa, Republique francaise', 'FEMALE', '1988-12-31', 1, 0, '21232.jpeg', 100, '    Je suis le meilleur designer en europe!    ', 'http://google.com', 0, NULL, 0),
+(1, 'charlotte@suityou.fr', 'Charlotte', 'd''Avignon', 'adsa, Republique francaise', 'FEMALE', '1988-12-31', 1, 0, '21232.jpeg', 0, '    Je suis le meilleur designer en europe!    ', 'http://google.com', 0, NULL, 0),
 (2, 'gabagaba@info.com', 'Umberto', 'de Cazale', '123 shapopo', 'MALE', '0001-01-01', 1, 0, '54770.png', 0, ' designing the best and most cutting edge clothing in all of west Mordor ', 'http://www.google.com', 0, NULL, 0),
-(3, 'boss@Boss.com', 'Boss', 'Bossss', 'Boss lane boss city', 'FEMALE', '1990-01-01', 0, 1, '', 100, '', '', 0, NULL, 3),
-(4, 'user1@suityou.com', 'user', 'one', 'aa', 'MALE', '2015-06-01', 0, 0, '', 90, NULL, NULL, 0, NULL, 3),
-(5, 'user2@suityou.com', 'user', 'two', 'agf 2', 'FEMALE', '0001-01-01', 0, 0, '', 100, NULL, NULL, 0, NULL, 0),
-(6, 'user3@suityou.com', 'user', 'three', 'aa', 'MALE', '2015-06-01', 0, 0, '', 90, NULL, NULL, 0, NULL, 3),
-(7, 'user4@suityou.com', 'user', 'four', 'agf 2', 'FEMALE', '0000-00-00', 0, 0, '', 30, NULL, NULL, 0, NULL, 0),
+(3, 'boss@Boss.com', 'Boss', 'Bossss', 'Boss lane boss city', 'FEMALE', '1990-01-01', 0, 1, '', 0, '', '', 0, NULL, 3),
+(4, 'user1@suityou.com', 'user', 'one', 'aa', 'MALE', '2015-06-01', 0, 0, '', 0, NULL, NULL, 0, NULL, 3),
+(5, 'user2@suityou.com', 'user', 'two', 'agf 2', 'FEMALE', '0001-01-01', 0, 0, '', 0, NULL, NULL, 0, NULL, 0),
+(6, 'user3@suityou.com', 'user', 'three', 'aa', 'MALE', '2015-06-01', 0, 0, '', 0, NULL, NULL, 0, NULL, 3),
+(7, 'user4@suityou.com', 'user', 'four', 'agf 2', 'FEMALE', '0000-00-00', 0, 0, '', 0, NULL, NULL, 0, NULL, 0),
 (8, 'hishi@suityou.jp', 'Hideko', 'Shinji', 'waka 14 JP', 'MALE', '0000-00-00', 1, 0, '', 0, NULL, 'http://japan.com', 0, NULL, 0),
 (9, 'clarasmith@suityou.co.uk', 'Clara', 'Smith', 'blabla 14 London, UK', 'FEMALE', '0000-00-00', 1, 0, '', 0, NULL, 'http://www.gmail.com', 0, NULL, 0),
 (10, 'mzaltzman@gmail.com', 'Riku', 'Zaltzman', 'TAU, Tel-Aviv', 'MALE', '0000-00-00', 0, 1, '', 0, NULL, 'http://japan.com', 0, NULL, 0),
-(11, 'amabir@gmail.com', 'Amit', 'Abir', 'TAU, Tel-Aviv', 'MALE', '0000-00-00', 0, 1, '', 60, NULL, 'http://www.gmail.com', 0, NULL, 0);
+(11, 'amabir@gmail.com', 'Amit', 'Abir', 'TAU, Tel-Aviv', 'MALE', '0000-00-00', 0, 1, '', 0, NULL, 'http://www.gmail.com', 0, NULL, 0),
+(16, 'spammer2@suityou.com', 'Spammer', '2', 'Espamia', 'MALE', '2015-06-03', 0, 0, '', 0, '', '', 0, NULL, 0),
+(15, 'spammer1@suityou.com', 'Spammer', '1', 'Espamia', 'FEMALE', '2015-06-03', 0, 0, '', 0, '', '', 0, NULL, 0);
 
 -- --------------------------------------------------------
 
@@ -842,7 +844,7 @@ CREATE TABLE IF NOT EXISTS `user_matchings` (
   `rating_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `skipped` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`user_match_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
