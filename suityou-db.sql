@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jun 15, 2015 at 03:34 PM
+-- Generation Time: Jun 16, 2015 at 08:57 AM
 -- Server version: 5.6.21
 -- PHP Version: 5.5.14
 
@@ -78,7 +78,7 @@ INSERT INTO `attributes` (`attribute_id`, `category_id`, `name`) VALUES
 (45, 1, 'Dark Blue'),
 (46, 1, 'Cyan'),
 (47, 3, 'Blotted'),
-(48, 3, 'Drawings?'),
+(48, 3, 'Drawings'),
 (49, 2, 'Nylon'),
 (50, 5, 'IGiveUp'),
 (51, 1, 'Grey'),
@@ -133,21 +133,20 @@ CREATE TABLE IF NOT EXISTS `constants` (
 INSERT INTO `constants` (`name`, `description`, `value`) VALUES
 ('AVERAGE_LIMIT', 'The average rating of a couple of attributes needs to be greater or equal to this constant in order to be considered a trend.', 7),
 ('BAD_RATING_REPEAT_LIMIT', 'A user rating the exact same rating this constant times in a row is to be considered as a spammer.', 10),
-('BAD_TIME_REPEAT_LIMIT', 'A user rating faster than the allowed time this constant times in a row is to be considered as a spammer.', 5),
+('BAD_TIME_REPEAT_LIMIT', 'A user rating faster than the allowed time this constant times in a row is to be considered as a spammer.', 10),
 ('COUPON_PRIZE', 'The coupon meter gets bigger by this constant every time the user rates a match.', 10),
 ('DIFF_FOR_ACCEPT_NEW_VOTE', 'A new rating is to be taken to account for a match avereage if it is not different more than this constant from the current average.', 10),
-('IGNORED_VOTES_LIMIT_FOR_ACCEPT', 'The number of ignored ratings needs to be greater than this constant in order for all the ignored ratings to be taken for the match average.', 10),
+('IGNORED_VOTES_LIMIT_FOR_ACCEPT', 'The number of ignored ratings needs to be greater than this constant in order for all the ignored ratings to be taken for the match average.', 3),
 ('MATCH_CONSTANT', 'The weight of the users opinion of a trend is given by this lovely constant.', 0.5),
 ('MATCH_SCORE_LIMIT', 'A trend''s users'' opinion must be greater than or equal to this constant in order to be considered a trend.', 50),
 ('MAX_COUPON', 'The coupon meter max value is defined by this wonderful constant. ', 100),
 ('MINIMAL_TIME', 'A vote made faster than this constant is suspicious for being too fast and the user might be a spammer.', 100),
-('NUMBER_OF_CATEGORIES', 'The number of categories is given to you here and now by this beautiful constant.', 6),
 ('STDEV_LIMIT', 'The STDEV of ratings of a couple of attributes needs to be smaller or equal to this constant in order to be considered a trend.', 1),
 ('TREND_CONSTANT', 'The weight of the our prediction of a trend is given by this once in a lifetime constant.', 0.5),
 ('TREND_SCORE_LIMIT', 'A trend''s prediction by us must be greater than or equal to this constant in order to be considered a trend.', 50),
-('VOTES_LIMIT_FOR_ACCEPT_NEW_VOTE', 'Any rating is accepted for a match if the total number of ratings for that match is lower than this brand new constant.', 10),
+('VOTES_LIMIT_FOR_ACCEPT_NEW_VOTE', 'Any rating is accepted for a match if the total number of ratings for that match is lower than this brand new constant.', 3),
 ('TREND_MIN_COUNT', 'The minimum number of ratings for two attributes to become a trend', 3),
-('TREND_MIN_RATINGS_COUNT', 'Below this number we will not check if the trend should be removed because of the users average rating', 3);
+('TREND_REMOVE_MIN_COUNT', 'Below this number we will not check if the trend should be removed because of the users average rating', 3);
 
 -- --------------------------------------------------------
 
@@ -168,7 +167,7 @@ CREATE TABLE IF NOT EXISTS `items` (
   PRIMARY KEY (`item_id`),
   UNIQUE KEY `id` (`item_id`),
   FULLTEXT KEY `name` (`name`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Items table' AUTO_INCREMENT=75 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Items table' AUTO_INCREMENT=76 ;
 
 --
 -- Dumping data for table `items`
@@ -185,37 +184,37 @@ INSERT INTO `items` (`item_id`, `name`, `gender`, `type`, `description`, `price`
 (39, 'Denim shorts for dudes', 'MALE', 'BOTTOM', 'name says it all. gotta love the belt buckle.', 35.99, 1, '2015-06-09 01:39:03', '32004.jpg'),
 (40, 'Gym teacher shorts (sorry Ofer..)', 'MALE', 'BOTTOM', 'NOT for running! check out that cool bright blue stripe, saying to your students: Im tough, but also elegant!.\r\n\r\n disclaimer: Umberto de Cazale will not be held liable for people being lonley forever after choosing to be a gym teacher. It''s YOUR responsibilty. Just do anything else.\r\n\r\nnote: I have NO unresolved issues with my former gym teacher, may he burn in hell.', 15.98, 1, '2015-06-09 01:47:47', '95739.jpg'),
 (41, 'Gym Shorts', 'MALE', 'BOTTOM', 'great for a run in the park.', 10, 2, '2015-06-09 01:49:42', '4557.jpg'),
-(42, 'golden Elephant patterned black pants', 'FEMALE', 'BOTTOM', 'chill, bro..', 5, 9, '2015-06-09 01:56:08', '13996.jpg'),
+(42, 'Golden Elephant patterned black pants', 'FEMALE', 'BOTTOM', 'chill, bro..', 5, 9, '2015-06-09 01:56:08', '13996.jpg'),
 (43, 'Colorful shorts', 'MALE', 'BOTTOM', 'yeah.', 15.99, 9, '2015-06-09 02:00:25', '22544.jpg'),
 (44, 'Metallica-and justice for all... shirt', 'MALE', 'TOP', '...and justice for all album cover shirt. wear it so other people will know what kind of music you like.', 10, 1, '2015-06-09 02:10:51', '77649.jpg'),
-(45, 'black denim vest', 'MALE', 'TOP', 'don''t do it.', 15, 9, '2015-06-09 02:14:22', '40210.jpg'),
-(46, 'grey tank top 2', 'FEMALE', 'TOP', 'umm..hmm..', 10, 9, '2015-06-09 02:16:16', '33060.jpg'),
-(47, 'black tank top', 'FEMALE', 'TOP', 'what the name says', 10, 2, '2015-06-09 02:17:54', '77118.jpg'),
-(48, 'grey shirt', 'MALE', 'TOP', 'cool cars.', 17.99, 2, '2015-06-09 02:19:58', '34152.jpg'),
-(49, 'yellow shirt', 'MALE', 'TOP', 'like the red one but yellow', 11.11, 1, '2015-06-09 02:21:56', '11829.jpg'),
-(50, 'red shirt', 'MALE', 'TOP', 'it''s like the red one but yellow', 11.09, 1, '2015-06-09 02:24:10', '20743.jpg'),
+(45, 'Black denim vest', 'MALE', 'TOP', 'don''t do it.', 15, 9, '2015-06-09 02:14:22', '40210.jpg'),
+(46, 'Grey tank top 2', 'FEMALE', 'TOP', 'umm..hmm..', 10, 9, '2015-06-09 02:16:16', '33060.jpg'),
+(47, 'Black tank top', 'FEMALE', 'TOP', 'what the name says', 10, 2, '2015-06-09 02:17:54', '77118.jpg'),
+(48, 'Grey shirt', 'MALE', 'TOP', 'cool cars.', 17.99, 2, '2015-06-09 02:19:58', '34152.jpg'),
+(49, 'Yellow shirt', 'MALE', 'TOP', 'like the red one but yellow', 11.11, 1, '2015-06-09 02:21:56', '11829.jpg'),
+(50, 'Red shirt', 'MALE', 'TOP', 'it''s like the red one but yellow', 11.09, 1, '2015-06-09 02:24:10', '20743.jpg'),
 (51, 'Hippie undershirt', 'FEMALE', 'TOP', 'ugh..why..', 9.1101, 2, '2015-06-09 02:26:29', '90826.jpg'),
-(52, 'white shirt', 'FEMALE', 'TOP', 'a white shirt.', 15, 2, '2015-06-11 04:17:49', '94461.jpg'),
-(53, 'black coat', 'MALE', 'TOP', 'a warm black coat. tons of pockets.', 120, 2, '2015-06-11 04:19:00', '32367.jpg'),
-(54, 'a striped white shirt', 'MALE', 'TOP', '', 10, 9, '2015-06-11 04:20:03', '68796.jpg'),
-(55, 'grey tank top', 'FEMALE', 'TOP', '', 13.45, 2, '2015-06-11 04:21:10', '50476.jpg'),
-(56, 'blue shirt', 'FEMALE', 'TOP', 'bright blue shirt with white lace', 17.89, 8, '2015-06-11 04:22:30', '45816.jpg'),
-(57, 'white shirt with cool circle thing', 'FEMALE', 'TOP', 'awesome white shirt with cool circle thing. its great?', 12.11, 8, '2015-06-11 04:24:01', '86309.jpg'),
-(58, 'orange', 'MALE', 'TOP', 'orange shirt. great for golfing with your buddies', 150, 2, '2015-06-11 04:25:22', '79818.jpg'),
-(59, 'white tank top w/ feather pattern', 'FEMALE', 'TOP', 'yup', 11.1111, 1, '2015-06-11 04:26:36', '58227.jpg'),
-(60, 'flannel 90s shirt', 'FEMALE', 'TOP', 'smells like awesome', 45.9, 9, '2015-06-11 04:28:28', '71975.jpg'),
-(61, 'pink/red shirt?', 'MALE', 'TOP', 'its pink? is it red? what?', 10.21, 2, '2015-06-11 04:29:37', '93963.jpg'),
-(63, 'red V neck shirt', 'MALE', 'TOP', '', 50, 9, '2015-06-11 04:31:16', '17102.jpg'),
-(64, 'colorful hippie shirt', 'FEMALE', 'TOP', 'whaaa', 99.99, 8, '2015-06-11 04:32:44', '95547.jpg'),
-(65, 'kawaii yellow jake the dog kigurumi- just top part', 'MALE', 'TOP', 'kawaiiiii', 10, 8, '2015-06-11 04:34:38', '44537.jpg'),
+(52, 'White shirt', 'FEMALE', 'TOP', 'a white shirt.', 15, 2, '2015-06-11 04:17:49', '94461.jpg'),
+(53, 'Black coat', 'MALE', 'TOP', 'a warm black coat. tons of pockets.', 120, 2, '2015-06-11 04:19:00', '32367.jpg'),
+(54, 'A striped white shirt', 'MALE', 'TOP', '', 10, 9, '2015-06-11 04:20:03', '68796.jpg'),
+(55, 'Grey tank top', 'FEMALE', 'TOP', '', 13.45, 2, '2015-06-11 04:21:10', '50476.jpg'),
+(56, 'Blue shirt', 'FEMALE', 'TOP', 'bright blue shirt with white lace', 17.89, 8, '2015-06-11 04:22:30', '45816.jpg'),
+(57, 'White shirt with cool circle thing', 'FEMALE', 'TOP', 'awesome white shirt with cool circle thing. its great?', 12.11, 8, '2015-06-11 04:24:01', '86309.jpg'),
+(58, 'Orange', 'MALE', 'TOP', 'orange shirt. great for golfing with your buddies', 150, 2, '2015-06-11 04:25:22', '79818.jpg'),
+(59, 'White tank top w/ feather pattern', 'FEMALE', 'TOP', 'yup', 11.1111, 1, '2015-06-11 04:26:36', '58227.jpg'),
+(60, 'Flannel 90s shirt', 'FEMALE', 'TOP', 'smells like awesome', 45.9, 9, '2015-06-11 04:28:28', '71975.jpg'),
+(61, 'Pink/red shirt?', 'MALE', 'TOP', 'its pink? is it red? what?', 10.21, 2, '2015-06-11 04:29:37', '93963.jpg'),
+(63, 'Red V neck shirt', 'MALE', 'TOP', '', 50, 9, '2015-06-11 04:31:16', '17102.jpg'),
+(64, 'Colorful hippie shirt', 'FEMALE', 'TOP', 'whaaa', 99.99, 8, '2015-06-11 04:32:44', '95547.jpg'),
+(65, 'Kawaii yellow jake the dog kigurumi- just top part', 'MALE', 'TOP', 'kawaiiiii', 10, 8, '2015-06-11 04:34:38', '44537.jpg'),
 (67, 'Flowery Denim shorts ', 'FEMALE', 'BOTTOM', 'flowerssss', 10, 8, '2015-06-11 04:37:12', '44037.jpg'),
 (68, 'Blue jeans', 'MALE', 'BOTTOM', '', 11.1, 2, '2015-06-11 04:38:06', '65817.jpg'),
-(69, 'bright blue jeans for the gals', 'FEMALE', 'BOTTOM', '', 1, 8, '2015-06-11 04:39:00', '50818.jpg'),
-(70, 'black training shorts', 'MALE', 'BOTTOM', 'cool', 101, 1, '2015-06-11 04:39:58', '8072.jpg'),
-(71, 'kawaii', 'FEMALE', 'BOTTOM', 'beautiful skirt. so cute. much awesome.', 32, 8, '2015-06-11 04:41:21', '97198.jpg'),
+(69, 'Bright blue jeans for the gals', 'FEMALE', 'BOTTOM', '', 1, 8, '2015-06-11 04:39:00', '50818.jpg'),
+(70, 'Black training shorts', 'MALE', 'BOTTOM', 'cool', 101, 1, '2015-06-11 04:39:58', '8072.jpg'),
+(71, 'Kawaii', 'FEMALE', 'BOTTOM', 'beautiful skirt. so cute. much awesome.', 32, 8, '2015-06-11 04:41:21', '97198.jpg'),
 (72, 'Black Jeans for the dudes', 'MALE', 'BOTTOM', 'better then the other pair', 190, 9, '2015-06-11 04:42:34', '91684.jpg'),
-(73, 'yellow shorts', 'MALE', 'BOTTOM', '', 150, 2, '2015-06-11 04:43:37', '76538.jpg'),
-(74, 'another black skirt', 'FEMALE', 'BOTTOM', 'it''s different. totes diff. believe us.', 131, 8, '2015-06-11 04:45:07', '92825.jpg');
+(73, 'Yellow shorts', 'MALE', 'BOTTOM', '', 150, 2, '2015-06-11 04:43:37', '76538.jpg'),
+(74, 'Another black skirt', 'FEMALE', 'BOTTOM', 'it''s different. totes diff. believe us.', 131, 8, '2015-06-11 04:45:07', '92825.jpg');
 
 -- --------------------------------------------------------
 
@@ -230,7 +229,7 @@ CREATE TABLE IF NOT EXISTS `items_stock` (
   `quantity` int(11) NOT NULL,
   PRIMARY KEY (`item_stock_id`),
   UNIQUE KEY `id` (`item_stock_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='The sizes and quantities of each size' AUTO_INCREMENT=120 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='The sizes and quantities of each size' AUTO_INCREMENT=122 ;
 
 --
 -- Dumping data for table `items_stock`
@@ -322,7 +321,9 @@ INSERT INTO `items_stock` (`item_stock_id`, `item_id`, `size`, `quantity`) VALUE
 (116, 72, 'Medium', 10),
 (117, 72, 'Small', 10),
 (118, 73, 'Medium', 10),
-(119, 74, 'Medium', 10);
+(119, 74, 'Medium', 10),
+(120, 75, 'LARGE', 12),
+(121, 75, 'UK 12', 20);
 
 -- --------------------------------------------------------
 
@@ -696,7 +697,13 @@ INSERT INTO `item_attributes` (`item_id`, `attribute_id`) VALUES
 (74, 16),
 (74, 24),
 (74, 25),
-(74, 31);
+(74, 31),
+(75, 7),
+(75, 10),
+(75, 16),
+(75, 23),
+(75, 25),
+(75, 32);
 
 -- --------------------------------------------------------
 
@@ -716,14 +723,14 @@ CREATE TABLE IF NOT EXISTS `item_matchings` (
   `ignored_match_percent` double NOT NULL DEFAULT '0',
   `ignored_match_count` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`match_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=491 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=657 ;
 
 --
 -- Dumping data for table `item_matchings`
 --
 
 INSERT INTO `item_matchings` (`match_id`, `top_item_id`, `bottom_item_id`, `match_percent`, `match_count`, `trend_percent`, `match_type`, `model_picture`, `ignored_match_percent`, `ignored_match_count`) VALUES
-(6, 46, 42, 0, 0, NULL, 1, '61108.jpg', 0, 0),
+(6, 46, 42, 0, 0, NULL, 1, '61108.jpg', 80, 1),
 (7, 49, 43, 0, 0, NULL, 1, '62732.jpg', 0, 0),
 (8, 50, 41, 0, 0, NULL, 1, '95156.jpg', 0, 0),
 (9, 47, 33, 0, 0, NULL, 1, '1960.jpg', 0, 0),
@@ -802,24 +809,24 @@ CREATE TABLE IF NOT EXISTS `users` (
   `is_spammer_time` timestamp NULL DEFAULT NULL,
   `time_tracking_ctr` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`user_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=13 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=15 ;
 
 --
 -- Dumping data for table `users`
 --
 
 INSERT INTO `users` (`user_id`, `email`, `first_name`, `last_name`, `address`, `gender`, `birth_date`, `is_designer`, `is_admin`, `avatar`, `coupon_meter`, `description`, `website_link`, `is_spammer`, `is_spammer_time`, `time_tracking_ctr`) VALUES
-(1, 'charlotte@suityou.fr', 'Charlotte', 'd''Avignon', 'adsa, Republique francaise', 'FEMALE', '1988-12-31', 1, 0, '21232.jpeg', 0, '  Je suis le meilleur designer en europe!  ', 'abcde', 0, NULL, 0),
+(1, 'charlotte@suityou.fr', 'Charlotte', 'd''Avignon', 'adsa, Republique francaise', 'FEMALE', '1988-12-31', 1, 0, '21232.jpeg', 100, '    Je suis le meilleur designer en europe!    ', 'http://google.com', 0, NULL, 0),
 (2, 'gabagaba@info.com', 'Umberto', 'de Cazale', '123 shapopo', 'MALE', '0001-01-01', 1, 0, '54770.png', 0, ' designing the best and most cutting edge clothing in all of west Mordor ', 'http://www.google.com', 0, NULL, 0),
-(3, 'boss@Boss.com', 'Boss', 'Bossss', 'Boss lane boss city', 'FEMALE', '1990-01-01', 0, 1, '', 100, '', '', 0, NULL, 0),
-(4, 'user1@suityou.com', 'user', 'one', 'aa', 'MALE', '2015-06-01', 0, 0, '', 0, NULL, NULL, 0, NULL, 0),
+(3, 'boss@Boss.com', 'Boss', 'Bossss', 'Boss lane boss city', 'FEMALE', '1990-01-01', 0, 1, '', 100, '', '', 0, NULL, 3),
+(4, 'user1@suityou.com', 'user', 'one', 'aa', 'MALE', '2015-06-01', 0, 0, '', 90, NULL, NULL, 0, NULL, 3),
 (5, 'user2@suityou.com', 'user', 'two', 'agf 2', 'FEMALE', '0001-01-01', 0, 0, '', 100, NULL, NULL, 0, NULL, 0),
-(6, 'user3@suityou.com', 'user', 'three', 'aa', 'MALE', '2015-06-01', 0, 0, '', 50, NULL, NULL, 0, NULL, 0),
-(7, 'user4@suityou.com', 'user', 'four', 'agf 2', 'FEMALE', '0000-00-00', 0, 0, '', 0, NULL, NULL, 0, NULL, 0),
+(6, 'user3@suityou.com', 'user', 'three', 'aa', 'MALE', '2015-06-01', 0, 0, '', 90, NULL, NULL, 0, NULL, 3),
+(7, 'user4@suityou.com', 'user', 'four', 'agf 2', 'FEMALE', '0000-00-00', 0, 0, '', 30, NULL, NULL, 0, NULL, 0),
 (8, 'hishi@suityou.jp', 'Hideko', 'Shinji', 'waka 14 JP', 'MALE', '0000-00-00', 1, 0, '', 0, NULL, 'http://japan.com', 0, NULL, 0),
 (9, 'clarasmith@suityou.co.uk', 'Clara', 'Smith', 'blabla 14 London, UK', 'FEMALE', '0000-00-00', 1, 0, '', 0, NULL, 'http://www.gmail.com', 0, NULL, 0),
 (10, 'mzaltzman@gmail.com', 'Riku', 'Zaltzman', 'TAU, Tel-Aviv', 'MALE', '0000-00-00', 0, 1, '', 0, NULL, 'http://japan.com', 0, NULL, 0),
-(11, 'amabir@gmail.com', 'Amit', 'Abir', 'TAU, Tel-Aviv', 'MALE', '0000-00-00', 0, 1, '', 0, NULL, 'http://www.gmail.com', 0, NULL, 0);
+(11, 'amabir@gmail.com', 'Amit', 'Abir', 'TAU, Tel-Aviv', 'MALE', '0000-00-00', 0, 1, '', 60, NULL, 'http://www.gmail.com', 0, NULL, 0);
 
 -- --------------------------------------------------------
 

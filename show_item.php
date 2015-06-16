@@ -144,9 +144,12 @@ $designerRow = mysql_fetch_array($designerNameQuery);
 					</h4>
 				</div>
 			</div>
-			<div class="row">
 				<?php
+				$count = 0;
 				foreach($sorted_matches as $key=>$matchRow) {
+					if ($count == 6) {
+						break;
+					}
 					$matchId = $matchRow['match_id'];
 					if ($item->type == "TOP") {
 						$matchItemId= $matchRow["bottom_item_id"];
@@ -166,6 +169,7 @@ $designerRow = mysql_fetch_array($designerNameQuery);
 					<div id="match_<?php echo $matchId; ?>" class="col-sm-2">
 					</div>
 				<?php
+				$count++;
 				}
 				?>
 			</div>

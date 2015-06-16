@@ -177,14 +177,11 @@
 				$bottomItemAttributes = $bottomItem->getItemAttributes();
 				$matchAndTrendExists = checkIfMatchAndTrendExists($items[0], $items[1]);
 				if(!$matchAndTrendExists[0]) {
-				//	echo "match doesn't exist</br>";
 					$trendScore = calculateTrendScore($topItemAttributes, $bottomItemAttributes, $attributesData);
-				//	echo "Score is : ".$trendScore."</br>";
 					if($matchAndTrendExists[1]) {
 						mysql_query("UPDATE item_matchings SET trend_percent = ".$trendScore."
 						WHERE top_item_id = ".$items[0]." AND bottom_item_id = ".$items[1]) or die(mysql_error());
 					} else if(isGoodCouple($data) and $trendScore >= $constantsArray['TREND_SCORE_LIMIT'] and $data["count"] >= $constantsArray['TREND_MIN_COUNT']) {
-				//		echo "Inserting</br>";
 						mysql_query("INSERT INTO item_matchings(top_item_id, bottom_item_id, trend_percent, match_type)
 						VALUES (".$items[0].", ".$items[1].", ".$trendScore.", 0)") or die(mysql_error());
 					}
@@ -195,7 +192,7 @@
 	
 	function removeOldTrends(){
 		$constantsArray = getConstants();
-		$matchTrendQuery = mysql_query("DELETE FROM item_matchings WHERE match_type = 0 AND (trend_percent < ".$constantsArray['TREND_SCORE_LIMIT']." OR (match_percent < ".$constantsArray['MATCH_SCORE_LIMIT']." AND match_percent > 0 AND match_count >= ".$constantsArray['TREND_MIN_RATINGS_COUNT'].") )") or die(mysql_error());
+		$matchTrendQuery = mysql_query("DELETE FROM item_matchings WHERE match_type = 0 AND (trend_percent < ".$constantsArray['TREND_SCORE_LIMIT']." OR (match_percent < ".$constantsArray['MATCH_SCORE_LIMIT']." AND match_percent > 0 AND match_count >= ".$constantsArray['TREND_REMOVE_MIN_COUNT'].") )") or die(mysql_error());
 	}
 	
 	function increaseCouponMeter($userID, $increaseSize){
@@ -279,6 +276,9 @@
 		$isSpammer = checkIsSpammer($userID, $rating, $time);
 		if (!$isSpammer) {
 			$query = mysql_query("SELECT * FROM item_matchings WHERE match_id = ".$matchID) or die(mysql_error());
+			if (mysql_num_rows($query) == 0) {
+				return;
+			}
 			$row = mysql_fetch_array($query);
 			$averageRating = $row['match_percent'];
 			$numberOfVotes = $row['match_count'];
