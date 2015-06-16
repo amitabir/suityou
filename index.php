@@ -95,7 +95,7 @@
         <div class="col-md-4">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h4><i class="fa fa-fw fa-gift"></i> Mathces</h4>
+                    <h4><i class="fa fa-fw fa-gift"></i> Matches </h4>
                 </div>
                 <div class="panel-body">
                     <p>Join our community and help rate the matches to help everyone decide what to wear! All you need to do is to rate the matches you found most appealing, and let our algorithms do the rest of the job. </p>

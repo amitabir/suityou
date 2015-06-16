@@ -35,7 +35,7 @@ function showSlider($query,$id)
 }
 ?>
 	<script src="js/libraries/jssor.slider.mini.js"></script>
-	<script src="js/libraries/shop_entrance.js?3"></script>
+	<script src="js/site_scripts/shop_entrance.js?3"></script>
     <div class="container">
 		<div class="row">
 			<div class="col-md-6" align="center">
