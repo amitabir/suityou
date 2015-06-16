@@ -44,7 +44,7 @@ require_once 'config.php';
 
 <body>
 
-<nav class="navbar navbar-default">
+<nav class="navbar navbar-inverse">
 
 
 
